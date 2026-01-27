@@ -1,0 +1,26 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "title": "Atomic Habits",
+      "author": "James Clear",
+      "category": "Développement personnel",
+      "description": "Un guide pratique pour créer de bonnes habitudes.",
+      "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c",
+      "quotes": [
+        "Les petites habitudes font les grands changements."
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Deep Work",
+      "author": "Cal Newport",
+      "category": "Productivité",
+      "description": "Se concentrer dans un monde distrait.",
+      "image": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f",
+      "quotes": [
+        "La concentration est une compétence rare."
+      ]
+    }
+  ]
+}
