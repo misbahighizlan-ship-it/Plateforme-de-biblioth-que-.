@@ -11,53 +11,55 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen flex text-white">
       {/* LEFT */}
-      <div
-        className="relative hidden md:flex w-1/2 items-center justify-center overflow-hidden"
-        style={{ backgroundColor: "#121d34" }}
-      >
-        {/* Animated stars */}
-        {stars.map((_, i) => (
-          <motion.span
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full opacity-70"
-            initial={{
-              x: Math.random() * 600 - 300,
-              y: Math.random() * 600 - 300,
-              opacity: 0,
-            }}
-            animate={{
-              y: [-300, 300],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 6 + Math.random() * 5,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-          />
-        ))}
+<div
+  className="relative hidden md:flex w-1/2 items-center justify-center overflow-hidden"
+>
+  {/* 🔴 BACKGROUND IMAGE (Cloudinary) */}
+  <img
+    src="https://res.cloudinary.com/dmxy7k7pm/image/upload/f_auto,q_auto/v1769605578/Book_uu3lq8.jpg"
+    alt="Bibliothèque intelligente"
+    className="absolute inset-0 w-full h-full object-cover"
+  />
 
-        {/* Overlay content */}
-        <div className="relative z-10 text-center px-10">
-          {/* mage / video / gif */}
-          {/* image */}
-          {/*
-          <img
-            src="/bibliotheque.jpg"
-            alt="Bibliothèque"
-            className="w-72 mx-auto mb-6 rounded-xl shadow-lg"
-          />
-          */}
+  {/* 🔴 DARK OVERLAY */}
+  <div className="absolute inset-0 bg-black/60"></div>
 
-          <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/10 flex items-center justify-center text-2xl font-bold">
-            IA
-          </div>
-          <h1 className="text-3xl font-bold mb-3">BiblioIA</h1>
-          <p className="text-white/80">
-            Votre bibliothèque intelligente avec assistant IA
-          </p>
-        </div>
-      </div>
+  {/* ⭐ Animated stars */}
+  {stars.map((_, i) => (
+    <motion.span
+      key={i}
+      className="absolute w-1 h-1 bg-white rounded-full opacity-70"
+      initial={{
+        x: Math.random() * 600 - 300,
+        y: Math.random() * 600 - 300,
+        opacity: 0,
+      }}
+      animate={{
+        y: [-300, 300],
+        opacity: [0, 1, 0],
+      }}
+      transition={{
+        duration: 6 + Math.random() * 5,
+        repeat: Infinity,
+        delay: Math.random() * 5,
+      }}
+    />
+  ))}
+
+  {/* 🟢 CONTENT */}
+  <div className="relative z-10 text-center px-10">
+    <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/10 flex items-center justify-center text-2xl font-bold">
+      IA
+    </div>
+
+    <h1 className="text-3xl font-bold mb-3">BiblioIA</h1>
+
+    <p className="text-white/80">
+      Votre bibliothèque intelligente avec assistant IA
+    </p>
+  </div>
+</div>
+
 
       {/* RIGHT */}
       <div
