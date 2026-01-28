@@ -1,24 +1,21 @@
-import Navbar from "./components/Navbar";
-import Home from "./pages/user/Home.jsx"
-import {BrowserRouter,Routes, Route} from "react-router-dom";
-import './index.css'
+// App.jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AdminLoginPage from "./pages/admin/AdminLoginPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminBooksPage from "./pages/admin/AdminBooksPage";
+import AdminMessagesPage from "./pages/admin/AdminMessagesPage";
+import AdminCategories  from "./pages/admin/AdminCategories";
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
-      {/* button panier dans Navbar*/}
-      <Navbar />
-
-      {/* Sidebar  */}
-      
-
       <Routes>
-        {/* User */}
-        <Route path="/" element={<Home />} />
-        
+        <Route path="/login" element={<AdminLoginPage />} />
+        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/books" element={<AdminBooksPage />} />
+        <Route path="/admin/messages" element={<AdminMessagesPage />} />
+        <Route path="/admin/categories" element={<AdminCategories />} />
       </Routes>
-      </BrowserRouter>
+    </BrowserRouter>
   );
 }
-
-export default App;
