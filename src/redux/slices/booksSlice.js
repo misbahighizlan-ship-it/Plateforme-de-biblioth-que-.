@@ -1,37 +1,46 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 
-
-/*Action : uploud book
-========================= */
+/* ================= FETCH ================= */
 export const fetchBooks = createAsyncThunk(
   "books/fetchBooks",
   async () => {
-    const response = await api.get("/books");
-    console.log("📦 DATA MEN API:", response.data);
-    return response.data;
+    const res = await api.get("/books");
+    return res.data;
   }
 );
 
-
-/*action : ajouter des livr*/
+/* ================= ADD ================= */
 export const addBook = createAsyncThunk(
   "books/addBook",
   async (newBook) => {
-    const response = await api.post("/books", newBook);
-    console.log("➕ BOOK ADDED:", response.data);
-    return response.data;
+    const res = await api.post("/books", newBook);
+    return res.data;
   }
 );
 
+/* ================= UPDATE ================= */
+export const updateBook = createAsyncThunk(
+  "books/updateBook",
+  async ({ id, data }) => {
+    const res = await api.put(`/books/${id}`, data);
+    return res.data;
+  }
+);
 
-/* 
-   SLICE
-*/
+/* ================= DELETE ================= */
+export const deleteBook = createAsyncThunk(
+  "books/deleteBook",
+  async (id) => {
+    await api.delete(`/books/${id}`);
+    return id;
+  }
+);
+
 const booksSlice = createSlice({
   name: "books",
   initialState: {
-    list: [],       //pour stocker les livre
+    list: [],
     loading: false,
     error: null,
   },
@@ -39,7 +48,7 @@ const booksSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // fetch books
+      /* FETCH */
       .addCase(fetchBooks.pending, (state) => {
         state.loading = true;
       })
@@ -52,9 +61,24 @@ const booksSlice = createSlice({
         state.error = action.error.message;
       })
 
-      // add book
+      /* ADD */
       .addCase(addBook.fulfilled, (state, action) => {
         state.list.push(action.payload);
+      })
+
+      /* UPDATE */
+      .addCase(updateBook.fulfilled, (state, action) => {
+        const i = state.list.findIndex(
+          (b) => b.id === action.payload.id
+        );
+        if (i !== -1) state.list[i] = action.payload;
+      })
+
+      /* DELETE */
+      .addCase(deleteBook.fulfilled, (state, action) => {
+        state.list = state.list.filter(
+          (b) => b.id !== action.payload
+        );
       });
   },
 });
