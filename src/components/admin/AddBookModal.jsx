@@ -1,17 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FiX, FiCheck } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import { addBook } from "../../redux/slices/booksSlice";
+import { fetchCategories } from "../../redux/slices/categoriesSlice";
 
 export default function AddBookModal({ open, onClose }) {
   const dispatch = useDispatch();
+
+  // 🟢 categories  depuis Redux
+  const { list: categories } = useSelector(
+    (state) => state.categories
+  );
 
   const [form, setForm] = useState({
     title: "",
     author: "",
     category: "",
   });
+
+  // le model ouvre 
+  useEffect(() => {
+    if (open) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, open]);
 
   if (!open) return null;
 
@@ -21,26 +35,28 @@ export default function AddBookModal({ open, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     dispatch(addBook(form));
-
     setForm({ title: "", author: "", category: "" });
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center
-                    bg-black/60 backdrop-blur-md">
-      
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* BACKDROP */}
+      <div
+        onClick={onClose}
+        className="absolute inset-0 bg-black/60 backdrop-blur-lg"
+      />
+
+      {/* MODAL */}
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.25 }}
         className="relative w-full max-w-2xl rounded-3xl p-10 shadow-2xl
                    bg-gradient-to-br from-[#009eff] to-[#121c33]"
       >
-
-        {/* ❌ Close */}
+        {/* Close */}
         <button
           onClick={onClose}
           className="absolute right-6 top-6 text-white/70 hover:text-white"
@@ -48,14 +64,11 @@ export default function AddBookModal({ open, onClose }) {
           <FiX size={26} />
         </button>
 
-        {/* 🧠 Title */}
         <h2 className="mb-8 text-2xl font-extrabold text-white">
           Ajouter un livre
         </h2>
 
-        {/* 📘 Form */}
-        <form onSubmit={handleSubmit} className="space-y-10">
-
+        <form onSubmit={handleSubmit} className="space-y-8">
           <Input
             name="title"
             placeholder="📘 Titre du livre"
@@ -70,17 +83,25 @@ export default function AddBookModal({ open, onClose }) {
             onChange={handleChange}
           />
 
-          <Input
+          {/* ✅ CATEGORY SELECT */}
+          <select
             name="category"
-            placeholder="📂 Catégorie"
             value={form.category}
             onChange={handleChange}
-          />
+            className="w-full rounded-xl bg-white/15 px-5 py-4
+                       text-white backdrop-blur-md outline-none
+                       focus:ring-2 focus:ring-red-400"
+          >
+            <option value="">📂 Choisir une catégorie</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.name}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
 
-          {/* ✅ Actions */}
+          {/* ACTIONS */}
           <div className="flex justify-end gap-4 pt-6">
-
-            {/* Cancel */}
             <button
               type="button"
               onClick={onClose}
@@ -91,16 +112,14 @@ export default function AddBookModal({ open, onClose }) {
               <FiX size={24} />
             </button>
 
-            {/* Save */}
             <button
               type="submit"
               className="flex h-14 w-14 items-center justify-center
-                         rounded-full bg-[#67b1db] text-white
-                         shadow-xl transition hover:scale-110"
+                         rounded-full bg-red-500 text-white
+                         shadow-xl transition hover:scale-110 hover:bg-red-600"
             >
               <FiCheck size={26} />
             </button>
-
           </div>
         </form>
       </motion.div>
@@ -108,7 +127,7 @@ export default function AddBookModal({ open, onClose }) {
   );
 }
 
-/* 🧊 Glass Input */
+/* INPUT */
 function Input({ name, placeholder, value, onChange }) {
   return (
     <input
@@ -119,7 +138,7 @@ function Input({ name, placeholder, value, onChange }) {
       className="w-full rounded-xl bg-white/15 px-5 py-4
                  text-white placeholder-white/70
                  backdrop-blur-md outline-none
-                 focus:ring-2 focus:ring-[#67b1db]"
+                 focus:ring-2 focus:ring-red-400"
     />
   );
 }

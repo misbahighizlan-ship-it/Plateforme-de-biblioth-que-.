@@ -23,7 +23,7 @@ export default function ViewBookModal({ isOpen, onClose, book }) {
           <FiX size={20} />
         </button>
 
-        {/* HEADER (نفس Edit) */}
+        {/* HEADER */}
         <h3 className="text-xl font-semibold mb-1">
           Détails du livre
         </h3>
@@ -31,7 +31,7 @@ export default function ViewBookModal({ isOpen, onClose, book }) {
           Informations complètes du livre
         </p>
 
-        {/* CONTENT (نفس form layout ولكن read-only) */}
+        {/* CONTENT (meme form layout read-only) */}
         <div className="space-y-4">
           <div>
             <label className="text-sm text-gray-400">Titre</label>
@@ -55,7 +55,7 @@ export default function ViewBookModal({ isOpen, onClose, book }) {
           </div>
         </div>
 
-        {/* FOOTER (نفس Edit) */}
+        {/* FOOTER (meme edit) */}
         <div className="flex justify-end mt-6">
           <button
             onClick={onClose}

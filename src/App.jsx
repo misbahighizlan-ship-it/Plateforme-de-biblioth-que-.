@@ -14,7 +14,8 @@ export default function App() {
         <Route path="/admin" element={<AdminDashboardPage />} />
         <Route path="/admin/books" element={<AdminBooksPage />} />
         <Route path="/admin/messages" element={<AdminMessagesPage />} />
-        <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/admin/categorie" element={<AdminCategories />} />
+      
       </Routes>
     </BrowserRouter>
   );
