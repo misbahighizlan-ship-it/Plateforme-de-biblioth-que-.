@@ -83,22 +83,34 @@ export default function AddBookModal({ open, onClose }) {
             onChange={handleChange}
           />
 
-          {/* ✅ CATEGORY SELECT */}
-          <select
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            className="w-full rounded-xl bg-white/15 px-5 py-4
-                       text-white backdrop-blur-md outline-none
-                       focus:ring-2 focus:ring-red-400"
-          >
-            <option value="">📂 Choisir une catégorie</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.name}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+          
+          {/*  SELECT CATEGORY */}
+<select
+  name="category"
+  value={form.category}
+  onChange={handleChange}
+  className="w-full rounded-xl px-5 py-4
+             from-[#009eff]  text-white
+             border border-white/20
+             backdrop-blur-md outline-none
+             focus:ring-2 focus:ring-red-400"
+>
+  {/* Option par défaut */}
+  <option value="" className="bg-[#0c1d46] text-whith-400">
+    📂 Choisir une catégorie
+  </option>
+
+  {categories.map((cat) => (
+    <option
+      key={cat.id}
+      value={cat.name}
+      className="bg-[#dc7784] text-white"
+    >
+      {cat.name}
+    </option>
+  ))}
+</select>
+
 
           {/* ACTIONS */}
           <div className="flex justify-end gap-4 pt-6">
