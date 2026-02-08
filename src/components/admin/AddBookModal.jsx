@@ -9,7 +9,7 @@ import { fetchCategories } from "../../redux/slices/categoriesSlice";
 export default function AddBookModal({ open, onClose }) {
   const dispatch = useDispatch();
 
-  // 🟢 categories  depuis Redux
+  // 🟢 categories depuis Redux
   const { list: categories } = useSelector(
     (state) => state.categories
   );
@@ -18,9 +18,10 @@ export default function AddBookModal({ open, onClose }) {
     title: "",
     author: "",
     category: "",
+    price: "",
   });
 
-  // le model ouvre 
+  // load categories when modal opens
   useEffect(() => {
     if (open) {
       dispatch(fetchCategories());
@@ -30,13 +31,29 @@ export default function AddBookModal({ open, onClose }) {
   if (!open) return null;
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addBook(form));
-    setForm({ title: "", author: "", category: "" });
+
+    dispatch(
+      addBook({
+        ...form,
+        price: Number(form.price), // 🟢 مهم بزاف
+      })
+    );
+
+    setForm({
+      title: "",
+      author: "",
+      category: "",
+      price: "",
+    });
+
     onClose();
   };
 
@@ -83,34 +100,40 @@ export default function AddBookModal({ open, onClose }) {
             onChange={handleChange}
           />
 
-          
-          {/*  SELECT CATEGORY */}
-<select
-  name="category"
-  value={form.category}
-  onChange={handleChange}
-  className="w-full rounded-xl px-5 py-4
-             from-[#009eff]  text-white
-             border border-white/20
-             backdrop-blur-md outline-none
-             focus:ring-2 focus:ring-red-400"
->
-  {/* Option par défaut */}
-  <option value="" className="bg-[#0c1d46] text-whith-400">
-    📂 Choisir une catégorie
-  </option>
+          {/* PRICE */}
+          <Input
+            name="price"
+            type="number"
+            placeholder="💰 Prix (DH)"
+            value={form.price}
+            onChange={handleChange}
+          />
 
-  {categories.map((cat) => (
-    <option
-      key={cat.id}
-      value={cat.name}
-      className="bg-[#dc7784] text-white"
-    >
-      {cat.name}
-    </option>
-  ))}
-</select>
+          {/* SELECT CATEGORY */}
+          <select
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+            className="w-full rounded-xl px-5 py-4
+                       bg-white/15 text-white
+                       border border-white/20
+                       backdrop-blur-md outline-none
+                       focus:ring-2 focus:ring-red-400"
+          >
+            <option value="" className="bg-[#0c1d46] text-white">
+              📂 Choisir une catégorie
+            </option>
 
+            {categories.map((cat) => (
+              <option
+                key={cat.id}
+                value={cat.name}
+                className="bg-[#0c1d46] text-white"
+              >
+                {cat.name}
+              </option>
+            ))}
+          </select>
 
           {/* ACTIONS */}
           <div className="flex justify-end gap-4 pt-6">
@@ -139,11 +162,12 @@ export default function AddBookModal({ open, onClose }) {
   );
 }
 
-/* INPUT */
-function Input({ name, placeholder, value, onChange }) {
+/* INPUT COMPONENT */
+function Input({ name, type = "text", placeholder, value, onChange }) {
   return (
     <input
       name={name}
+      type={type}
       value={value}
       onChange={onChange}
       placeholder={placeholder}

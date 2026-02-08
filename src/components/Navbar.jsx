@@ -1,33 +1,48 @@
-import { FiSearch } from "react-icons/fi"
-import { MdMenuBook } from "react-icons/md";
+import { motion } from "framer-motion";
+import { FaHeart, FaShoppingCart, FaSearch } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
 export default function Navbar() {
   return (
-    <nav className="w-full bg-gradient-to-r from-[#060b1f] via-[#0b1230] to-[#060b1f] px-6 py-4 flex items-center justify-between shadow-lg">
-      
-      {/* Logo */}
-      <div className="flex items-center gap-2 text-cyan-400 font-semibold tracking-wide">
-        <span className="text-xl">📘</span>
-        <span className="uppercase">Salon du livre</span>
+    <nav className="flex items-center justify-between px-8 py-4 bg-white shadow-md sticky top-0 z-50">
+      {/* LEFT */}
+      <div className="flex items-center gap-3">
+        <motion.img
+          src="/logo.png"
+          alt="Logo"
+          className="w-10"
+          whileHover={{ rotate: 360 }}
+          transition={{ duration: 0.6 }}
+        />
+
+        <span className="font-bold text-xl text-[#2B55B5]">
+          SmartLibrary
+        </span>
       </div>
 
-      {/* Search */}
-      <div className="flex-1 max-w-xl mx-8">
+      {/* CENTER */}
+      <div className="flex gap-8 text-[#212E53] font-medium">
+        <Link to="/">Accueil</Link>
+        <Link to="/catalogue">Bibliothèque</Link>
+        <Link to="/chatbot">IA</Link>
+        <Link to="/contact">Contact</Link>
+      </div>
+
+      {/* RIGHT */}
+      <div className="flex items-center gap-4">
+        {/* SEARCH */}
         <div className="relative">
-          <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 w-5 h-5" />
+          <FaSearch className="absolute top-3 left-3 text-gray-400" />
           <input
             type="text"
-            placeholder="Découvrez votre prochaine lecture..."
-            className="w-full rounded-full bg-[#0e173d] text-white pl-12 pr-4 py-2 
-                       placeholder:text-cyan-300/60 focus:outline-none 
-                       focus:ring-2 focus:ring-cyan-400"
+            placeholder="Rechercher un livre..."
+            className="pl-10 pr-4 py-2 rounded-full bg-[#B6D8F2] outline-none"
           />
         </div>
-      </div>
 
-      {/* Avatar */}
-      <div className="w-10 h-10 rounded-full bg-cyan-400 flex items-center justify-center shadow-md">
-  <MdMenuBook className="text-black w-6 h-6" />
-</div>
+        <FaHeart className="text-xl cursor-pointer text-[#2B55B5]" />
+        <FaShoppingCart className="text-xl cursor-pointer text-[#2B55B5]" />
+      </div>
     </nav>
   );
 }

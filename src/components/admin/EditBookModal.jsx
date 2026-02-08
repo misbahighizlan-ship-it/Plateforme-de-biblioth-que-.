@@ -10,7 +10,11 @@ export default function EditBookModal({
   const [formData, setFormData] = useState({
     title: "",
     author: "",
+    image: "",
+    description: "",
     category: "",
+    rating: "",
+    price: 0,
   });
 
   useEffect(() => {
@@ -18,7 +22,11 @@ export default function EditBookModal({
       setFormData({
         title: book.title,
         author: book.author,
+        image: book.image,
         category: book.category,
+        description: book.description || "",
+        rating: book.rating || "",
+        price: book.price || 0,
       });
     }
   }, [book]);
@@ -39,7 +47,7 @@ export default function EditBookModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      
+
       {/* BACKDROP BLUR */}
       <div
         onClick={onClose}
@@ -88,6 +96,31 @@ export default function EditBookModal({
           </div>
 
           <div>
+            <label className="text-sm text-gray-400">Image URL</label>
+            <input
+              name="image"
+              value={formData.image}
+              onChange={handleChange}
+              className="w-full mt-1 px-4 py-2 rounded-xl
+               bg-[#0B0F19] border border-gray-800
+               focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="text-sm text-gray-400">Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full mt-1 px-4 py-2 rounded-xl
+               bg-[#0B0F19] border border-gray-800
+               focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+
+          <div>
             <label className="text-sm text-gray-400">Category</label>
             <input
               name="category"
@@ -96,6 +129,30 @@ export default function EditBookModal({
               className="w-full mt-1 px-4 py-2 rounded-xl bg-[#0B0F19] border border-gray-800 focus:outline-none focus:border-blue-500"
             />
           </div>
+<div>
+  <label className="text-sm text-gray-400">Price</label>
+  <input
+    type="number"
+    name="price"
+    value={formData.price}
+    onChange={handleChange}
+    className="w-full mt-1 px-4 py-2 rounded-xl bg-[#0B0F19] border border-gray-800 focus:outline-none focus:border-blue-500"
+  />
+</div>
+
+          <div>
+            <label className="text-sm text-gray-400">Rating</label>
+            <input
+              name="rating"
+              value={formData.rating}
+              onChange={handleChange}
+              placeholder="4.5"
+              className="w-full mt-1 px-4 py-2 rounded-xl
+               bg-[#0B0F19] border border-gray-800
+               focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
         </div>
 
         {/* FOOTER */}
