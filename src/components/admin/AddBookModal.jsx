@@ -19,6 +19,8 @@ export default function AddBookModal({ open, onClose }) {
     author: "",
     category: "",
     price: "",
+    image: "",   // 🆕 image Cloudinary
+    rating: "",  // 🆕 rating
   });
 
   // load categories when modal opens
@@ -43,7 +45,8 @@ export default function AddBookModal({ open, onClose }) {
     dispatch(
       addBook({
         ...form,
-        price: Number(form.price), // 🟢 مهم بزاف
+        price: Number(form.price),
+        rating: Number(form.rating),
       })
     );
 
@@ -52,6 +55,8 @@ export default function AddBookModal({ open, onClose }) {
       author: "",
       category: "",
       price: "",
+      image: "",
+      rating: "",
     });
 
     onClose();
@@ -100,12 +105,32 @@ export default function AddBookModal({ open, onClose }) {
             onChange={handleChange}
           />
 
-          {/* PRICE */}
           <Input
             name="price"
             type="number"
             placeholder="💰 Prix (DH)"
             value={form.price}
+            onChange={handleChange}
+          />
+
+          {/* IMAGE URL */}
+          <Input
+            name="image"
+            type="url"
+            placeholder="🖼️ Lien image (Cloudinary)"
+            value={form.image}
+            onChange={handleChange}
+          />
+
+          {/* RATING */}
+          <Input
+            name="rating"
+            type="number"
+            min="1"
+            max="5"
+            step="0.5"
+            placeholder="⭐ Rating (1 à 5)"
+            value={form.rating}
             onChange={handleChange}
           />
 
@@ -163,11 +188,14 @@ export default function AddBookModal({ open, onClose }) {
 }
 
 /* INPUT COMPONENT */
-function Input({ name, type = "text", placeholder, value, onChange }) {
+function Input({ name, type = "text", placeholder, value, onChange, min, max, step }) {
   return (
     <input
       name={name}
       type={type}
+      min={min}
+      max={max}
+      step={step}
       value={value}
       onChange={onChange}
       placeholder={placeholder}

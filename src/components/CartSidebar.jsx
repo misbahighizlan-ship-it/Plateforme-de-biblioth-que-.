@@ -80,13 +80,12 @@ export default function CartSidebar({ show, onClose }) {
                   </div>
 
                   <button
-                    onClick={() =>
-                      dispatch(removeFromCart(item.id))
-                    }
-                    className="text-xs text-red-400 mt-2"
-                  >
-                    Supprimer
-                  </button>
+  onClick={() => dispatch(removeFromCart(item.id))}
+  className="flex items-center gap-1 text-pink-400 hover:text-pink-300 text-sm mt-2"
+>
+   Supprimer
+</button>
+
                 </div>
               </div>
             ))

@@ -1,15 +1,24 @@
 import HeroSection from "../../components/HeroSection";
-import PopularBooks from "../../components/PopularBooks";
-export default function Home() {
-  ;
+import BooksCarousel from "../../components/BooksCarousel";
+import CategoriesSection from "../../components/CategoriesSection";
 
+import api from "../../services/api";
+import { useEffect, useState } from "react";
+
+export default function Home() {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    api.get("/books").then(res => setBooks(res.data));
+  }, []);
 
   return (
-    <div className="home-page">
+    <>
       <HeroSection />
-      <PopularBooks />
 
-    </div>
+      <CategoriesSection />
+
+      <BooksCarousel books={books} />
+    </>
   );
 }
-
