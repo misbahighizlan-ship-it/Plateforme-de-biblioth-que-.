@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 /* load cart from localStorage */
 const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -16,13 +16,13 @@ const initialState = {
 };
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState,
 
   reducers: {
     addToCart: (state, action) => {
       const productInCart = state.items.find(
-        item => item.id === action.payload.id
+        (item) => item.id === action.payload.id
       );
 
       const price = Number(action.payload.price) || 0;
@@ -43,7 +43,7 @@ const cartSlice = createSlice({
 
     removeFromCart: (state, action) => {
       state.items = state.items.filter(
-        item => item.id !== action.payload
+        (item) => item.id !== action.payload
       );
 
       state.total = calculateTotal(state.items);
@@ -52,7 +52,7 @@ const cartSlice = createSlice({
 
     incrementQuantity: (state, action) => {
       const product = state.items.find(
-        item => item.id === action.payload
+        (item) => item.id === action.payload
       );
 
       if (product) product.quantity += 1;
@@ -63,7 +63,7 @@ const cartSlice = createSlice({
 
     decrementQuantity: (state, action) => {
       const product = state.items.find(
-        item => item.id === action.payload
+        (item) => item.id === action.payload
       );
 
       if (product && product.quantity > 1) {
@@ -73,6 +73,13 @@ const cartSlice = createSlice({
       state.total = calculateTotal(state.items);
       localStorage.setItem("cart", JSON.stringify(state.items));
     },
+
+    /* ✅ clearCart خاصو يكون هنا بوحدو
+    clearCart: (state) => {
+      state.items = [];
+      state.total = 0;
+      localStorage.removeItem("cart");
+    },*/
   },
 });
 
@@ -81,6 +88,7 @@ export const {
   removeFromCart,
   incrementQuantity,
   decrementQuantity,
+  clearCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

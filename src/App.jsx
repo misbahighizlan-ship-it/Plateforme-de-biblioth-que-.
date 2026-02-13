@@ -7,12 +7,13 @@ import CartSidebar from "./components/CartSidebar";
 import Home from "./pages/user/Home";
 import BookDetails from "./pages/user/BookDetails";
 import Wishlist from "./pages/user/Wishlist";
-
+ import Checkout from "./pages/user/Checkout";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminBooksPage from "./pages/admin/AdminBooksPage";
 import AdminMessagesPage from "./pages/admin/AdminMessagesPage";
 import AdminCategories from "./pages/admin/AdminCategories";
+
 
 export default function App() {
   // ✅ HERE is the missing part
@@ -35,6 +36,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/books/:id" element={<BookDetails />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/Checkout" element={<Checkout />} />
+
 
 
         {/* Admin */}
