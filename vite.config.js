@@ -6,4 +6,13 @@ export default defineConfig({
   plugins: [react(),
   tailwindcss(),
   ],
+  server: {
+    proxy: {
+      '/api-n8n': {
+        target: 'https://librery.app.n8n.cloud',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-n8n/, ''),
+      },
+    },
+  },
 })

@@ -1,61 +1,27 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { FiUser, FiMail, FiPhone, FiMapPin, FiSend } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 export default function Checkout() {
   const { items, total } = useSelector((state) => state.cart);
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    address: "",
-    phone: "",
-  });
-
-  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // Handle input change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  // 🔹 Initialize React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
-  };
-
-  // Validation
-  const validate = () => {
-    let newErrors = {};
-
-    if (!form.name.trim()) newErrors.name = "Name is required";
-    if (!form.email.includes("@")) newErrors.email = "Valid email required";
-    if (form.phone.length < 8) newErrors.phone = "Valid phone required";
-    if (!form.address.trim()) newErrors.address = "Address is required";
-
-    return newErrors;
-  };
-
-  // Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
+  // 🔹 Submit function
+  const onSubmit = async (data) => {
     const orderData = {
-      customer: form,
+      customer: data,
       items,
       total,
       date: new Date(),
@@ -72,12 +38,7 @@ export default function Checkout() {
 
       alert("Commande envoyée avec succès 💖");
 
-      setForm({
-        name: "",
-        email: "",
-        address: "",
-        phone: "",
-      });
+      reset(); // 🔹 Reset form after success
 
     } catch (error) {
       console.error(error);
@@ -94,8 +55,8 @@ export default function Checkout() {
       </h2>
 
       <div className="grid md:grid-cols-2 gap-10">
-        
-        {/* LEFT SIDE */}
+
+        {/* LEFT - CART */}
         <div className="bg-white shadow-xl rounded-2xl p-6">
           <h3 className="text-xl font-semibold mb-4 text-blue-500">
             🛒 Vos articles
@@ -122,7 +83,7 @@ export default function Checkout() {
           </div>
         </div>
 
-        {/* RIGHT SIDE - FORM */}
+        {/* RIGHT - FORM */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -133,9 +94,9 @@ export default function Checkout() {
             📦 Informations de livraison
           </h3>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
-            {/* NAME + EMAIL in same row */}
+            {/* NAME + EMAIL */}
             <div className="grid md:grid-cols-2 gap-4">
 
               {/* NAME */}
@@ -146,16 +107,15 @@ export default function Checkout() {
                 <div className="flex items-center bg-gray-50 border rounded-xl px-4 focus-within:ring-2 focus-within:ring-blue-300">
                   <FiUser className="text-gray-400 mr-3" />
                   <input
-                    type="text"
-                    name="name"
+                    {...register("name", { required: "Name is required" })}
                     placeholder="Votre nom"
-                    value={form.name}
-                    onChange={handleChange}
                     className="w-full py-3 bg-transparent outline-none"
                   />
                 </div>
                 {errors.name && (
-                  <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.name.message}
+                  </p>
                 )}
               </div>
 
@@ -167,19 +127,23 @@ export default function Checkout() {
                 <div className="flex items-center bg-gray-50 border rounded-xl px-4 focus-within:ring-2 focus-within:ring-pink-300">
                   <FiMail className="text-gray-400 mr-3" />
                   <input
-                    type="email"
-                    name="email"
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^\S+@\S+$/i,
+                        message: "Enter a valid email",
+                      },
+                    })}
                     placeholder="votre@email.com"
-                    value={form.email}
-                    onChange={handleChange}
                     className="w-full py-3 bg-transparent outline-none"
                   />
                 </div>
                 {errors.email && (
-                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.email.message}
+                  </p>
                 )}
               </div>
-
             </div>
 
             {/* PHONE */}
@@ -190,16 +154,21 @@ export default function Checkout() {
               <div className="flex items-center bg-gray-50 border rounded-xl px-4 focus-within:ring-2 focus-within:ring-blue-300">
                 <FiPhone className="text-gray-400 mr-3" />
                 <input
-                  type="text"
-                  name="phone"
+                  {...register("phone", {
+                    required: "Phone is required",
+                    minLength: {
+                      value: 8,
+                      message: "Phone must be at least 8 digits",
+                    },
+                  })}
                   placeholder="06XXXXXXXX"
-                  value={form.phone}
-                  onChange={handleChange}
                   className="w-full py-3 bg-transparent outline-none"
                 />
               </div>
               {errors.phone && (
-                <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.phone.message}
+                </p>
               )}
             </div>
 
@@ -211,20 +180,22 @@ export default function Checkout() {
               <div className="flex items-start bg-gray-50 border rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-pink-300">
                 <FiMapPin className="text-gray-400 mr-3 mt-2" />
                 <textarea
-                  name="address"
-                  placeholder="Votre adresse..."
-                  value={form.address}
-                  onChange={handleChange}
+                  {...register("address", {
+                    required: "Address is required",
+                  })}
                   rows="3"
+                  placeholder="Votre adresse..."
                   className="w-full bg-transparent outline-none resize-none"
                 />
               </div>
               {errors.address && (
-                <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.address.message}
+                </p>
               )}
             </div>
 
-            {/* BUTTON with icon */}
+            {/* BUTTON */}
             <button
               type="submit"
               disabled={loading}
@@ -235,7 +206,7 @@ export default function Checkout() {
               ) : (
                 <>
                   Confirmer la commande
-                  <FiSend className="text-lg" />
+                  <FiSend />
                 </>
               )}
             </button>

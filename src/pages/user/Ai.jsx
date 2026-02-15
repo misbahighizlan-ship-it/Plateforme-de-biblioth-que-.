@@ -18,11 +18,6 @@ export default function Ai() {
 
 ))}
             </div>
-
-
-
-
-
         </div>
     )
 }

@@ -74,7 +74,7 @@ const cartSlice = createSlice({
       localStorage.setItem("cart", JSON.stringify(state.items));
     },
 
-    /* ✅ clearCart خاصو يكون هنا بوحدو
+    /* ✅ clearCart
     clearCart: (state) => {
       state.items = [];
       state.total = 0;
