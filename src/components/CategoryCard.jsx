@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-// ⭐ نجيمة
+// STAR
 function Star({ delay }) {
   return (
     <motion.span

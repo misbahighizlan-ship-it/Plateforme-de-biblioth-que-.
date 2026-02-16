@@ -8,6 +8,7 @@ import Home from "./pages/user/Home";
 import BookDetails from "./pages/user/BookDetails";
 import Wishlist from "./pages/user/Wishlist";
  import Checkout from "./pages/user/Checkout";
+ import Ai from "./pages/user/Ai";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminBooksPage from "./pages/admin/AdminBooksPage";
@@ -37,7 +38,7 @@ export default function App() {
         <Route path="/books/:id" element={<BookDetails />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/Checkout" element={<Checkout />} />
-
+        <Route path="/ai" element={<Ai />} />
 
 
         {/* Admin */}
