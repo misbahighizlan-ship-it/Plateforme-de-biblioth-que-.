@@ -49,7 +49,7 @@ console.log("KEY OK?", !!import.meta.env.VITE_GEMINI_API_KEY);
   setLoading(false);
 }
 
-
+o
   }
 
   return (

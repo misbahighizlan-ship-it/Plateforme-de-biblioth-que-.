@@ -32,11 +32,11 @@ export default function Checkout() {
       setLoading(true);
 
       await axios.post(
-        "https://librery.app.n8n.cloud/webhook-test/c953a4fb-810d-4236-a46f-93cd1378fd1d",
+        "http://localhost:5678/webhook-test/orders",
         orderData
       );
 
-      alert("Commande envoyée avec succès 💖");
+      alert("Commande envoyée avec succès ");
 
       reset(); // 🔹 Reset form after success
 

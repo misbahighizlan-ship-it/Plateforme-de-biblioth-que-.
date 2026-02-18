@@ -7,8 +7,8 @@ import CartSidebar from "./components/CartSidebar";
 import Home from "./pages/user/Home";
 import BookDetails from "./pages/user/BookDetails";
 import Wishlist from "./pages/user/Wishlist";
- import Checkout from "./pages/user/Checkout";
- import Ai from "./pages/user/Ai";
+import Checkout from "./pages/user/Checkout";
+import Ai from "./pages/user/Ai";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminBooksPage from "./pages/admin/AdminBooksPage";
@@ -19,6 +19,9 @@ import AdminCategories from "./pages/admin/AdminCategories";
 export default function App() {
   // ✅ HERE is the missing part
   const [showCart, setShowCart] = useState(false);
+  
+
+
 
   return (
     <BrowserRouter>
