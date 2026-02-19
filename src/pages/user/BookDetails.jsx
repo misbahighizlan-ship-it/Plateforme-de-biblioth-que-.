@@ -14,8 +14,8 @@ import {
   FaArrowLeft
 } from "react-icons/fa";
 import { useState } from "react";
-import { addToCart } from "../../redux/slices/cartSlice";
-import { addToWishlist } from "../../redux/slices/wishlistSlice";
+import { addToCart } from "../../slices/cartSlice";
+import { addToWishlist } from "../../slices/wishlistSlice";
 import DownloadModal from "../../components/DownloadModal";
 
 export default function BookDetails() {
@@ -213,8 +213,8 @@ export default function BookDetails() {
                 whileTap={{ scale: 0.95 }}
                 onClick={handleWishlist}
                 className={`flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all ${isWishlisted
-                    ? "bg-pink-500 text-white"
-                    : "bg-white/10 backdrop-blur-md hover:bg-pink-500/80 text-white border border-white/20"
+                  ? "bg-pink-500 text-white"
+                  : "bg-white/10 backdrop-blur-md hover:bg-pink-500/80 text-white border border-white/20"
                   }`}
               >
                 <FaHeart className={`text-xl ${isWishlisted ? "animate-pulse" : ""}`} />

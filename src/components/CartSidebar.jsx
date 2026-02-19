@@ -4,7 +4,7 @@ import {
   decrementQuantity,
   removeFromCart,
   clearCart
-} from "../redux/slices/cartSlice";
+} from "../slices/cartSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function CartSidebar({ show, onClose }) {
@@ -21,7 +21,7 @@ export default function CartSidebar({ show, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
-      
+
       {/* BACKDROP */}
       <div
         onClick={onClose}
@@ -98,14 +98,14 @@ export default function CartSidebar({ show, onClose }) {
 
         {/* FOOTER */}
         <div className="p-5 border-t bg-gradient-to-r from-blue-50 to-pink-50">
-          
+
           <p className="text-lg font-bold text-[#2B55B5] mb-4">
             Total : {total.toFixed(2)} DH
           </p>
 
           {/* BUTTONS */}
           <div className="flex flex-col gap-3">
-            
+
             <button
               onClick={() => dispatch(clearCart())}
               className="w-full py-2 rounded-xl border border-pink-300 text-pink-500 hover:bg-pink-50 transition"

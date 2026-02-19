@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 // STAR
 function Star({ delay }) {
@@ -24,10 +25,13 @@ function Star({ delay }) {
 }
 
 export default function CategoryCard({ name, icon, color }) {
+  const navigate = useNavigate();
+
   return (
     <motion.div
       whileHover={{ y: -6, scale: 1.05 }}
       transition={{ type: "spring", stiffness: 200 }}
+      onClick={() => navigate(`/catalogue?category=${name}`)}
       className="
         relative
         overflow-hidden

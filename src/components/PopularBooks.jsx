@@ -2,7 +2,15 @@ export default function PopularBooks() {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    api.get("/books").then((res) => setBooks(res.data));
+    const loadBooks = async () => {
+      try {
+        const res = await api.get("/books");
+        setBooks(res.data);
+      } catch (error) {
+        console.error("Erreur chargement livres populaires:", error);
+      }
+    };
+    loadBooks();
   }, []);
 
   return (

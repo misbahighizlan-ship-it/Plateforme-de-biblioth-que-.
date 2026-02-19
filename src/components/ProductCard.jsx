@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/slices/cartSlice";
-import { addToWishlist } from "../redux/slices/wishlistSlice";
+import { addToCart } from "../slices/cartSlice";
+import { addToWishlist } from "../slices/wishlistSlice";
 import { useState } from "react";
 
 export default function ProductCard({ book }) {

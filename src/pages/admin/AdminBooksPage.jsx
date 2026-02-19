@@ -4,13 +4,11 @@ import {
   fetchBooks,
   deleteBook,
   updateBook,
-} from "../../redux/slices/booksSlice";
-
+} from "../../slices/booksSlice";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import EditBookModal from "../../components/admin/EditBookModal";
 import ViewBookModal from "../../components/admin/ViewBookModal";
 import DeleteConfirmModal from "../../components/admin/DeleteConfirmModal";
-
 import { FiEdit, FiTrash2, FiEye, FiSearch } from "react-icons/fi";
 
 export default function AdminBooksPage() {
@@ -19,7 +17,6 @@ export default function AdminBooksPage() {
 
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-
   const [selectedBook, setSelectedBook] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
@@ -33,12 +30,10 @@ export default function AdminBooksPage() {
 
   const filteredBooks = books.filter((book) => {
     const matchSearch =
-      book.title.toLowerCase().includes(search.toLowerCase()) ||
-      book.author.toLowerCase().includes(search.toLowerCase());
-
+      book.title?.toLowerCase().includes(search.toLowerCase()) ||
+      book.author?.toLowerCase().includes(search.toLowerCase());
     const matchCategory =
       categoryFilter === "all" || book.category === categoryFilter;
-
     return matchSearch && matchCategory;
   });
 
@@ -61,14 +56,13 @@ export default function AdminBooksPage() {
   return (
     <div className="flex min-h-screen bg-[#0B0F19] text-white">
       <AdminSidebar />
-
       <main className="flex-1 p-8">
         {/* HEADER */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 className="text-3xl font-bold">Books</h2>
+            <h2 className="text-3xl font-bold">Livres</h2>
             <p className="text-gray-400 text-sm">
-              Manage all books in your platform
+              Gérez tous les ouvrages de votre plateforme
             </p>
           </div>
         </div>
@@ -83,7 +77,7 @@ export default function AdminBooksPage() {
                 placeholder="Search by title or author..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#0B0F19] border border-gray-800 focus:outline-none focus:border-blue-500"
+                className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#0B0F19] border border-gray-800 focus:outline-none focus:border-blue-500 text-white"
               />
             </div>
 
@@ -91,7 +85,7 @@ export default function AdminBooksPage() {
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-4 py-3 rounded-xl bg-[#0B0F19] border border-gray-800 focus:outline-none focus:border-blue-500"
+              className="px-4 py-3 rounded-xl bg-[#0B0F19] border border-gray-800 focus:outline-none focus:border-blue-500 text-white"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
@@ -107,71 +101,68 @@ export default function AdminBooksPage() {
           {loading ? (
             <p className="p-6 text-gray-400">Loading...</p>
           ) : (
-            <table className="w-full">
-              <thead className="bg-[#0B0F19] text-gray-400 text-sm">
-                <tr>
-                  <th className="p-5 text-left">Title</th>
-                  <th className="p-5 text-left">Author</th>
-                  <th className="p-5 text-left">Category</th>
-                  <th className="p-5 text-center">Actions</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {filteredBooks.map((book) => (
-                  <tr
-                    key={book.id}
-                    className="border-t border-gray-800 hover:bg-[#0B0F19] transition"
-                  >
-                    <td className="p-5 font-medium">{book.title}</td>
-                    <td className="p-5 text-gray-400">{book.author}</td>
-                    <td className="p-5">
-                      <span className="px-3 py-1 text-xs rounded-full bg-blue-500/15 text-blue-400">
-                        {book.category}
-                      </span>
-                    </td>
-
-                    <td className="p-5">
-                      <div className="flex justify-center gap-3">
-                        {/* VIEW */}
-                        <button
-                          onClick={() => {
-                            setSelectedBook(book);
-                            setIsViewOpen(true);
-                          }}
-                          className="p-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
-                        >
-                          <FiEye />
-                        </button>
-
-                        {/* EDIT */}
-                        <button
-                          onClick={() => {
-                            setSelectedBook(book);
-                            setIsEditOpen(true);
-                          }}
-                          className="p-2 rounded-lg bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20"
-                        >
-                          <FiEdit />
-                        </button>
-
-                        {/* DELETE */}
-                        <button
-                          onClick={() => handleDeleteClick(book)}
-                          className="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                        >
-                          <FiTrash2 />
-                        </button>
-                      </div>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-[#0B0F19] text-gray-400 text-sm uppercase">
+                  <tr>
+                    <th className="p-5 text-left font-semibold">Title</th>
+                    <th className="p-5 text-left font-semibold">Author</th>
+                    <th className="p-5 text-left font-semibold">Category</th>
+                    <th className="p-5 text-center font-semibold">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredBooks.map((book) => (
+                    <tr
+                      key={book.id}
+                      className="border-t border-gray-800 hover:bg-[#0B0F19] transition"
+                    >
+                      <td className="p-5 font-medium">{book.title}</td>
+                      <td className="p-5 text-gray-400">{book.author}</td>
+                      <td className="p-5">
+                        <span className="px-3 py-1 text-xs rounded-full bg-blue-500/15 text-blue-400">
+                          {book.category}
+                        </span>
+                      </td>
+                      <td className="p-5">
+                        <div className="flex justify-center gap-3">
+                          {/* VIEW */}
+                          <button
+                            onClick={() => {
+                              setSelectedBook(book);
+                              setIsViewOpen(true);
+                            }}
+                            className="p-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors"
+                          >
+                            <FiEye />
+                          </button>
+                          {/* EDIT */}
+                          <button
+                            onClick={() => {
+                              setSelectedBook(book);
+                              setIsEditOpen(true);
+                            }}
+                            className="p-2 rounded-lg bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20 transition-colors"
+                          >
+                            <FiEdit />
+                          </button>
+                          {/* DELETE */}
+                          <button
+                            onClick={() => handleDeleteClick(book)}
+                            className="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
+                          >
+                            <FiTrash2 />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
-
           {filteredBooks.length === 0 && !loading && (
-            <p className="p-6 text-center text-gray-500">No books found</p>
+            <p className="p-10 text-center text-gray-500 italic">No books found</p>
           )}
         </div>
 
@@ -182,18 +173,17 @@ export default function AdminBooksPage() {
           book={selectedBook}
           onSave={handleUpdate}
         />
-
         <ViewBookModal
           isOpen={isViewOpen}
           onClose={() => setIsViewOpen(false)}
           book={selectedBook}
         />
-
         <DeleteConfirmModal
           isOpen={isDeleteOpen}
           onClose={() => setIsDeleteOpen(false)}
           onConfirm={handleDeleteConfirm}
-          book={selectedBook}
+          item={selectedBook}
+          type="Book"
         />
       </main>
     </div>
