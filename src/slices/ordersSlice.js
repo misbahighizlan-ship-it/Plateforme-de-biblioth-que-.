@@ -1,37 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-/* Load from localStorage */
-let savedOrders = [];
-try {
-    savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
-} catch (e) {
-    localStorage.removeItem("orders");
-}
-
-const initialState = {
-    list: savedOrders,
-};
+const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
 
 const ordersSlice = createSlice({
     name: "orders",
-    initialState,
+    initialState: {
+        list: savedOrders,
+    },
     reducers: {
         addOrder: (state, action) => {
-            const order = {
-                ...action.payload,
-                id: Date.now().toString(),
-                date: new Date().toISOString(),
-                status: "En cours",
-            };
-            state.list.unshift(order);
+            state.list.unshift(action.payload); // plus récent en premier
             localStorage.setItem("orders", JSON.stringify(state.list));
         },
         clearOrders: (state) => {
             state.list = [];
             localStorage.removeItem("orders");
         },
+        cancelOrder: (state, action) => {
+            const order = state.list.find((o) => (o.orderId || o.id) === action.payload);
+            if (order) {
+                order.status = "Annulée";
+                localStorage.setItem("orders", JSON.stringify(state.list));
+            }
+        },
     },
 });
 
-export const { addOrder, clearOrders } = ordersSlice.actions;
+export const { addOrder, clearOrders, cancelOrder } = ordersSlice.actions;
 export default ordersSlice.reducer;

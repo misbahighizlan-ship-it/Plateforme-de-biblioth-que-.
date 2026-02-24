@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   FiBook,
   FiUsers,
@@ -9,22 +9,11 @@ import {
 
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import AdminHeader from "../../components/admin/AdminHeader";
-import ThemeToggle from "../../components/admin/ThemeToggle";
 import AddBookModal from "../../components/admin/AddBookModal";
 import CategoriesChart from "../../components/admin/CategoriesChart";
 
 export default function AdminDashboardPage() {
   const [openAdd, setOpenAdd] = useState(false);
-  const [dark, setDark] = useState(true);
-
-  // Dark mode
-  useEffect(() => {
-    if (dark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [dark]);
 
   return (
     <div className="flex min-h-screen bg-gray-100 text-gray-900 dark:bg-[#0B0F19] dark:text-white">
@@ -34,8 +23,8 @@ export default function AdminDashboardPage() {
         {/* HEADER */}
         <div className="mb-6 flex items-center justify-between">
           <AdminHeader />
-          <ThemeToggle dark={dark} setDark={setDark} />
         </div>
+
 
         {/* TITLE + BUTTON */}
         <div className="mb-8 flex items-center justify-between">
@@ -137,9 +126,8 @@ function StatCard({ title, value, icon, trend, positive }) {
         </div>
 
         <span
-          className={`text-xs font-medium ${
-            positive ? "text-green-500" : "text-red-500"
-          }`}
+          className={`text-xs font-medium ${positive ? "text-green-500" : "text-red-500"
+            }`}
         >
           {trend}
         </span>

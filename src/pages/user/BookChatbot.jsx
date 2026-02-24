@@ -13,7 +13,7 @@ export default function BookChatbot() {
     const [messages, setMessages] = useState([
         {
             role: "assistant",
-            content: `Hello! I'm your AI assistant for "${book?.title || 'this book'}". I can help answer questions about the book, discuss themes, characters, and much more. What would you like to know?`,
+            content: `Bonjour ! Je suis votre assistant IA pour "${book?.title || 'ce livre'}". Je peux répondre à vos questions sur ce livre, ses thèmes, ses personnages et bien plus encore. Que souhaitez-vous savoir ?`,
         },
     ]);
     const [inputValue, setInputValue] = useState("");
@@ -30,7 +30,7 @@ export default function BookChatbot() {
         setTimeout(() => {
             const aiResponse = {
                 role: "assistant",
-                content: `That's an interesting question about "${book?.title}". While I'm a demo AI assistant, in a real implementation, I would provide detailed insights about the book's content, themes, and context. Feel free to ask more questions!`,
+                content: `C'est une excellente question sur "${book?.title}". En tant qu'assistant IA, je peux vous fournir des informations détaillées sur le contenu, les thèmes et le contexte du livre. N'hésitez pas à poser d'autres questions !`,
             };
             setMessages((prev) => [...prev, aiResponse]);
         }, 1000);
@@ -42,12 +42,12 @@ export default function BookChatbot() {
         return (
             <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center">
                 <div className="text-center">
-                    <p className="text-white text-xl mb-4">Book not found</p>
+                    <p className="text-white text-xl mb-4">Livre introuvable</p>
                     <button
                         onClick={() => navigate("/")}
                         className="px-6 py-3 bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] text-white rounded-xl font-semibold hover:from-[#2B55B5] hover:to-[#5db2e3] transition-all"
                     >
-                        Back to Home
+                        Retour à l'accueil
                     </button>
                 </div>
             </div>
@@ -75,13 +75,13 @@ export default function BookChatbot() {
                             />
                             <div>
                                 <h1 className="font-bold text-lg line-clamp-1">{book.title}</h1>
-                                <p className="text-sm text-gray-400">AI Book Assistant</p>
+                                <p className="text-sm text-gray-400">Assistant IA du livre</p>
                             </div>
                         </div>
                     </div>
                     <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-purple-600/20 border border-purple-500/30">
                         <FaRobot className="text-purple-400" />
-                        <span className="text-sm font-semibold text-purple-300">AI Chat</span>
+                        <span className="text-sm font-semibold text-purple-300">Chat IA</span>
                     </div>
                 </div>
             </div>
@@ -102,15 +102,15 @@ export default function BookChatbot() {
                             >
                                 <div
                                     className={`max-w-[80%] rounded-2xl px-6 py-4 ${message.role === "user"
-                                            ? "bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] text-white"
-                                            : "bg-white/10 backdrop-blur-md text-gray-200 border border-white/10"
+                                        ? "bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] text-white"
+                                        : "bg-white/10 backdrop-blur-md text-gray-200 border border-white/10"
                                         }`}
                                 >
                                     {message.role === "assistant" && (
                                         <div className="flex items-center gap-2 mb-2">
                                             <FaRobot className="text-purple-400" />
                                             <span className="text-xs font-semibold text-purple-300">
-                                                AI Assistant
+                                                Assistant IA
                                             </span>
                                         </div>
                                     )}
@@ -127,7 +127,7 @@ export default function BookChatbot() {
                                 type="text"
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
-                                placeholder="Ask anything about this book..."
+                                placeholder="Posez une question sur ce livre..."
                                 className="flex-1 px-6 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 focus:outline-none focus:border-[#5db2e3] text-white placeholder-gray-400 transition-colors"
                             />
                             <motion.button
@@ -137,7 +137,7 @@ export default function BookChatbot() {
                                 className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] hover:from-[#2B55B5] hover:to-[#5db2e3] text-white font-semibold shadow-lg transition-all flex items-center gap-2"
                             >
                                 <FaPaperPlane />
-                                Send
+                                Envoyer
                             </motion.button>
                         </form>
                     </div>

@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { clearCart } from "../../slices/cartSlice";
+import { addOrder } from "../../slices/ordersSlice";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -9,6 +11,7 @@ import { motion } from "framer-motion";
 export default function Checkout() {
   const { items, total } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -23,25 +26,25 @@ export default function Checkout() {
   // 🔹 Submit function
   const onSubmit = async (data) => {
     const orderData = {
+      orderId: `ORD-${Date.now()}`,
+      date: new Date().toISOString(),
+      status: "Confirmée",
       customer: data,
-      items,
-      total,
-      date: new Date(),
-      status: "Pending",
+      items: [...items],
+      total: total,
     };
 
     try {
       setLoading(true);
 
       await axios.post(
-        "http://localhost:5678/webhook-test/orders",
+        "https://n8n.deontex.com/webhook/orders",
         orderData
       );
 
-      alert("Commande envoyée avec succès ");
-
-      reset();
+      dispatch(addOrder(orderData));
       dispatch(clearCart());
+      navigate("/orders");
 
     } catch (error) {
       console.error(error);
@@ -50,6 +53,7 @@ export default function Checkout() {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50 p-10">
@@ -110,7 +114,7 @@ export default function Checkout() {
                 <div className="flex items-center bg-gray-50 border rounded-xl px-4 focus-within:ring-2 focus-within:ring-blue-300">
                   <FiUser className="text-gray-400 mr-3" />
                   <input
-                    {...register("name", { required: "Name is required" })}
+                    {...register("name", { required: "Le nom est requis" })}
                     placeholder="Votre nom"
                     className="w-full py-3 bg-transparent outline-none"
                   />
@@ -131,10 +135,10 @@ export default function Checkout() {
                   <FiMail className="text-gray-400 mr-3" />
                   <input
                     {...register("email", {
-                      required: "Email is required",
+                      required: "L'email est requis",
                       pattern: {
                         value: /^\S+@\S+$/i,
-                        message: "Enter a valid email",
+                        message: "Entrez un email valide",
                       },
                     })}
                     placeholder="votre@email.com"
@@ -158,10 +162,10 @@ export default function Checkout() {
                 <FiPhone className="text-gray-400 mr-3" />
                 <input
                   {...register("phone", {
-                    required: "Phone is required",
+                    required: "Le téléphone est requis",
                     minLength: {
                       value: 8,
-                      message: "Phone must be at least 8 digits",
+                      message: "Le téléphone doit contenir au moins 8 chiffres",
                     },
                   })}
                   placeholder="06XXXXXXXX"
@@ -184,7 +188,7 @@ export default function Checkout() {
                 <FiMapPin className="text-gray-400 mr-3 mt-2" />
                 <textarea
                   {...register("address", {
-                    required: "Address is required",
+                    required: "L'adresse est requise",
                   })}
                   rows="3"
                   placeholder="Votre adresse..."

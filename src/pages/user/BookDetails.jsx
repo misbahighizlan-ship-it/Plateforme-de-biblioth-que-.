@@ -33,12 +33,12 @@ export default function BookDetails() {
     return (
       <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-white text-xl mb-4">Book not found</p>
+          <p className="text-white text-xl mb-4">Livre introuvable</p>
           <button
             onClick={() => navigate("/")}
             className="px-6 py-3 bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] text-white rounded-xl font-semibold hover:from-[#2B55B5] hover:to-[#5db2e3] transition-all"
           >
-            Back to Home
+            Retour à l'accueil
           </button>
         </div>
       </div>
@@ -74,7 +74,7 @@ export default function BookDetails() {
           className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-6"
         >
           <FaArrowLeft />
-          <span>Back to Library</span>
+          <span>Retour à la bibliothèque</span>
         </motion.button>
       </div>
 
@@ -113,7 +113,7 @@ export default function BookDetails() {
             {/* Author */}
             <p className="text-xl text-gray-400 flex items-center gap-2">
               <span className="text-2xl">✍️</span>
-              <span>by {book.author || "Unknown Author"}</span>
+              <span>par {book.author || "Auteur inconnu"}</span>
             </p>
 
             {/* Category & Rating */}
@@ -137,7 +137,7 @@ export default function BookDetails() {
                 </div>
                 <span className="font-semibold">{book.rating || 4.5}/5</span>
                 <span className="text-gray-400 text-sm">
-                  ({reviewCount} reviews)
+                  ({reviewCount} avis)
                 </span>
               </div>
             </div>
@@ -152,9 +152,9 @@ export default function BookDetails() {
               <div className="flex items-center gap-3">
                 <FaCalendar className="text-[#5db2e3] text-xl" />
                 <div>
-                  <p className="text-xs text-gray-400">Publish Date</p>
+                  <p className="text-xs text-gray-400">Date de publication</p>
                   <p className="font-semibold">
-                    {book.publishDate || "Oct 12, 2025"}
+                    {book.publishDate || "12 Oct, 2025"}
                   </p>
                 </div>
               </div>
@@ -170,8 +170,8 @@ export default function BookDetails() {
               <div className="flex items-center gap-3">
                 <FaLanguage className="text-[#5db2e3] text-xl" />
                 <div>
-                  <p className="text-xs text-gray-400">Language</p>
-                  <p className="font-semibold">{book.language || "English"}</p>
+                  <p className="text-xs text-gray-400">Langue</p>
+                  <p className="font-semibold">{book.language || "Français"}</p>
                 </div>
               </div>
 
@@ -179,7 +179,7 @@ export default function BookDetails() {
                 <FaBookOpen className="text-[#5db2e3] text-xl" />
                 <div>
                   <p className="text-xs text-gray-400">Format</p>
-                  <p className="font-semibold">{book.format || "Hardcover"}</p>
+                  <p className="font-semibold">{book.format || "Relié"}</p>
                 </div>
               </div>
             </div>
@@ -194,7 +194,7 @@ export default function BookDetails() {
                 className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white shadow-lg transition-all"
               >
                 <FaRobot className="text-xl" />
-                AI Chat
+                Chat IA
               </motion.button>
 
               {/* Download Button */}
@@ -205,7 +205,7 @@ export default function BookDetails() {
                 className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] hover:from-[#2B55B5] hover:to-[#5db2e3] text-white shadow-lg transition-all"
               >
                 <FaDownload className="text-xl" />
-                Download
+                Télécharger
               </motion.button>
 
               {/* Wishlist Button */}
@@ -219,7 +219,7 @@ export default function BookDetails() {
                   }`}
               >
                 <FaHeart className={`text-xl ${isWishlisted ? "animate-pulse" : ""}`} />
-                {isWishlisted ? "Added to Wishlist!" : "Wishlist"}
+                {isWishlisted ? "Ajouté à la liste !" : "Ma liste"}
               </motion.button>
 
               {/* Add to Cart Button */}
@@ -230,7 +230,7 @@ export default function BookDetails() {
                 className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold bg-gradient-to-r from-green-600 to-green-800 hover:from-green-700 hover:to-green-900 text-white shadow-lg transition-all"
               >
                 <FaShoppingCart className="text-xl" />
-                Add to Cart
+                Ajouter au panier
               </motion.button>
             </div>
           </motion.div>
@@ -245,11 +245,11 @@ export default function BookDetails() {
         >
           <h2 className="text-3xl font-bold mb-4 flex items-center gap-3">
             <span className="text-[#5db2e3]">📖</span>
-            Deep Dive
+            Description
           </h2>
           <p className="text-gray-300 leading-relaxed text-lg">
             {book.description ||
-              "Discover an immersive journey through the pages of this captivating book. With rich storytelling and compelling characters, this work stands as a testament to literary excellence. Whether you're a seasoned reader or just beginning your literary adventure, this book promises to engage, enlighten, and entertain."}
+              "Découvrez un voyage immersif à travers les pages de ce livre captivant. Avec une narration riche et des personnages convaincants, cette œuvre témoigne de l'excellence littéraire. Que vous soyez un lecteur chevronné ou que vous commenciez tout juste votre aventure littéraire, ce livre promet de vous engager, de vous éclairer et de vous divertir."}
           </p>
         </motion.div>
 
@@ -260,15 +260,15 @@ export default function BookDetails() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mb-16 bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10"
         >
-          <h2 className="text-3xl font-bold mb-6">About {book.author || "the Author"}</h2>
+          <h2 className="text-3xl font-bold mb-6">À propos de l'auteur</h2>
           <div className="flex items-start gap-6">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#5db2e3] to-[#2B55B5] flex items-center justify-center text-3xl font-bold flex-shrink-0">
               {(book.author || "A")[0].toUpperCase()}
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">{book.author || "Unknown Author"}</h3>
+              <h3 className="text-xl font-semibold mb-2">{book.author || "Auteur inconnu"}</h3>
               <p className="text-gray-400 leading-relaxed">
-                {book.author || "Unknown Author"} is a best-selling author known for their captivating storytelling and unique narrative style. With numerous acclaimed works, they continue to inspire readers worldwide.
+                {book.author || "Cet auteur"} est un auteur à succès connu pour ses récits captivants et son style narratif unique. Avec de nombreuses œuvres acclamées, il continue d'inspirer les lecteurs du monde entier.
               </p>
             </div>
           </div>
@@ -282,7 +282,7 @@ export default function BookDetails() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="mb-16"
           >
-            <h2 className="text-3xl font-bold mb-8">Users who liked this also read...</h2>
+            <h2 className="text-3xl font-bold mb-8">Les lecteurs ont aussi aimé...</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {relatedBooks.map((relatedBook) => (
                 <motion.div
@@ -304,7 +304,7 @@ export default function BookDetails() {
                     </div>
                   </div>
                   <p className="text-gray-400 text-sm text-center line-clamp-1">
-                    {relatedBook.author || "Unknown Author"}
+                    {relatedBook.author || "Auteur inconnu"}
                   </p>
                 </motion.div>
               ))}
@@ -317,8 +317,10 @@ export default function BookDetails() {
       <DownloadModal
         show={showDownloadModal}
         onClose={() => setShowDownloadModal(false)}
+        book={book}
         bookTitle={book.title}
       />
+
     </div>
   );
 }

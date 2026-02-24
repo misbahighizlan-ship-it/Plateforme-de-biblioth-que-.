@@ -74,7 +74,7 @@ export default function AdminBooksPage() {
             <div className="relative flex-1">
               <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
-                placeholder="Search by title or author..."
+                placeholder="Rechercher par titre ou auteur..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#0B0F19] border border-gray-800 focus:outline-none focus:border-blue-500 text-white"
@@ -87,7 +87,8 @@ export default function AdminBooksPage() {
               onChange={(e) => setCategoryFilter(e.target.value)}
               className="px-4 py-3 rounded-xl bg-[#0B0F19] border border-gray-800 focus:outline-none focus:border-blue-500 text-white"
             >
-              {categories.map((cat) => (
+              <option value="all">Toutes les catégories</option>
+              {categories.slice(1).map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>
@@ -99,15 +100,15 @@ export default function AdminBooksPage() {
         {/* TABLE CARD */}
         <div className="bg-[#111827] rounded-2xl shadow-lg overflow-hidden">
           {loading ? (
-            <p className="p-6 text-gray-400">Loading...</p>
+            <p className="p-6 text-gray-400">Chargement...</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-[#0B0F19] text-gray-400 text-sm uppercase">
                   <tr>
-                    <th className="p-5 text-left font-semibold">Title</th>
-                    <th className="p-5 text-left font-semibold">Author</th>
-                    <th className="p-5 text-left font-semibold">Category</th>
+                    <th className="p-5 text-left font-semibold">Titre</th>
+                    <th className="p-5 text-left font-semibold">Auteur</th>
+                    <th className="p-5 text-left font-semibold">Catégorie</th>
                     <th className="p-5 text-center font-semibold">Actions</th>
                   </tr>
                 </thead>
@@ -162,7 +163,7 @@ export default function AdminBooksPage() {
             </div>
           )}
           {filteredBooks.length === 0 && !loading && (
-            <p className="p-10 text-center text-gray-500 italic">No books found</p>
+            <p className="p-10 text-center text-gray-500 italic">Aucun livre trouvé</p>
           )}
         </div>
 

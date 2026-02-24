@@ -5,10 +5,9 @@ import { FaBook, FaChartBar, FaComments } from "react-icons/fa";
 
 export default function AdminSidebar() {
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-4 px-4 py-2 rounded-lg transition-colors duration-200 ${
-      isActive
-        ? " text-white hover:bg-blue-600 "
-        : "text-gray-300 hover:bg-blue-600 "
+    `flex items-center gap-4 px-4 py-2 rounded-lg transition-colors duration-200 ${isActive
+      ? " text-white hover:bg-blue-600 "
+      : "text-gray-300 hover:bg-blue-600 "
     }`;
 
   return (
@@ -18,7 +17,7 @@ export default function AdminSidebar() {
       <nav className="flex flex-col gap-8">
         <NavLink to="/admin" className={linkClass}>
           <FaChartBar className="text-2xl text-blue-400" />
-          <span className="text-lg">Dashboard</span>
+          <span className="text-lg">Tableau de bord</span>
         </NavLink>
 
         <NavLink to="/admin/books" className={linkClass}>

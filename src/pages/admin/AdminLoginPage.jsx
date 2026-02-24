@@ -9,17 +9,22 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (!email || !password) return;
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/admin");
-    }, 1000);
+    if (email === "admin@biblioia.com" && password === "admin123") {
+      setLoading(true);
+      localStorage.setItem("isAdmin", "true");
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/admin");
+      }, 1000);
+    } else {
+      setError("Email ou mot de passe incorrect");
+    }
   };
+
 
   // stars animation
   const stars = Array.from({ length: 20 });
@@ -140,7 +145,13 @@ export default function AdminLoginPage() {
               </button>
             </div>
 
+            {/* Error Message */}
+            {error && (
+              <p className="text-red-400 text-sm text-center mb-4">{error}</p>
+            )}
+
             {/* Button */}
+
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}

@@ -12,7 +12,7 @@ export default function Ai() {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "Hello! I am your SmartLib AI. How can I assist you today? (Recommendations, themes, or specific book info)",
+      content: "Bonjour ! Je suis votre assistant SmartLib IA. Comment puis-je vous aider ? (Recommandations, thèmes, ou informations sur un livre)",
     },
   ]);
   const [input, setInput] = useState("");
@@ -48,7 +48,7 @@ export default function Ai() {
       const aiText = await askGemini({ prompt });
       setMessages((prev) => [...prev, { role: "assistant", content: aiText }]);
     } catch (err) {
-      setError("AI Service temporarily unavailable. Please check your connection or try again later.");
+      setError("Service IA temporairement indisponible. Vérifiez votre connexion ou réessayez.");
       console.error("Chatbot error:", err);
     } finally {
       setLoading(false);
@@ -66,12 +66,12 @@ export default function Ai() {
               <FaRobot size={20} />
             </div>
             <div>
-              <h1 className="font-bold text-lg">SmartLib AI Assistant</h1>
-              <p className="text-xs text-blue-100">Always here to help you find the best books</p>
+              <h1 className="font-bold text-lg">Assistant SmartLib IA</h1>
+              <p className="text-xs text-blue-100">Toujours là pour vous aider à trouver les meilleurs livres</p>
             </div>
           </div>
           <div className="text-xs bg-black/20 px-2 py-1 rounded-full">
-            {books.length} Books Loaded
+            {books.length} Livres chargés
           </div>
         </div>
 
@@ -90,8 +90,8 @@ export default function Ai() {
                   {m.role === "user" ? <FaUser size={14} /> : <FaRobot size={14} />}
                 </div>
                 <div className={`p-3 rounded-2xl text-sm ${m.role === "user"
-                    ? "bg-[#2B55B5] text-white rounded-tr-none"
-                    : "bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-gray-200 rounded-tl-none border border-slate-200 dark:border-slate-700 shadow-sm"
+                  ? "bg-[#2B55B5] text-white rounded-tr-none"
+                  : "bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-gray-200 rounded-tl-none border border-slate-200 dark:border-slate-700 shadow-sm"
                   }`}>
                   <div className="whitespace-pre-wrap leading-relaxed">
                     {m.content}
@@ -133,7 +133,7 @@ export default function Ai() {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder='Type your request (e.g. "Recommend a mystery book")'
+              placeholder='Tapez votre demande (ex: "Recommandez-moi un livre de science-fiction")'
               className="flex-1 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl border border-slate-300 dark:border-slate-600 px-4 py-3 outline-none focus:ring-2 focus:ring-[#2B55B5] transition-all"
             />
             <button
@@ -145,7 +145,7 @@ export default function Ai() {
             </button>
           </div>
           <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-2 text-center uppercase tracking-widest">
-            Powered by Gemini AI Service
+            Propulsé par Gemini IA
           </p>
         </form>
       </div>

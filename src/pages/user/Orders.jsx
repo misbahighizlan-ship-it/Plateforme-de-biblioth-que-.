@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -10,8 +9,19 @@ import {
     FaCalendarAlt,
     FaMapMarkerAlt,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { FiDownload, FiXCircle } from "react-icons/fi";
+import { cancelOrder } from "../../slices/ordersSlice";
 
 const statusConfig = {
+    "Confirmée": {
+        icon: FaCheckCircle,
+        color: "text-green-400",
+        bg: "bg-green-400/10",
+        border: "border-green-400/30",
+        gradient: "from-green-500 to-emerald-500",
+    },
     "En cours": {
         icon: FaClock,
         color: "text-yellow-400",
@@ -33,11 +43,27 @@ const statusConfig = {
         border: "border-green-400/30",
         gradient: "from-green-500 to-emerald-500",
     },
+    "Annulée": {
+        icon: FaCheckCircle,
+        color: "text-red-400",
+        bg: "bg-red-400/10",
+        border: "border-red-500/20",
+        gradient: "from-red-500 to-rose-500",
+    },
 };
+
 
 export default function Orders() {
     const { list: orders } = useSelector((state) => state.orders);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [filter, setFilter] = useState("Toutes");
+
+    const filteredOrders = filter === "Toutes"
+        ? orders
+        : orders.filter((o) => o.status === filter);
+
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -48,6 +74,27 @@ export default function Orders() {
             hour: "2-digit",
             minute: "2-digit",
         });
+    };
+
+    const handleDownload = (item) => {
+        if (item.pdf) {
+            const link = document.createElement("a");
+            link.href = item.pdf;
+            link.download = `${item.title}.pdf`;
+            link.target = "_blank";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            alert(`Le livre "${item.title}" sera disponible dans votre email.`);
+        }
+    };
+
+    const handleCancel = (orderId) => {
+        const confirm = window.confirm("Voulez-vous annuler cette commande ?");
+        if (confirm) {
+            dispatch(cancelOrder(orderId));
+        }
     };
 
     return (
@@ -76,8 +123,29 @@ export default function Orders() {
                     </p>
                 </motion.div>
 
+                {/* Filters */}
+                <div className="flex gap-3 mb-8 justify-center flex-wrap">
+                    {["Toutes", "Confirmée", "Annulée"].map((f) => (
+                        <button
+                            key={f}
+                            onClick={() => setFilter(f)}
+                            className={`px-6 py-2 rounded-full text-sm font-semibold border transition-all ${filter === f
+                                ? "bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] text-white border-transparent"
+                                : "bg-transparent border-gray-700 text-gray-400 hover:border-[#5db2e3] hover:text-[#5db2e3]"
+                                }`}
+                        >
+                            {f}
+                            <span className="ml-2 bg-white/10 px-2 py-0.5 rounded-full text-xs">
+                                {f === "Toutes"
+                                    ? orders.length
+                                    : orders.filter((o) => o.status === f).length}
+                            </span>
+                        </button>
+                    ))}
+                </div>
+
                 {/* Empty state */}
-                {orders.length === 0 ? (
+                {filteredOrders.length === 0 ? (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -87,29 +155,33 @@ export default function Orders() {
                             <FaShoppingBag className="text-4xl text-gray-600" />
                         </div>
                         <h3 className="text-xl font-semibold text-gray-400 mb-2">
-                            Aucune commande
+                            {filter === "Toutes" ? "Aucune commande" : `Aucune commande ${filter.toLowerCase()}`}
                         </h3>
                         <p className="text-gray-500 mb-8 max-w-md mx-auto">
-                            Commencez à explorer notre catalogue et passez votre première commande
+                            {filter === "Toutes"
+                                ? "Commencez à explorer notre catalogue et passez votre première commande"
+                                : `Vous n'avez pas de commandes avec le statut ${filter.toLowerCase()}`}
                         </p>
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => navigate("/catalogue")}
-                            className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all"
-                        >
-                            Explorer le catalogue
-                        </motion.button>
+                        {filter === "Toutes" && (
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => navigate("/catalogue")}
+                                className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all"
+                            >
+                                Explorer le catalogue
+                            </motion.button>
+                        )}
                     </motion.div>
                 ) : (
                     <div className="space-y-6">
-                        {orders.map((order, index) => {
+                        {filteredOrders.map((order, index) => {
                             const config = statusConfig[order.status] || statusConfig["En cours"];
                             const StatusIcon = config.icon;
 
                             return (
                                 <motion.div
-                                    key={order.id}
+                                    key={order.orderId || order.id}
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.08 }}
@@ -123,8 +195,9 @@ export default function Orders() {
                                             </div>
                                             <div>
                                                 <h3 className="text-white font-bold">
-                                                    Commande #{order.id.slice(-6)}
+                                                    Commande #{(order.orderId || order.id).slice(-6)}
                                                 </h3>
+
                                                 <div className="flex items-center gap-2 text-gray-400 text-sm mt-0.5">
                                                     <FaCalendarAlt className="text-xs" />
                                                     {formatDate(order.date)}
@@ -157,20 +230,43 @@ export default function Orders() {
                                                             Qté: {item.quantity}
                                                         </p>
                                                     </div>
-                                                    <span className="text-[#5db2e3] font-semibold text-sm">
-                                                        {(item.price * item.quantity).toFixed(2)} DH
-                                                    </span>
+                                                    <div className="flex flex-col items-end gap-2">
+                                                        <span className="text-[#5db2e3] font-semibold text-sm">
+                                                            {(item.price * item.quantity).toFixed(2)} DH
+                                                        </span>
+                                                        {!isAdmin && order.status !== "Annulée" && (
+                                                            <button
+                                                                onClick={() => handleDownload(item)}
+                                                                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#5db2e3] to-pink-400 text-white text-[10px] font-bold hover:opacity-90 transition-all"
+                                                            >
+                                                                <FiDownload className="text-xs" />
+                                                                Télécharger
+                                                            </button>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             ))}
                                         </div>
 
                                         {/* Customer info + total */}
                                         <div className="flex items-center justify-between mt-5 pt-4 border-t border-gray-800/50">
-                                            <div className="flex items-center gap-2 text-gray-400 text-sm">
-                                                <FaMapMarkerAlt className="text-xs" />
-                                                <span className="truncate max-w-[200px]">
-                                                    {order.customer?.name || "Client"}
-                                                </span>
+                                            <div className="flex items-center gap-4">
+                                                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                                                    <FaMapMarkerAlt className="text-xs" />
+                                                    <span className="truncate max-w-[150px]">
+                                                        {order.customer?.name || "Client"}
+                                                    </span>
+                                                </div>
+
+                                                {order.status === "Confirmée" && (
+                                                    <button
+                                                        onClick={() => handleCancel(order.orderId || order.id)}
+                                                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white text-xs font-semibold transition-all"
+                                                    >
+                                                        <FiXCircle className="text-sm" />
+                                                        Annuler
+                                                    </button>
+                                                )}
                                             </div>
                                             <div className="text-right">
                                                 <p className="text-xs text-gray-500">Total</p>

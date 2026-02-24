@@ -1,15 +1,21 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../slices/cartSlice";
 
-export default function DownloadModal({ show, onClose, bookTitle }) {
+export default function DownloadModal({ show, onClose, book, bookTitle }) {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [showPurchaseMessage, setShowPurchaseMessage] = useState(false);
 
     const handleYes = () => {
-        // Here you would integrate with your payment/purchase system
-        alert("Redirecting to purchase flow...");
+        if (book) dispatch(addToCart(book));
         onClose();
+        navigate("/checkout");
     };
+
 
     const handleNo = () => {
         setShowPurchaseMessage(true);
@@ -69,16 +75,16 @@ export default function DownloadModal({ show, onClose, bookTitle }) {
 
                                 {/* Title */}
                                 <h3 className="text-2xl font-bold text-white text-center mb-3">
-                                    Download Book
+                                    Télécharger le livre
                                 </h3>
 
                                 {/* Message */}
                                 <p className="text-gray-300 text-center mb-8">
-                                    Do you want to purchase{" "}
+                                    Souhaitez-vous acheter{" "}
                                     <span className="font-semibold text-[#5db2e3]">
                                         "{bookTitle}"
                                     </span>{" "}
-                                    to download it?
+                                    pour le télécharger ?
                                 </p>
 
                                 {/* Buttons */}
@@ -89,7 +95,7 @@ export default function DownloadModal({ show, onClose, bookTitle }) {
                                         onClick={handleNo}
                                         className="flex-1 px-6 py-3 rounded-xl font-semibold bg-gray-700 hover:bg-gray-600 text-white transition-colors"
                                     >
-                                        No
+                                        Non
                                     </motion.button>
                                     <motion.button
                                         whileHover={{ scale: 1.05 }}
@@ -97,7 +103,7 @@ export default function DownloadModal({ show, onClose, bookTitle }) {
                                         onClick={handleYes}
                                         className="flex-1 px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] hover:from-[#2B55B5] hover:to-[#5db2e3] text-white shadow-lg transition-all"
                                     >
-                                        Yes
+                                        Oui
                                     </motion.button>
                                 </div>
                             </>
@@ -124,12 +130,12 @@ export default function DownloadModal({ show, onClose, bookTitle }) {
 
                                 {/* Title */}
                                 <h3 className="text-2xl font-bold text-white text-center mb-3">
-                                    Purchase Required
+                                    Achat requis
                                 </h3>
 
                                 {/* Message */}
                                 <p className="text-gray-300 text-center mb-8">
-                                    Sorry, you need to purchase the book to download it.
+                                    Désolé, vous devez acheter le livre pour le télécharger.
                                 </p>
 
                                 {/* Close Button */}
@@ -139,7 +145,7 @@ export default function DownloadModal({ show, onClose, bookTitle }) {
                                     onClick={handleCloseModal}
                                     className="w-full px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] hover:from-[#2B55B5] hover:to-[#5db2e3] text-white shadow-lg transition-all"
                                 >
-                                    Got it
+                                    D'accord
                                 </motion.button>
                             </>
                         )}
