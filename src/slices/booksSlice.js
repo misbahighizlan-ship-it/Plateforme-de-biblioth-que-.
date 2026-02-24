@@ -93,11 +93,20 @@ const booksSlice = createSlice({
         state.error = action.payload || action.error.message;
       })
       /* UPDATE */
+      .addCase(updateBook.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateBook.fulfilled, (state, action) => {
+        state.loading = false;
         const index = state.list.findIndex((b) => b.id === action.payload.id);
         if (index !== -1) {
           state.list[index] = action.payload;
         }
+      })
+      .addCase(updateBook.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message;
       })
       /* DELETE */
       .addCase(deleteBook.pending, (state) => {

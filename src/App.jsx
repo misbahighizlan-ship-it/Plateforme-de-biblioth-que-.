@@ -55,7 +55,7 @@ export default function App() {
           <Route path="/catalogue" element={<Catalogue />} />
           <Route path="/books/:id" element={<BookDetails />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/Checkout" element={<Checkout />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/ai" element={<Ai />} />
 
           <Route path="/login" element={<AdminLoginPage />} />

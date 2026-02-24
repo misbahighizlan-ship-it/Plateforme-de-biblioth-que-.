@@ -13,7 +13,7 @@ import {
   FaBookOpen,
   FaArrowLeft
 } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { addToCart } from "../../slices/cartSlice";
 import { addToWishlist } from "../../slices/wishlistSlice";
 import DownloadModal from "../../components/DownloadModal";
@@ -27,6 +27,7 @@ export default function BookDetails() {
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   const book = books.find((b) => b.id == id);
+  const reviewCount = useMemo(() => Math.floor(Math.random() * 200) + 50, [id]);
 
   if (!book) {
     return (
@@ -136,7 +137,7 @@ export default function BookDetails() {
                 </div>
                 <span className="font-semibold">{book.rating || 4.5}/5</span>
                 <span className="text-gray-400 text-sm">
-                  ({Math.floor(Math.random() * 200) + 50} reviews)
+                  ({reviewCount} reviews)
                 </span>
               </div>
             </div>

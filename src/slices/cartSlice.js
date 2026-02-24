@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 /* load cart from localStorage */
-const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+let savedCart = [];
+try {
+  savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+} catch (e) {
+  localStorage.removeItem("cart");
+}
 
 /* helper to calculate total */
 const calculateTotal = (items) =>
@@ -74,12 +79,11 @@ const cartSlice = createSlice({
       localStorage.setItem("cart", JSON.stringify(state.items));
     },
 
-    /* ✅ clearCart
     clearCart: (state) => {
       state.items = [];
       state.total = 0;
       localStorage.removeItem("cart");
-    },*/
+    },
   },
 });
 

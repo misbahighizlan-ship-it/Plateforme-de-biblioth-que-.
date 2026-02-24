@@ -1,4 +1,5 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { clearCart } from "../../slices/cartSlice";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -7,6 +8,7 @@ import { motion } from "framer-motion";
 
 export default function Checkout() {
   const { items, total } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
 
@@ -38,7 +40,8 @@ export default function Checkout() {
 
       alert("Commande envoyée avec succès ");
 
-      reset(); // 🔹 Reset form after success
+      reset();
+      dispatch(clearCart());
 
     } catch (error) {
       console.error(error);

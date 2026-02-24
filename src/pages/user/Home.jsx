@@ -2,30 +2,24 @@ import HeroSection from "../../components/HeroSection";
 import BooksCarousel from "../../components/BooksCarousel";
 import CategoriesSection from "../../components/CategoriesSection";
 
-import api from "../../services/api";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchBooks } from "../../slices/booksSlice";
 
 export default function Home() {
-  const [books, setBooks] = useState([]);
+  const dispatch = useDispatch();
+  const { list: books } = useSelector((state) => state.books);
 
   useEffect(() => {
-    const loadBooks = async () => {
-      try {
-        const res = await api.get("/books");
-        setBooks(res.data);
-      } catch (error) {
-        console.error("Erreur chargement livres:", error);
-      }
-    };
-    loadBooks();
-  }, []);
+    if (books.length === 0) {
+      dispatch(fetchBooks());
+    }
+  }, [dispatch, books.length]);
 
   return (
     <>
       <HeroSection />
-
       <CategoriesSection />
-
       <BooksCarousel books={books} />
     </>
   );
