@@ -1,7 +1,7 @@
 // components/admin/AdminSidebar.jsx
 import { NavLink } from "react-router-dom";
 import { BiCategory } from "react-icons/bi";
-import { FaBook, FaChartBar, FaComments } from "react-icons/fa";
+import { FaBook, FaChartBar, FaComments, FaShoppingBag } from "react-icons/fa";
 
 export default function AdminSidebar() {
   const linkClass = ({ isActive }) =>
@@ -33,6 +33,11 @@ export default function AdminSidebar() {
         <NavLink to="/admin/messages" className={linkClass}>
           <FaComments className="text-2xl text-blue-400" />
           <span className="text-lg">Messages</span>
+        </NavLink>
+
+        <NavLink to="/orders" className={linkClass}>
+          <FaShoppingBag className="text-2xl text-blue-400" />
+          <span className="text-lg">Commandes</span>
         </NavLink>
       </nav>
     </aside>

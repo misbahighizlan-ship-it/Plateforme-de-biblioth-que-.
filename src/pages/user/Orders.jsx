@@ -237,9 +237,9 @@ export default function Orders() {
                                                         {!isAdmin && order.status !== "Annulée" && (
                                                             <button
                                                                 onClick={() => handleDownload(item)}
-                                                                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#5db2e3] to-pink-400 text-white text-[10px] font-bold hover:opacity-90 transition-all"
+                                                                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-400 to-pink-400 text-white text-sm font-semibold hover:opacity-90 transition-all"
                                                             >
-                                                                <FiDownload className="text-xs" />
+                                                                <FiDownload className="text-sm" />
                                                                 Télécharger
                                                             </button>
                                                         )}
@@ -261,7 +261,7 @@ export default function Orders() {
                                                 {order.status === "Confirmée" && (
                                                     <button
                                                         onClick={() => handleCancel(order.orderId || order.id)}
-                                                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white text-xs font-semibold transition-all"
+                                                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white text-sm font-semibold transition-all"
                                                     >
                                                         <FiXCircle className="text-sm" />
                                                         Annuler
