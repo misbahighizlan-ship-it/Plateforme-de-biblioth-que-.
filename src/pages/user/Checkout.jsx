@@ -34,17 +34,32 @@ export default function Checkout() {
       total: total,
     };
 
+    // Détecter si c'est un téléchargement
+    const isDownloadOrder = items.some((item) => item.isDownload === true);
+
     try {
       setLoading(true);
 
-      await axios.post(
-        "https://n8n.deontex.com/webhook/orders",
-        orderData
-      );
+      if (isDownloadOrder) {
+        // 📥 CAS TÉLÉCHARGEMENT → webhook /download
+        const downloadData = {
+          email: data.email,
+          customerName: data.name,
+          bookTitle: items[0]?.title || "",
+          bookAuthor: items[0]?.author || "",
+          price: total.toFixed(2),
+          pdfUrl: items[0]?.pdf || "",
+          orderId: orderData.orderId,
+        };
+        await axios.post("https://n8n.deontex.com/webhook/download", downloadData);
+      } else {
+        // 🛒 CAS ACHAT NORMAL → webhook /orders
+        await axios.post("https://n8n.deontex.com/webhook/orders", orderData);
+      }
 
       dispatch(addOrder(orderData));
       dispatch(clearCart());
-      navigate("/orders");
+      navigate("/orders", { state: { fromCheckout: true, isDownload: isDownloadOrder } });
 
     } catch (error) {
       console.error(error);

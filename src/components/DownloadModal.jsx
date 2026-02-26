@@ -11,7 +11,7 @@ export default function DownloadModal({ show, onClose, book, bookTitle }) {
     const [showPurchaseMessage, setShowPurchaseMessage] = useState(false);
 
     const handleYes = () => {
-        if (book) dispatch(addToCart(book));
+        if (book) dispatch(addToCart({ ...book, isDownload: true }));
         onClose();
         navigate("/checkout");
     };

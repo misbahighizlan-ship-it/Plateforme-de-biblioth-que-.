@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { FiDownload, FiXCircle } from "react-icons/fi";
+import { FiXCircle } from "react-icons/fi";
 import { cancelOrder } from "../../slices/ordersSlice";
 
 const statusConfig = {
@@ -52,7 +52,6 @@ const statusConfig = {
     },
 };
 
-
 export default function Orders() {
     const { list: orders } = useSelector((state) => state.orders);
     const navigate = useNavigate();
@@ -74,20 +73,6 @@ export default function Orders() {
             hour: "2-digit",
             minute: "2-digit",
         });
-    };
-
-    const handleDownload = (item) => {
-        if (item.pdf) {
-            const link = document.createElement("a");
-            link.href = item.pdf;
-            link.download = `${item.title}.pdf`;
-            link.target = "_blank";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } else {
-            alert(`Le livre "${item.title}" sera disponible dans votre email.`);
-        }
     };
 
     const handleCancel = (orderId) => {
@@ -197,7 +182,6 @@ export default function Orders() {
                                                 <h3 className="text-white font-bold">
                                                     Commande #{(order.orderId || order.id).slice(-6)}
                                                 </h3>
-
                                                 <div className="flex items-center gap-2 text-gray-400 text-sm mt-0.5">
                                                     <FaCalendarAlt className="text-xs" />
                                                     {formatDate(order.date)}
@@ -230,20 +214,9 @@ export default function Orders() {
                                                             Qté: {item.quantity}
                                                         </p>
                                                     </div>
-                                                    <div className="flex flex-col items-end gap-2">
-                                                        <span className="text-[#5db2e3] font-semibold text-sm">
-                                                            {(item.price * item.quantity).toFixed(2)} DH
-                                                        </span>
-                                                        {!isAdmin && order.status !== "Annulée" && (
-                                                            <button
-                                                                onClick={() => handleDownload(item)}
-                                                                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-400 to-pink-400 text-white text-sm font-semibold hover:opacity-90 transition-all"
-                                                            >
-                                                                <FiDownload className="text-sm" />
-                                                                Télécharger
-                                                            </button>
-                                                        )}
-                                                    </div>
+                                                    <span className="text-[#5db2e3] font-semibold text-sm">
+                                                        {(item.price * item.quantity).toFixed(2)} DH
+                                                    </span>
                                                 </div>
                                             ))}
                                         </div>
@@ -258,7 +231,7 @@ export default function Orders() {
                                                     </span>
                                                 </div>
 
-                                                {order.status === "Confirmée" && (
+                                                {!isAdmin && order.status === "Confirmée" && (
                                                     <button
                                                         onClick={() => handleCancel(order.orderId || order.id)}
                                                         className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white text-sm font-semibold transition-all"
