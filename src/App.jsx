@@ -30,7 +30,7 @@ export default function App() {
   });
 
   useEffect(() => {
-    const root = document.documentElement; // c'est la balise <html>
+    const root = document.documentElement; // c'est la balise 
     if (darkMode) {
       root.classList.add("dark");
       localStorage.setItem("theme", "dark");
