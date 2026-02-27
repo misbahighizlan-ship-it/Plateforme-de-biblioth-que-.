@@ -2,7 +2,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { FaArrowLeft, FaPaperPlane, FaRobot } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { buildPrompt } from "../../features/chatbot/buildPrompt";
+import { askGemini } from "../../services/geminiService";
 
 export default function BookChatbot() {
     const { id } = useParams();
@@ -17,25 +19,35 @@ export default function BookChatbot() {
         },
     ]);
     const [inputValue, setInputValue] = useState("");
+    const [loading, setLoading] = useState(false);
+    const scrollRef = useRef(null);
 
-    const handleSendMessage = (e) => {
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    }, [messages, loading]);
+
+    const handleSendMessage = async (e) => {
         e.preventDefault();
-        if (!inputValue.trim()) return;
+        if (!inputValue.trim() || loading) return;
 
         // Add user message
-        const userMessage = { role: "user", content: inputValue };
-        setMessages((prev) => [...prev, userMessage]);
-
-        // Simulate AI response (in production, this would call your AI API)
-        setTimeout(() => {
-            const aiResponse = {
-                role: "assistant",
-                content: `C'est une excellente question sur "${book?.title}". En tant qu'assistant IA, je peux vous fournir des informations détaillées sur le contenu, les thèmes et le contexte du livre. N'hésitez pas à poser d'autres questions !`,
-            };
-            setMessages((prev) => [...prev, aiResponse]);
-        }, 1000);
-
+        const userMessage = inputValue.trim();
+        setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
         setInputValue("");
+        setLoading(true);
+
+        try {
+            const prompt = buildPrompt({ books, userMessage, currentBook: book });
+            const aiText = await askGemini({ prompt });
+            setMessages((prev) => [...prev, { role: "assistant", content: aiText }]);
+        } catch (error) {
+            console.error("Chatbot error:", error);
+            setMessages((prev) => [...prev, { role: "assistant", content: "Désolé, je rencontre des difficultés de connexion. Veuillez réessayer." }]);
+        } finally {
+            setLoading(false);
+        }
     };
 
     if (!book) {
@@ -90,7 +102,7 @@ export default function BookChatbot() {
             <div className="max-w-5xl mx-auto px-6 py-8">
                 <div className="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 h-[calc(100vh-250px)] flex flex-col">
                     {/* Messages Area */}
-                    <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                    <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-4 scroll-smooth">
                         {messages.map((message, index) => (
                             <motion.div
                                 key={index}
@@ -114,10 +126,27 @@ export default function BookChatbot() {
                                             </span>
                                         </div>
                                     )}
-                                    <p className="leading-relaxed">{message.content}</p>
+                                    <div className="leading-relaxed whitespace-pre-wrap">{message.content}</div>
                                 </div>
                             </motion.div>
                         ))}
+
+                        {loading && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="flex justify-start"
+                            >
+                                <div className="bg-white/10 backdrop-blur-md rounded-2xl px-6 py-4 border border-white/10 flex items-center gap-2">
+                                    <FaRobot className="text-purple-400" />
+                                    <div className="flex gap-1">
+                                        <span className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></span>
+                                        <span className="w-2 h-2 bg-purple-400 rounded-full animate-bounce delay-75"></span>
+                                        <span className="w-2 h-2 bg-purple-400 rounded-full animate-bounce delay-150"></span>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
                     </div>
 
                     {/* Input Area */}
@@ -127,14 +156,16 @@ export default function BookChatbot() {
                                 type="text"
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
-                                placeholder="Posez une question sur ce livre..."
-                                className="flex-1 px-6 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 focus:outline-none focus:border-[#5db2e3] text-white placeholder-gray-400 transition-colors"
+                                disabled={loading}
+                                placeholder={loading ? "L'IA réfléchit..." : "Posez une question sur ce livre..."}
+                                className="flex-1 px-6 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 focus:outline-none focus:border-[#5db2e3] text-white placeholder-gray-400 transition-colors disabled:opacity-50"
                             />
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 type="submit"
-                                className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] hover:from-[#2B55B5] hover:to-[#5db2e3] text-white font-semibold shadow-lg transition-all flex items-center gap-2"
+                                disabled={loading || !inputValue.trim()}
+                                className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#5db2e3] to-[#2B55B5] hover:from-[#2B55B5] hover:to-[#5db2e3] text-white font-semibold shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 disabled:grayscale"
                             >
                                 <FaPaperPlane />
                                 Envoyer

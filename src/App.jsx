@@ -13,6 +13,7 @@ import Ai from "./pages/user/Ai";
 import Catalogue from "./pages/user/Catalogue";
 import BookChatbot from "./pages/user/BookChatbot";
 import Orders from "./pages/user/Orders";
+import Contact from "./pages/user/Contact";
 
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
@@ -65,6 +66,7 @@ export default function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/ai" element={<Ai />} />
+          <Route path="/contact" element={<Contact />} />
 
           <Route path="/login" element={<AdminLoginPage />} />
 

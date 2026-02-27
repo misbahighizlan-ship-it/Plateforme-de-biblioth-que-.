@@ -59,6 +59,7 @@ export default function Navbar({ onCartClick, darkMode, toggleDarkMode }) {
         <Link to="/">Accueil</Link>
         <Link to="/catalogue">Catalogue</Link>
         <Link to="/ai">Assistant IA</Link>
+        <Link to="/contact">Contact & Avis</Link>
 
         {/* CATEGORIES */}
         <div className="relative">
