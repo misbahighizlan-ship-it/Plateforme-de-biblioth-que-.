@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import Navbar from "./components/Navbar";
@@ -21,8 +21,7 @@ import AdminBooksPage from "./pages/admin/AdminBooksPage";
 import AdminMessagesPage from "./pages/admin/AdminMessagesPage";
 import AdminCategories from "./pages/admin/AdminCategories";
 
-
-export default function App() {
+function AppContent() {
   const [showCart, setShowCart] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem("theme");
@@ -43,42 +42,54 @@ export default function App() {
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
+  const location = useLocation();
+  const isAdminOrLogin = location.pathname.startsWith('/admin') || location.pathname === '/login';
+
   return (
-    <BrowserRouter>
-      <div>
+    <div>
+      {!isAdminOrLogin && (
         <Navbar
           onCartClick={() => setShowCart(true)}
           darkMode={darkMode}
           toggleDarkMode={toggleDarkMode}
         />
+      )}
 
+      {!isAdminOrLogin && (
         <CartSidebar
           show={showCart}
           onClose={() => setShowCart(false)}
         />
+      )}
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/catalogue" element={<Catalogue />} />
-          <Route path="/books/:id" element={<BookDetails />} />
-          <Route path="/books/:id/chat" element={<BookChatbot />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/ai" element={<Ai />} />
-          <Route path="/contact" element={<Contact />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/catalogue" element={<Catalogue />} />
+        <Route path="/books/:id" element={<BookDetails />} />
+        <Route path="/books/:id/chat" element={<BookChatbot />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/ai" element={<Ai />} />
+        <Route path="/contact" element={<Contact />} />
 
-          <Route path="/login" element={<AdminLoginPage />} />
+        <Route path="/login" element={<AdminLoginPage />} />
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/admin" element={<AdminDashboardPage />} />
-            <Route path="/admin/books" element={<AdminBooksPage />} />
-            <Route path="/admin/messages" element={<AdminMessagesPage />} />
-            <Route path="/admin/categorie" element={<AdminCategories />} />
-          </Route>
-        </Routes>
-      </div>
-    </BrowserRouter>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin/books" element={<AdminBooksPage />} />
+          <Route path="/admin/messages" element={<AdminMessagesPage />} />
+          <Route path="/admin/categorie" element={<AdminCategories />} />
+        </Route>
+      </Routes>
+    </div>
   );
 }
 
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  );
+}

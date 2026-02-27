@@ -1,149 +1,160 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import {
-  FaHeart,
-  FaShoppingCart,
-  FaUserShield,
-  FaChevronDown,
-  FaMoon,
-  FaSun
-} from "react-icons/fa";
+import { useState } from "react";
+import { useEffect } from "react";
+import { FaHeart, FaShoppingCart, FaBook, FaHome, FaRobot, FaSignInAlt, FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import { MdMovie, MdScience, MdChildCare } from "react-icons/md";
 import { GiDramaMasks, GiGhost } from "react-icons/gi";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCategories } from "../slices/categoriesSlice";
 
-export default function Navbar({ onCartClick, darkMode, toggleDarkMode }) {
-  const [openCat, setOpenCat] = useState(false);
+export default function Navbar({ onCartClick }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const cartCount = useSelector((state) => state.cart.items.length);
-  const wishCount = useSelector((state) => state.wishlist.items.length);
-  const { list: categories, loading: catLoading } = useSelector((state) => state.categories);
+  const wishlistCount = useSelector((state) => state.wishlist.items.length);
+  const { list: categories } = useSelector((state) => state.categories);
 
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+  useEffect(() => { dispatch(fetchCategories()); }, [dispatch]);
 
-  const categoryIcons = {
-    Action: <MdMovie />,
-    Drame: <GiDramaMasks />,
-    Horreur: <GiGhost />,
-    "Science-fiction": <MdScience />,
-    Science: <MdScience />,
-    Animation: <MdChildCare />,
-    Enfants: <MdChildCare />,
-  };
+  const links = [
+    { to: "/", label: "Accueil", icon: <FaHome size={18} /> },
+    { to: "/catalogue", label: "Catalogue", icon: <FaBook size={18} /> },
+    { to: "/ai", label: "Assistant IA", icon: <FaRobot size={18} /> },
+    { to: "/contact", label: "Contact & Avis", icon: null },
+  ];
 
   return (
-    <nav className="flex items-center justify-between px-8 py-4 bg-white dark:bg-[#0B0F19] shadow-md sticky top-0 z-50">
+    <div className="w-full px-4 py-3 sticky top-0 z-50 bg-transparent">
 
-      {/* LOGO */}
-      <Link to="/" className="flex items-center gap-3">
-        <motion.img
-          src="/logo.png"
-          alt="Logo"
-          className="w-10"
-          whileHover={{ rotate: 360 }}
-          transition={{ duration: 0.6 }}
-        />
-        <span className="font-bold text-xl text-[#2B55B5]">
-          SmartLibrary
-        </span>
-      </Link>
+      {/* NAVBAR CONTAINER — Arrondie + Gradient */}
+      <nav
+        className="max-w-7xl mx-auto rounded-2xl shadow-xl px-6 py-3"
+        style={{
+          background: "linear-gradient(to right, #77A1D3, #79CBCA, #E684AE)",
+        }}
+      >
+        <div className="flex items-center justify-between gap-4">
 
-      {/* LINKS */}
-      <div className="flex items-center gap-8 text-[#212E53] dark:text-gray-300 font-medium relative">
-        <Link to="/">Accueil</Link>
-        <Link to="/catalogue">Catalogue</Link>
-        <Link to="/ai">Assistant IA</Link>
-        <Link to="/contact">Contact & Avis</Link>
-
-        {/* CATEGORIES */}
-        <div className="relative">
-          <button
-            onClick={() => setOpenCat(!openCat)}
-            className="flex items-center gap-1"
-          >
-            Catégories <FaChevronDown size={12} />
-          </button>
-
-          {openCat && (
-            <div className="absolute top-10 left-0 bg-white dark:bg-[#111827] shadow-xl rounded-xl w-56 p-3 space-y-2 z-50">
-              {catLoading ? (
-                <p className="text-xs text-gray-400 p-2">Chargement...</p>
-              ) : categories.length > 0 ? (
-                categories.map((cat) => (
-                  <CategoryItem
-                    key={cat.id || cat.name}
-                    icon={categoryIcons[cat.name] || <MdMovie />}
-                    label={cat.name}
-                    onClick={() => {
-                      navigate(`/catalogue?category=${cat.name}`);
-                      setOpenCat(false);
-                    }}
-                  />
-                ))
-              ) : (
-                <p className="text-xs text-gray-400 p-2">Aucune catégorie</p>
-              )}
+          {/* LOGO */}
+          <NavLink to="/" style={{ cursor: "pointer" }}
+            className="flex items-center gap-2 flex-shrink-0">
+            <div className="w-11 h-11 rounded-xl bg-white/20 backdrop-blur
+                            flex items-center justify-center shadow-md">
+              <FaBook className="text-white" size={20} />
             </div>
-          )}
+            <div className="hidden sm:block">
+              <span className="font-bold text-white text-lg leading-none block">
+                SmartLibrary
+              </span>
+              <span className="text-white/70 text-xs">BiblioIA</span>
+            </div>
+          </NavLink>
+
+          {/* LIENS — Desktop */}
+          <div className="hidden md:flex items-center gap-1">
+            {links.map(({ to, label, icon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                style={{ cursor: "pointer" }}
+                className={({ isActive }) => `
+                  flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold
+                  transition-all duration-200
+                  ${isActive
+                    ? "bg-white/30 text-white shadow-sm"
+                    : "text-white/80 hover:bg-white/20 hover:text-white"
+                  }
+                `}
+              >
+                {icon && <span>{icon}</span>}
+                {label}
+              </NavLink>
+            ))}
+          </div>
+
+          {/* DROITE */}
+          <div className="flex items-center gap-2">
+
+            {/* Wishlist → ROSE */}
+            <NavLink to="/wishlist" style={{ cursor: "pointer" }}
+              className="relative w-10 h-10 rounded-xl bg-white/10 hover:bg-white/25
+                         flex items-center justify-center transition-all">
+              <FaHeart className="text-pink-200" size={20} />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-pink-400
+                                 text-white text-xs rounded-full flex items-center
+                                 justify-center font-bold shadow">
+                  {wishlistCount}
+                </span>
+              )}
+            </NavLink>
+
+            {/* Cart → BLEU */}
+            <button onClick={onCartClick} style={{ cursor: "pointer" }}
+              className="relative w-10 h-10 rounded-xl bg-white/10 hover:bg-white/25
+                         flex items-center justify-center transition-all">
+              <FaShoppingCart className="text-blue-200" size={20} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#5db2e3]
+                                 text-white text-xs rounded-full flex items-center
+                                 justify-center font-bold shadow">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            {/* Séparateur */}
+            <div className="w-px h-6 bg-white/30 mx-1 hidden sm:block" />
+
+            {/* Login UNIQUEMENT */}
+            <NavLink to="/login" style={{ cursor: "pointer" }}
+              className="hidden sm:flex items-center gap-2 px-5 py-2 rounded-xl
+                         text-sm font-bold text-[#7a5cff] bg-white
+                         hover:bg-white/90 hover:scale-105
+                         transition-all duration-200 shadow-md whitespace-nowrap">
+              <FaSignInAlt size={16} /> Login
+            </NavLink>
+
+            {/* Burger mobile */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              style={{ cursor: "pointer" }}
+              className="md:hidden w-10 h-10 rounded-xl bg-white/10 hover:bg-white/25
+                         flex items-center justify-center text-white transition-all">
+              {mobileOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
+            </button>
+
+          </div>
         </div>
-      </div>
 
-      {/* ICONS */}
-      <div className="flex items-center gap-6 text-[#2B55B5]">
-
-        {/* 🌓 DARK MODE TOGGLE */}
-        <button
-          onClick={toggleDarkMode}
-          className="p-2 rounded-lg transition-colors"
-        >
-          {darkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
-        </button>
-
-        {/* ❤️ WISHLIST */}
-        <Link to="/wishlist" className="relative">
-          <FaHeart className="text-xl cursor-pointer hover:scale-110 transition" />
-          {wishCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-rose-400 text-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
-              {wishCount}
-            </span>
-          )}
-        </Link>
-
-        {/* 🛒 CART */}
-        <div onClick={onCartClick} className="relative cursor-pointer">
-          <FaShoppingCart className="text-xl hover:scale-110 transition" />
-          {cartCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-cyan-500 text-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
-              {cartCount}
-            </span>
-          )}
-        </div>
-
-        {/* ADMIN */}
-        <Link to="/login">
-          <FaUserShield className="text-xl cursor-pointer hover:scale-110 transition" />
-        </Link>
-      </div>
-    </nav>
-  );
-}
-
-function CategoryItem({ icon, label, onClick }) {
-  return (
-    <div
-      onClick={onClick}
-      className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
-    >
-      <span className="text-[#2B55B5] text-lg">
-        {icon}
-      </span>
-      <span className="text-sm dark:text-gray-300">{label}</span>
+        {/* MOBILE MENU */}
+        {mobileOpen && (
+          <div className="md:hidden mt-3 pt-3 border-t border-white/20 space-y-1">
+            {links.map(({ to, label, icon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                onClick={() => setMobileOpen(false)}
+                style={{ cursor: "pointer" }}
+                className="flex items-center gap-3 px-4 py-2.5 rounded-xl
+                           text-white/80 hover:bg-white/20 hover:text-white
+                           transition-all text-sm font-medium"
+              >
+                {icon && <span>{icon}</span>}
+                {label}
+              </NavLink>
+            ))}
+            <NavLink to="/login"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl
+                         text-[#7a5cff] bg-white font-bold text-sm mt-2">
+              <FaSignInAlt /> Login
+            </NavLink>
+          </div>
+        )}
+      </nav>
     </div>
   );
 }

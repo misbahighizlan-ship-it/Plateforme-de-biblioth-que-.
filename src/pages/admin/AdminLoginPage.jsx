@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+import { FaHome } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export default function AdminLoginPage() {
@@ -85,9 +86,19 @@ export default function AdminLoginPage() {
 
       {/* RIGHT */}
       <div
-        className="w-full md:w-1/2 flex items-center justify-center"
+        className="w-full md:w-1/2 flex items-center justify-center relative"
         style={{ backgroundColor: "#13233e" }}
       >
+        <button
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+          className="absolute top-6 right-8 flex items-center gap-2 px-4 py-2 rounded-xl
+                     bg-[#111827] border border-gray-700 text-gray-400
+                     hover:text-white hover:border-[#5db2e3] transition-all text-sm"
+        >
+          <FaHome /> Retour à l'accueil
+        </button>
+
         <div className="w-full max-w-md px-8">
           <h2 className="text-2xl font-semibold mb-2">
             Connexion Admin

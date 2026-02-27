@@ -55,7 +55,7 @@ export default function CategoriesSection() {
   }));
 
   return (
-    <section className="py-20 bg-[#111827] relative overflow-hidden">
+    <section className="py-20 bg-white relative overflow-hidden">
 
       {/* Ambient blobs */}
       <div className="absolute inset-0 pointer-events-none">
@@ -76,7 +76,7 @@ export default function CategoriesSection() {
           <span className="text-[#5db2e3] text-sm font-semibold tracking-widest uppercase block mb-3">
             GENRES
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
             Explorer les{" "}
             <span className="bg-gradient-to-r from-[#5db2e3] to-pink-400 bg-clip-text text-transparent">
               catégories
@@ -100,25 +100,25 @@ export default function CategoriesSection() {
                 variants={cardVariants}
                 whileHover={{ y: -10, scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className={`relative bg-[#0B0F19] border border-gray-800/80 rounded-2xl p-6 text-center
-                  cursor-pointer ${border} transition-all duration-300 group
-                  shadow-lg ${glow} hover:shadow-2xl overflow-hidden`}
+                className={`relative bg-white border border-gray-100 rounded-2xl p-6 text-center
+                  cursor-pointer transition-all duration-300 group
+                  shadow-sm hover:shadow-xl overflow-hidden`}
                 onClick={() => navigate(`/catalogue?category=${encodeURIComponent(cat.name)}`)}
               >
                 {/* Subtle card shimmer on hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-white/[0.03] to-transparent rounded-2xl" />
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-[#2B55B5]/[0.02] to-transparent rounded-2xl" />
 
                 {/* Icon container */}
                 <motion.div
                   className={`w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br ${bg}
-                    flex items-center justify-center border border-white/5`}
+                    flex items-center justify-center`}
                   whileHover={{ rotate: [0, -6, 6, 0], scale: 1.1 }}
                   transition={{ duration: 0.45 }}
                 >
                   <Icon className={`text-xl ${color}`} strokeWidth={1.5} />
                 </motion.div>
 
-                <h3 className="text-white/90 font-semibold text-sm leading-tight">{cat.name}</h3>
+                <h3 className="text-gray-900 font-semibold text-sm leading-tight">{cat.name}</h3>
                 <p className="text-gray-500 text-xs mt-1">{cat.bookCount} livres</p>
               </motion.div>
             );
