@@ -59,7 +59,8 @@ export default function Checkout() {
 
       dispatch(addOrder(orderData));
       dispatch(clearCart());
-      navigate("/orders", { state: { fromCheckout: true, isDownload: isDownloadOrder } });
+
+      navigate("/catalogue");
 
     } catch (error) {
       console.error(error);

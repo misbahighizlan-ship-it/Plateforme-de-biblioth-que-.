@@ -8,11 +8,13 @@ import {
     FaShoppingBag,
     FaCalendarAlt,
     FaMapMarkerAlt,
+    FaUser,
+    FaPhone,
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { FiXCircle } from "react-icons/fi";
-import { cancelOrder } from "../../slices/ordersSlice";
+import { FiXCircle, FiTrash2 } from "react-icons/fi";
+import { cancelOrder, deleteOrder } from "../../slices/ordersSlice";
 
 const statusConfig = {
     "Confirmée": {
@@ -79,6 +81,13 @@ export default function Orders() {
         const confirm = window.confirm("Voulez-vous annuler cette commande ?");
         if (confirm) {
             dispatch(cancelOrder(orderId));
+        }
+    };
+
+    const handleDelete = (orderId) => {
+        const confirm = window.confirm("Voulez-vous supprimer cette commande définitivement ?");
+        if (confirm) {
+            dispatch(deleteOrder(orderId));
         }
     };
 
@@ -224,11 +233,23 @@ export default function Orders() {
                                         {/* Customer info + total */}
                                         <div className="flex items-center justify-between mt-5 pt-4 border-t border-gray-800/50">
                                             <div className="flex items-center gap-4">
-                                                <div className="flex items-center gap-2 text-gray-400 text-sm">
-                                                    <FaMapMarkerAlt className="text-xs" />
-                                                    <span className="truncate max-w-[150px]">
-                                                        {order.customer?.name || "Client"}
-                                                    </span>
+                                                <div className="flex flex-col gap-1">
+                                                    <div className="flex items-center gap-2 text-gray-300 text-sm">
+                                                        <FaUser className="text-xs text-[#5db2e3]" />
+                                                        <span className="font-medium">
+                                                            {order.customer?.name || "Client"}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                                                        <FaMapMarkerAlt className="text-xs text-pink-400" />
+                                                        <span className="truncate max-w-[200px]">
+                                                            {order.customer?.address || "—"}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                                                        <FaPhone className="text-xs text-green-400" />
+                                                        <span>{order.customer?.phone || "—"}</span>
+                                                    </div>
                                                 </div>
 
                                                 {!isAdmin && order.status === "Confirmée" && (
@@ -238,6 +259,16 @@ export default function Orders() {
                                                     >
                                                         <FiXCircle className="text-sm" />
                                                         Annuler
+                                                    </button>
+                                                )}
+
+                                                {isAdmin && (
+                                                    <button
+                                                        onClick={() => handleDelete(order.orderId || order.id)}
+                                                        className="flex items-center justify-center w-9 h-9 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white transition-all"
+                                                        title="Supprimer la commande"
+                                                    >
+                                                        <FiTrash2 className="text-sm" />
                                                     </button>
                                                 )}
                                             </div>

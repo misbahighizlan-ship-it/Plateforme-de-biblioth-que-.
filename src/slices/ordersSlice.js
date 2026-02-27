@@ -23,8 +23,14 @@ const ordersSlice = createSlice({
                 localStorage.setItem("orders", JSON.stringify(state.list));
             }
         },
+        deleteOrder: (state, action) => {
+            state.list = state.list.filter(
+                (o) => (o.orderId || o.id) !== action.payload
+            );
+            localStorage.setItem("orders", JSON.stringify(state.list));
+        },
     },
 });
 
-export const { addOrder, clearOrders, cancelOrder } = ordersSlice.actions;
+export const { addOrder, clearOrders, cancelOrder, deleteOrder } = ordersSlice.actions;
 export default ordersSlice.reducer;

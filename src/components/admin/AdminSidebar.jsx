@@ -39,6 +39,17 @@ export default function AdminSidebar() {
           <FaShoppingBag className="text-2xl text-blue-400" />
           <span className="text-lg">Commandes</span>
         </NavLink>
+
+        <button
+          onClick={() => {
+            localStorage.removeItem("isAdmin");
+            window.location.href = "/";
+          }}
+          className="flex items-center gap-4 px-4 py-2 mt-8 rounded-lg transition-colors duration-200 text-red-400 hover:bg-red-600 hover:text-white"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+          <span className="text-lg">Déconnexion</span>
+        </button>
       </nav>
     </aside>
   );
