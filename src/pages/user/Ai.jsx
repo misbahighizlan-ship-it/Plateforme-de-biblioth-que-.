@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchBooks } from "../../slices/booksSlice";
 import { buildPrompt } from "../../features/chatbot/buildPrompt";
 import { askGemini } from "../../services/geminiService";
-import { FaRobot, FaUser, FaPaperPlane, FaTimes } from "react-icons/fa";
+import { FaRobot, FaUser, FaPaperPlane, FaTimes, FaBook } from "react-icons/fa";
 
 export default function Ai() {
   const dispatch = useDispatch();
@@ -56,99 +56,181 @@ export default function Ai() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0B0F19] transition-colors p-4 md:p-8">
-      <div className="mx-auto max-w-4xl bg-white dark:bg-[#111827] rounded-2xl shadow-xl overflow-hidden flex flex-col h-[80vh]">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
 
-        {/* Header */}
-        <div className="p-4 bg-[#2B55B5] dark:bg-[#1e3a8a] text-white flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-              <FaRobot size={20} />
+      {/* HEADER */}
+      <div
+        className="px-6 py-5 shadow-lg"
+        style={{ background: "linear-gradient(135deg, #ff758c, #7a5cff)" }}
+      >
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            {/* Avatar bot animé */}
+            <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur
+                            flex items-center justify-center shadow-lg border border-white/30">
+              <FaRobot className="text-white text-2xl" />
             </div>
             <div>
-              <h1 className="font-bold text-lg">Assistant SmartLib IA</h1>
-              <p className="text-xs text-blue-100">Toujours là pour vous aider à trouver les meilleurs livres</p>
+              <h1 className="text-white font-bold text-xl">Assistant SmartLib IA</h1>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                <span className="text-white/80 text-sm">En ligne · Propulsé par Gemini IA</span>
+              </div>
             </div>
           </div>
-          <div className="text-xs bg-black/20 px-2 py-1 rounded-full">
-            {books.length} Livres chargés
+          {/* Compteur livres */}
+          <div className="hidden sm:flex items-center gap-2 bg-white/20 rounded-2xl px-4 py-2">
+            <FaBook className="text-white text-sm" />
+            <span className="text-white text-sm font-semibold">{books.length} livres</span>
           </div>
         </div>
+      </div>
 
-        {/* Messages area */}
-        <div
-          ref={scrollRef}
-          className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth"
-        >
+      {/* ZONE MESSAGES */}
+      <div className="flex-1 overflow-y-auto py-6 px-4">
+        <div className="max-w-4xl mx-auto space-y-4" ref={scrollRef}>
+
           {messages.map((m, idx) => (
             <div
               key={idx}
-              className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+              className={`flex gap-3 ${m.role === "user" ? "justify-end" : "justify-start"}`}
             >
-              <div className={`flex gap-3 max-w-[85%] ${m.role === "user" ? "flex-row-reverse" : ""}`}>
-                <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center ${m.role === "user" ? "bg-blue-500 text-white" : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300"}`}>
-                  {m.role === "user" ? <FaUser size={14} /> : <FaRobot size={14} />}
+              {/* Avatar BOT */}
+              {m.role === "assistant" && (
+                <div className="w-9 h-9 rounded-xl flex-shrink-0 flex items-center justify-center shadow-md"
+                  style={{ background: "linear-gradient(135deg, #ff758c, #7a5cff)" }}>
+                  <FaRobot className="text-white text-sm" />
                 </div>
-                <div className={`p-3 rounded-2xl text-sm ${m.role === "user"
-                  ? "bg-[#2B55B5] text-white rounded-tr-none"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-gray-200 rounded-tl-none border border-slate-200 dark:border-slate-700 shadow-sm"
-                  }`}>
-                  <div className="whitespace-pre-wrap leading-relaxed">
-                    {m.content}
-                  </div>
-                </div>
+              )}
+
+              {/* Bulle message */}
+              <div
+                className={`max-w-[75%] px-5 py-4 rounded-3xl shadow-sm text-sm leading-relaxed
+                  ${m.role === "user"
+                    ? "rounded-br-lg text-white"
+                    : "rounded-bl-lg bg-white border border-gray-100 text-gray-700 shadow-md"
+                  }`}
+                style={m.role === "user" ? {
+                  background: "linear-gradient(135deg, #ff758c, #7a5cff)"
+                } : {}}
+              >
+                <div className="whitespace-pre-wrap">{m.content}</div>
               </div>
+
+              {/* Avatar USER */}
+              {m.role === "user" && (
+                <div className="w-9 h-9 rounded-xl flex-shrink-0 bg-pink-400
+                               flex items-center justify-center shadow-md">
+                  <FaUser className="text-white text-sm" />
+                </div>
+              )}
             </div>
           ))}
 
+          {/* Typing indicator */}
           {loading && (
-            <div className="flex justify-start">
-              <div className="flex gap-3 max-w-[85%]">
-                <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 animate-pulse flex items-center justify-center">
-                  <FaRobot size={14} className="text-slate-400" />
-                </div>
-                <div className="bg-slate-100 dark:bg-slate-800 p-3 rounded-2xl rounded-tl-none">
-                  <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></span>
-                    <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-75"></span>
-                    <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce delay-150"></span>
-                  </div>
+            <div className="flex gap-3 justify-start">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
+                style={{ background: "linear-gradient(135deg, #ff758c, #7a5cff)" }}>
+                <FaRobot className="text-white text-sm" />
+              </div>
+              <div className="bg-white border border-gray-100 rounded-3xl rounded-bl-lg
+                              px-5 py-4 shadow-md">
+                <div className="flex gap-1.5 items-center">
+                  <div className="w-2.5 h-2.5 rounded-full bg-pink-400 animate-bounce"
+                    style={{ animationDelay: "0ms" }} />
+                  <div className="w-2.5 h-2.5 rounded-full bg-purple-400 animate-bounce"
+                    style={{ animationDelay: "150ms" }} />
+                  <div className="w-2.5 h-2.5 rounded-full bg-blue-400 animate-bounce"
+                    style={{ animationDelay: "300ms" }} />
                 </div>
               </div>
             </div>
           )}
 
+          {/* Message d'erreur */}
           {error && (
-            <div className="flex justify-center p-2">
-              <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-2 rounded-lg text-sm flex items-center gap-2 border border-red-100 dark:border-red-900/30">
+            <div className="flex justify-center">
+              <div className="bg-red-50 border border-red-200 text-red-500 px-5 py-3
+                              rounded-2xl text-sm flex items-center gap-2 shadow-sm">
                 <FaTimes /> {error}
               </div>
             </div>
           )}
-        </div>
 
-        {/* Input area */}
-        <form onSubmit={handleSend} className="p-4 bg-slate-50 dark:bg-[#1e293b] border-t border-slate-200 dark:border-slate-700">
-          <div className="flex gap-2">
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder='Tapez votre demande (ex: "Recommandez-moi un livre de science-fiction")'
-              className="flex-1 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-xl border border-slate-300 dark:border-slate-600 px-4 py-3 outline-none focus:ring-2 focus:ring-[#2B55B5] transition-all"
-            />
+        </div>
+      </div>
+
+      {/* SUGGESTIONS RAPIDES */}
+      {messages.length <= 1 && (
+        <div className="px-4 pb-3">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-gray-400 text-xs text-center mb-3">
+              💡 Suggestions rapides
+            </p>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {[
+                "📚 Recommande-moi un livre",
+                "💕 Roman romantique",
+                "🎭 Un livre de drame",
+                "✨ Une citation inspirante",
+                "🔮 Thriller psychologique",
+              ].map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => setInput(s)}
+                  style={{ cursor: "pointer" }}
+                  className="px-4 py-2 rounded-full text-sm border border-pink-200
+                             text-pink-500 bg-pink-50 hover:bg-pink-100
+                             transition-all font-medium"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ZONE DE SAISIE */}
+      <div className="bg-white border-t border-gray-100 px-4 py-4 shadow-lg">
+        <form onSubmit={handleSend} className="max-w-4xl mx-auto">
+          <div className="flex gap-3 items-end">
+            <div className="flex-1 relative">
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder='Posez votre question... (ex: "Je cherche un livre sur la motivation")'
+                className="w-full px-5 py-4 rounded-2xl border border-gray-200 bg-gray-50
+                           outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100
+                           transition-all text-gray-700 text-sm pr-4"
+              />
+            </div>
             <button
-              disabled={loading || !input.trim()}
               type="submit"
-              className="bg-[#2B55B5] hover:bg-blue-700 text-white w-12 h-12 rounded-xl flex items-center justify-center disabled:opacity-50 disabled:grayscale transition-all shadow-lg"
+              disabled={loading || !input.trim()}
+              style={{
+                cursor: loading || !input.trim() ? "not-allowed" : "pointer",
+                background: loading || !input.trim()
+                  ? "#e5e7eb"
+                  : "linear-gradient(135deg, #ff758c, #7a5cff)"
+              }}
+              className="w-13 h-13 w-14 h-14 rounded-2xl flex items-center justify-center
+                         text-white shadow-lg hover:opacity-90 hover:scale-105
+                         transition-all disabled:opacity-50 flex-shrink-0"
             >
-              <FaPaperPlane />
+              {loading
+                ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                : <FaPaperPlane className="text-lg" />
+              }
             </button>
           </div>
-          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-2 text-center uppercase tracking-widest">
+          <p className="text-center text-xs text-gray-400 mt-2 tracking-widest uppercase">
             Propulsé par Gemini IA
           </p>
         </form>
       </div>
+
     </div>
   );
 }
