@@ -83,7 +83,7 @@ export default function AdminLoginPage() {
         initial={{ opacity: 0, x: 40 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 py-12 bg-white"
+        className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 py-12 bg-white dark:bg-[#0B0F19] transition-colors duration-300"
       >
         {/* Logo et Retour */}
         <div className="mb-10 w-full relative">
@@ -92,7 +92,7 @@ export default function AdminLoginPage() {
             type="button"
             style={{ cursor: "pointer" }}
             className="absolute top-0 right-0 flex items-center gap-2 px-3 py-1.5 rounded-lg
-                       bg-white border border-gray-200 text-gray-400
+                       bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 text-gray-400
                        hover:text-pink-500 hover:border-pink-200 transition-all text-sm shadow-sm"
           >
             <FaHome /> Accueil
@@ -106,86 +106,86 @@ export default function AdminLoginPage() {
               <FaBook className="text-white text-xl" />
             </div>
             <div>
-              <span className="font-bold text-gray-900 text-xl block leading-none">
+              <span className="font-bold text-gray-900 dark:text-white text-xl block leading-none">
                 SmartLibrary
               </span>
               <span className="text-gray-400 text-xs">BiblioIA</span>
             </div>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Espace Admin 🔐
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
+            Espace Admin <span className="text-2xl">🔐</span>
           </h1>
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
             Connectez-vous pour accéder au tableau de bord.
           </p>
         </div>
 
         {/* Formulaire */}
-        <form onSubmit={handleLogin} className="space-y-5">
+        <form onSubmit={handleLogin} className="space-y-6">
 
           {/* Email */}
           <div>
-            <label className="text-sm font-semibold text-gray-700 mb-2 block">
+            <label className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3 block">
               Adresse email
             </label>
             <div className="relative">
-              <FiMail className="absolute left-4 top-1/2 -translate-y-1/2
-                                 text-gray-400 text-base" />
+              <FiMail className="absolute left-5 top-1/2 -translate-y-1/2
+                                 text-gray-400 text-lg" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="admin@biblioia.com"
-                className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-gray-200
-                           bg-gray-50 outline-none focus:border-pink-400
-                           focus:ring-2 focus:ring-pink-100 transition-all text-sm
-                           text-gray-700"
+                className="w-full pl-12 pr-4 py-4 rounded-[1.2rem] border border-gray-100
+                           dark:border-gray-800 bg-gray-50 dark:bg-[#111827] outline-none 
+                           focus:border-pink-400 dark:focus:border-blue-500
+                           transition-all text-sm text-gray-700 dark:text-white font-medium"
               />
             </div>
           </div>
 
           {/* Mot de passe */}
           <div>
-            <label className="text-sm font-semibold text-gray-700 mb-2 block">
+            <label className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3 block">
               Mot de passe
             </label>
             <div className="relative">
-              <FiLock className="absolute left-4 top-1/2 -translate-y-1/2
-                                 text-gray-400 text-base" />
+              <FiLock className="absolute left-5 top-1/2 -translate-y-1/2
+                                 text-gray-400 text-lg" />
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="w-full pl-11 pr-12 py-3.5 rounded-2xl border border-gray-200
-                           bg-gray-50 outline-none focus:border-pink-400
-                           focus:ring-2 focus:ring-pink-100 transition-all text-sm
-                           text-gray-700"
+                className="w-full pl-12 pr-12 py-4 rounded-[1.2rem] border border-gray-100
+                           dark:border-gray-800 bg-gray-50 dark:bg-[#111827] outline-none 
+                           focus:border-pink-400 dark:focus:border-blue-500
+                           transition-all text-sm text-gray-700 dark:text-white font-medium"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 style={{ cursor: "pointer" }}
-                className="absolute right-4 top-1/2 -translate-y-1/2
+                className="absolute right-5 top-1/2 -translate-y-1/2
                            text-gray-400 hover:text-pink-400 transition-colors"
               >
-                {showPassword ? <FiEyeOff /> : <FiEye />}
+                {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
               </button>
             </div>
           </div>
 
           {/* Mémoriser + Mot de passe oublié */}
           <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" className="rounded text-pink-400 accent-pink-400" />
-              <span className="text-sm text-gray-500">Se souvenir de moi</span>
+            <label className="flex items-center gap-2 cursor-pointer group">
+              <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-pink-500 focus:ring-pink-200" />
+              <span className="text-xs font-bold text-gray-400 group-hover:text-gray-600 transition-colors">Se souvenir de moi</span>
             </label>
             <button
               type="button"
-              className="text-sm font-medium transition-colors"
+              className="text-xs font-black uppercase tracking-widest transition-colors hover:underline"
               style={{
                 background: "linear-gradient(135deg, #ff758c, #7a5cff)",
                 WebkitBackgroundClip: "text",
@@ -199,10 +199,15 @@ export default function AdminLoginPage() {
 
           {/* Message d'erreur global */}
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-2xl px-4 py-3
-                            text-red-500 text-sm flex items-center gap-2">
-              ⚠️ {error}
-            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 
+                              rounded-2xl px-5 py-3 text-red-500 text-xs font-black uppercase tracking-widest
+                              flex items-center gap-3 shadow-sm"
+            >
+              <FiXCircle className="text-lg" /> {error}
+            </motion.div>
           )}
 
           {/* Bouton connexion */}
@@ -215,29 +220,22 @@ export default function AdminLoginPage() {
                 ? "#e5e7eb"
                 : "linear-gradient(135deg, #ff758c, #7a5cff)"
             }}
-            className="w-full py-4 rounded-2xl text-white font-bold text-base
-                       hover:opacity-90 hover:scale-[1.02] transition-all
-                       shadow-lg flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-[1.2rem] text-white font-black text-xs uppercase tracking-[0.2em]
+                       hover:scale-[1.02] transition-all shadow-xl shadow-pink-500/20
+                       flex items-center justify-center gap-3 active:scale-95"
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent
+              <div className="w-5 h-5 border-3 border-white border-t-transparent
                               rounded-full animate-spin" />
             ) : (
               <>
-                <FiLogIn className="text-lg" />
+                <FiLogIn className="text-xl" />
                 Se connecter
               </>
             )}
           </button>
-
-          {/* Séparateur */}
-          <div className="flex items-center gap-3 mt-4">
-            <div className="flex-1 h-px bg-gray-200" />
-          </div>
-
         </form>
       </motion.div>
-
     </div>
   );
 }
