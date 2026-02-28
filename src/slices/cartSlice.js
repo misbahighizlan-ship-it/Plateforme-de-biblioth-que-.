@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 let savedCart = [];
 try {
   savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-} catch (e) {
+} catch {
   localStorage.removeItem("cart");
 }
 

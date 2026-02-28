@@ -38,7 +38,7 @@ export default function AdminLoginPage() {
         className="hidden lg:block w-1/2 relative overflow-hidden"
       >
         <img
-          src="https://res.cloudinary.com/dmxy7k7pm/image/upload/v1740682054/a1_kofnjw.jpg"
+          src="/image_login.jpg"
           alt="Bibliothèque"
           className="w-full h-full object-cover"
         />

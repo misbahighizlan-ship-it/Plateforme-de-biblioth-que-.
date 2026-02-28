@@ -10,19 +10,19 @@ import CategoriesSection from "../../components/CategoriesSection";
 import ProductCard from "../../components/ProductCard";
 import { fetchBooks } from "../../slices/booksSlice";
 
-const RainStars = () => {
-  const stars = Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    left: Math.random() * 100,
-    delay: Math.random() * 4,
-    duration: 2 + Math.random() * 2,
-    size: 10 + Math.random() * 10,
-    emoji: ["⭐", "✨", "🌟", "💫"][Math.floor(Math.random() * 4)],
-  }));
+const STARS_DATA = Array.from({ length: 20 }, (_, i) => ({
+  id: i,
+  left: Math.random() * 100,
+  delay: Math.random() * 4,
+  duration: 2 + Math.random() * 2,
+  size: 10 + Math.random() * 10,
+  emoji: ["⭐", "✨", "🌟", "💫"][Math.floor(Math.random() * 4)],
+}));
 
+const RainStars = () => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {stars.map((star) => (
+      {STARS_DATA.map((star) => (
         <motion.div
           key={star.id}
           className="absolute"
@@ -40,7 +40,7 @@ const RainStars = () => {
             duration: star.duration,
             delay: star.delay,
             repeat: Infinity,
-            repeatDelay: Math.random() * 3,
+            repeatDelay: 1,
             ease: "linear",
           }}
         >
@@ -123,20 +123,20 @@ export default function Home() {
                         style={{
                           top: "50%",
                           left: "50%",
-                          fontSize: `${12 + Math.random() * 14}px`,
+                          fontSize: `${12 + (i % 5) * 3}px`,
                           zIndex: 50,
                         }}
                         initial={{ x: 0, y: 0, opacity: 1, scale: 0 }}
                         animate={{
-                          x: Math.cos((i / 16) * Math.PI * 2) * (80 + Math.random() * 60),
-                          y: Math.sin((i / 16) * Math.PI * 2) * (80 + Math.random() * 60),
+                          x: Math.cos((i / 16) * Math.PI * 2) * (80 + (i % 3) * 20),
+                          y: Math.sin((i / 16) * Math.PI * 2) * (80 + (i % 3) * 20),
                           opacity: 0,
-                          scale: 1.5 + Math.random(),
-                          rotate: Math.random() * 360,
+                          scale: 1.5 + (i % 2) * 0.5,
+                          rotate: i * 45,
                         }}
-                        transition={{ duration: 0.8 + Math.random() * 0.4, ease: "easeOut" }}
+                        transition={{ duration: 0.8 + (i % 3) * 0.2, ease: "easeOut" }}
                       >
-                        {["⭐", "✨", "🌟", "💫"][Math.floor(Math.random() * 4)]}
+                        {["⭐", "✨", "🌟", "💫"][i % 4]}
                       </motion.span>
                     ))}
                   </>
@@ -176,20 +176,20 @@ export default function Home() {
                         style={{
                           top: "50%",
                           left: "50%",
-                          fontSize: `${12 + Math.random() * 14}px`,
+                          fontSize: `${12 + (i % 5) * 3}px`,
                           zIndex: 50,
                         }}
                         initial={{ x: 0, y: 0, opacity: 1, scale: 0 }}
                         animate={{
-                          x: Math.cos((i / 16) * Math.PI * 2) * (80 + Math.random() * 60),
-                          y: Math.sin((i / 16) * Math.PI * 2) * (80 + Math.random() * 60),
+                          x: Math.cos((i / 16) * Math.PI * 2) * (80 + (i % 3) * 20),
+                          y: Math.sin((i / 16) * Math.PI * 2) * (80 + (i % 3) * 20),
                           opacity: 0,
-                          scale: 1.5 + Math.random(),
-                          rotate: Math.random() * 360,
+                          scale: 1.5 + (i % 2) * 0.5,
+                          rotate: i * 45,
                         }}
-                        transition={{ duration: 0.8 + Math.random() * 0.4, ease: "easeOut" }}
+                        transition={{ duration: 0.8 + (i % 3) * 0.2, ease: "easeOut" }}
                       >
-                        {["⭐", "✨", "🌟", "💫"][Math.floor(Math.random() * 4)]}
+                        {["⭐", "✨", "🌟", "💫"][i % 4]}
                       </motion.span>
                     ))}
                   </>
