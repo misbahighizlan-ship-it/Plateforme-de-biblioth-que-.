@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
-import { FaHome } from "react-icons/fa";
+import { useNavigate, NavLink } from "react-router-dom";
+import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
+import { FaBook, FaHome } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export default function AdminLoginPage() {
@@ -27,162 +27,217 @@ export default function AdminLoginPage() {
   };
 
 
-  // stars animation
-  const stars = Array.from({ length: 20 });
-
   return (
-    <div className="min-h-screen flex text-white">
-      {/* LEFT */}
-      <div
-        className="relative hidden md:flex w-1/2 items-center justify-center overflow-hidden"
+    <div className="min-h-screen flex flex-col-reverse lg:flex-row">
+
+      {/* GAUCHE — Nouvelle Photo (Anciennement Droite) */}
+      <motion.div
+        initial={{ opacity: 0, x: -40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="hidden lg:block w-1/2 relative overflow-hidden"
       >
-        {/* 🔴 BACKGROUND IMAGE (Cloudinary) */}
         <img
-          src="https://res.cloudinary.com/dmxy7k7pm/image/upload/f_auto,q_auto/v1769605578/Book_uu3lq8.jpg"
-          alt="Bibliothèque intelligente"
-          className="absolute inset-0 w-full h-full object-cover"
+          src="https://res.cloudinary.com/dmxy7k7pm/image/upload/v1740682054/a1_kofnjw.jpg"
+          alt="Bibliothèque"
+          className="w-full h-full object-cover"
         />
 
-        {/* 🔴 DARK OVERLAY WITH PINK TINGE */}
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
-        <div className="absolute inset-0 bg-pink-500/5"></div>
+        {/* Overlay léger pour le texte si nécessaire, sinon on peut l'enlever */}
+        <div className="absolute inset-0 bg-black/40"></div>
 
-        {/* ⭐ Animated stars */}
-        {stars.map((_, i) => (
-          <motion.span
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full opacity-70"
-            initial={{
-              x: Math.random() * 600 - 300,
-              y: Math.random() * 600 - 300,
-              opacity: 0,
-            }}
-            animate={{
-              y: [-300, 300],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 6 + Math.random() * 5,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-          />
-        ))}
+        {/* Texte sur la photo */}
+        <div className="absolute inset-0 flex flex-col justify-end p-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <h2 className="text-white text-4xl font-bold mb-4 leading-tight">
+              Votre bibliothèque<br />intelligente
+            </h2>
+            <p className="text-white/80 text-lg">
+              Des milliers de livres à portée de main,<br />
+              recommandés par l'intelligence artificielle.
+            </p>
 
-        {/* 🟢 CONTENT */}
-        <div className="relative z-10 text-center px-10">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/10 flex items-center justify-center text-2xl font-bold">
-            IA
+            {/* Stats */}
+            <div className="flex gap-6 mt-8">
+              {[
+                { value: "500+", label: "Livres" },
+                { value: "10K+", label: "Lecteurs" },
+                { value: "24/7", label: "IA Active" },
+              ].map((stat, i) => (
+                <div key={i} className="text-center">
+                  <div className="text-white font-bold text-2xl">{stat.value}</div>
+                  <div className="text-white/70 text-sm">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* DROITE — Formulaire (Anciennement Gauche) */}
+      <motion.div
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+        className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 py-12 bg-white"
+      >
+        {/* Logo et Retour */}
+        <div className="mb-10 w-full relative">
+          <button
+            onClick={() => navigate("/")}
+            type="button"
+            style={{ cursor: "pointer" }}
+            className="absolute top-0 right-0 flex items-center gap-2 px-3 py-1.5 rounded-lg
+                       bg-white border border-gray-200 text-gray-400
+                       hover:text-pink-500 hover:border-pink-200 transition-all text-sm shadow-sm"
+          >
+            <FaHome /> Accueil
+          </button>
+
+          <div className="flex items-center gap-3 mb-8">
+            <div
+              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+              style={{ background: "linear-gradient(135deg, #ff758c, #7a5cff)" }}
+            >
+              <FaBook className="text-white text-xl" />
+            </div>
+            <div>
+              <span className="font-bold text-gray-900 text-xl block leading-none">
+                SmartLibrary
+              </span>
+              <span className="text-gray-400 text-xs">BiblioIA</span>
+            </div>
           </div>
 
-          <h1 className="text-3xl font-bold mb-3">BiblioIA</h1>
-
-          <p className="text-white/80">
-            Votre bibliothèque intelligente avec assistant IA
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Espace Admin 🔐
+          </h1>
+          <p className="text-gray-500 text-sm">
+            Connectez-vous pour accéder au tableau de bord.
           </p>
         </div>
-      </div>
 
+        {/* Formulaire */}
+        <form onSubmit={handleLogin} className="space-y-5">
 
-      {/* RIGHT */}
-      <div
-        className="w-full md:w-1/2 flex items-center justify-center relative"
-        style={{ backgroundColor: "#13233e" }}
-      >
-        <button
-          onClick={() => navigate("/")}
-          style={{ cursor: "pointer" }}
-          className="absolute top-6 right-8 flex items-center gap-2 px-4 py-2 rounded-xl
-                     bg-[#111827] border border-gray-700 text-gray-400
-                     hover:text-white hover:border-[#5db2e3] transition-all text-sm"
-        >
-          <FaHome /> Retour à l'accueil
-        </button>
-
-        <div className="w-full max-w-md px-8">
-          <h2 className="text-2xl font-semibold mb-2">
-            Connexion Admin
-          </h2>
-          <p className="text-sm text-slate-300 mb-8 border-l-2 border-pink-500/50 pl-3">
-            Accédez à votre espace d'administration
-          </p>
-
-          <form onSubmit={handleLogin}>
-            {/* Email */}
-            <div className="mb-4">
-              <label className="text-sm mb-1 block">Email</label>
-              <div className="relative">
-                <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="email"
-                  placeholder="admin@biblioia.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-[#121d34] border border-slate-600 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+          {/* Email */}
+          <div>
+            <label className="text-sm font-semibold text-gray-700 mb-2 block">
+              Adresse email
+            </label>
+            <div className="relative">
+              <FiMail className="absolute left-4 top-1/2 -translate-y-1/2
+                                 text-gray-400 text-base" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="admin@biblioia.com"
+                className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-gray-200
+                           bg-gray-50 outline-none focus:border-pink-400
+                           focus:ring-2 focus:ring-pink-100 transition-all text-sm
+                           text-gray-700"
+              />
             </div>
+          </div>
 
-            {/* Password */}
-            <div className="mb-4">
-              <label className="text-sm mb-1 block">Mot de passe</label>
-              <div className="relative">
-                <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-[#121d34] border border-slate-600 rounded-lg py-2 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
-                >
-                  {showPassword ? <FiEyeOff /> : <FiEye />}
-                </button>
-              </div>
-            </div>
-
-            {/* Options */}
-            <div className="flex items-center justify-between mb-6 text-sm">
-              <label className="flex items-center gap-2 text-slate-300">
-                <input type="checkbox" className="accent-indigo-500" />
-                Se souvenir de moi
-              </label>
-              <button type="button" className="text-indigo-400 hover:underline">
-                Mot de passe oublié ?
+          {/* Mot de passe */}
+          <div>
+            <label className="text-sm font-semibold text-gray-700 mb-2 block">
+              Mot de passe
+            </label>
+            <div className="relative">
+              <FiLock className="absolute left-4 top-1/2 -translate-y-1/2
+                                 text-gray-400 text-base" />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+                className="w-full pl-11 pr-12 py-3.5 rounded-2xl border border-gray-200
+                           bg-gray-50 outline-none focus:border-pink-400
+                           focus:ring-2 focus:ring-pink-100 transition-all text-sm
+                           text-gray-700"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{ cursor: "pointer" }}
+                className="absolute right-4 top-1/2 -translate-y-1/2
+                           text-gray-400 hover:text-pink-400 transition-colors"
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
+          </div>
 
-            {/* Error Message */}
-            {error && (
-              <p className="text-red-400 text-sm text-center mb-4">{error}</p>
-            )}
-
-            {/* Button */}
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-indigo-600 via-pink-500 to-purple-600 py-3 rounded-xl font-bold shadow-lg shadow-pink-500/10 transition-all flex items-center justify-center gap-2"
+          {/* Mémoriser + Mot de passe oublié */}
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" className="rounded text-pink-400 accent-pink-400" />
+              <span className="text-sm text-gray-500">Se souvenir de moi</span>
+            </label>
+            <button
+              type="button"
+              className="text-sm font-medium transition-colors"
+              style={{
+                background: "linear-gradient(135deg, #ff758c, #7a5cff)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                cursor: "pointer"
+              }}
             >
-              {loading ? (
-                <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-              ) : (
-                "Se connecter"
-              )}
-            </motion.button>
-          </form>
+              Mot de passe oublié ?
+            </button>
+          </div>
 
-          <p className="text-xs text-center text-slate-400 mt-8">
-            © 2024 BiblioIA. Tous droits réservés.
-          </p>
-        </div>
-      </div>
+          {/* Message d'erreur global */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-2xl px-4 py-3
+                            text-red-500 text-sm flex items-center gap-2">
+              ⚠️ {error}
+            </div>
+          )}
+
+          {/* Bouton connexion */}
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              cursor: loading ? "not-allowed" : "pointer",
+              background: loading
+                ? "#e5e7eb"
+                : "linear-gradient(135deg, #ff758c, #7a5cff)"
+            }}
+            className="w-full py-4 rounded-2xl text-white font-bold text-base
+                       hover:opacity-90 hover:scale-[1.02] transition-all
+                       shadow-lg flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent
+                              rounded-full animate-spin" />
+            ) : (
+              <>
+                <FiLogIn className="text-lg" />
+                Se connecter
+              </>
+            )}
+          </button>
+
+          {/* Séparateur */}
+          <div className="flex items-center gap-3 mt-4">
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+
+        </form>
+      </motion.div>
+
     </div>
   );
 }
