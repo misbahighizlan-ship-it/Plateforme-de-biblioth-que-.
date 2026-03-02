@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import Navbar from "./components/Navbar";
 import CartSidebar from "./components/CartSidebar";
@@ -24,24 +24,6 @@ import AdminCategories from "./pages/admin/AdminCategories";
 
 function AppContent() {
   const [showCart, setShowCart] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved) return saved === "dark";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
-
-  useEffect(() => {
-    const root = document.documentElement; // c'est la balise 
-    if (darkMode) {
-      root.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      root.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
-
-  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   const location = useLocation();
   const hideNavbar = location.pathname.startsWith('/admin') || location.pathname === '/login' || location.pathname === '/orders';
@@ -51,8 +33,6 @@ function AppContent() {
       {!hideNavbar && (
         <Navbar
           onCartClick={() => setShowCart(true)}
-          darkMode={darkMode}
-          toggleDarkMode={toggleDarkMode}
         />
       )}
 

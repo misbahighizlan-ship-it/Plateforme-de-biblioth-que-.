@@ -64,13 +64,13 @@ export default function ConfirmModal({
                     className="relative w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl"
                 >
                     {/* Glass card */}
-                    <div className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 p-8">
+                    <div className="bg-white border border-gray-100 p-8">
                         {/* Close */}
                         <button
                             onClick={onClose}
                             style={{ cursor: "pointer" }}
-                            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-white
-                rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+                            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600
+                rounded-xl hover:bg-gray-100 transition-all"
                         >
                             <FiX size={18} />
                         </button>
@@ -93,7 +93,7 @@ export default function ConfirmModal({
                         </h3>
 
                         {/* Message */}
-                        <p className="text-gray-500 dark:text-gray-400 text-sm text-center leading-relaxed mb-8 px-2">
+                        <p className="text-gray-500 text-sm text-center leading-relaxed mb-8 px-2">
                             {message}
                         </p>
 
@@ -102,9 +102,9 @@ export default function ConfirmModal({
                             <button
                                 onClick={onClose}
                                 style={{ cursor: "pointer" }}
-                                className="flex-1 px-5 py-3.5 rounded-2xl bg-gray-100 dark:bg-gray-800
-                  text-gray-700 dark:text-gray-300 font-bold text-sm
-                  hover:bg-gray-200 dark:hover:bg-gray-700 transition-all active:scale-95"
+                                className="flex-1 px-5 py-3.5 rounded-2xl bg-gray-100
+                  text-gray-700 font-bold text-sm
+                  hover:bg-gray-200:bg-gray-700 transition-all active:scale-95"
                             >
                                 {cancelText}
                             </button>

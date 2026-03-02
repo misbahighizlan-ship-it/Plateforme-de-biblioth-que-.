@@ -114,17 +114,17 @@ export default function Orders() {
     };
 
     const content = (
-        <div className={`relative z-10 w-full ${isAdmin ? "max-w-[1200px] mx-auto" : "max-w-5xl mx-auto px-6 py-12"}`}>
+        <div className={`relative z-10 w-full ${isAdmin ? "max-w-[1200px] mx-auto" : "max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12"}`}>
             {/* Header Admin vs User */}
             {isAdmin ? (
                 <div className="mb-8">
                     <AdminHeader />
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-8 mb-8">
                         <div>
-                            <h2 className="text-2xl font-black tracking-tight text-gray-800 dark:text-white">
+                            <h2 className="text-2xl font-black tracking-tight text-gray-800">
                                 Gestion des Commandes
                             </h2>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                            <p className="text-sm text-gray-500 mt-1">
                                 Suivez et gérez les achats de vos clients.
                             </p>
                         </div>
@@ -143,7 +143,7 @@ export default function Orders() {
                         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#5db2e3] to-[#2B55B5] flex items-center justify-center shadow-lg shadow-blue-500/30">
                             <FaBox className="text-white text-xl" />
                         </div>
-                        <h1 className="text-4xl font-bold text-white tracking-tight">Mes Commandes</h1>
+                        <h1 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">Mes Commandes</h1>
                     </div>
                     <p className="text-gray-400 font-medium">
                         {orders.length === 0
@@ -154,19 +154,19 @@ export default function Orders() {
             )}
 
             {/* Filters */}
-            <div className={`flex gap-3 mb-10 overflow-x-auto pb-2 scrollbar-none ${isAdmin ? "justify-start" : "justify-center"}`}>
+            <div className={`flex gap-2 sm:gap-3 mb-8 sm:mb-10 overflow-x-auto pb-2 scrollbar-none ${isAdmin ? "justify-start" : "justify-center"}`}>
                 {["Toutes", "Confirmée", "Livrée", "Annulée"].map((f) => (
                     <button
                         key={f}
                         onClick={() => setFilter(f)}
                         style={{ cursor: "pointer" }}
-                        className={`px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest border transition-all shrink-0 ${filter === f
+                        className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest border transition-all shrink-0 ${filter === f
                             ? "bg-blue-600 text-white border-transparent shadow-lg shadow-blue-500/20"
-                            : "bg-white dark:bg-[#111827] border-gray-100 dark:border-gray-800 text-gray-400 hover:border-blue-500/50 hover:text-blue-500"
+                            : "bg-white border-gray-100 text-gray-400 hover:border-blue-500/50 hover:text-blue-500"
                             }`}
                     >
                         {f}
-                        <span className={`ml-2 px-2 py-0.5 rounded-lg text-[9px] ${filter === f ? "bg-white/20" : "bg-gray-100 dark:bg-gray-800"}`}>
+                        <span className={`ml-2 px-2 py-0.5 rounded-lg text-[9px] ${filter === f ? "bg-white/20" : "bg-gray-100"}`}>
                             {f === "Toutes"
                                 ? orders.length
                                 : orders.filter((o) => o.status === f).length}
@@ -180,9 +180,9 @@ export default function Orders() {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-20 bg-white dark:bg-[#111827] rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-lg"
+                    className="text-center py-20 bg-white rounded-[2.5rem] border border-gray-100 shadow-lg"
                 >
-                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center">
+                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-50 flex items-center justify-center">
                         <FaShoppingBag className="text-4xl text-gray-300" />
                     </div>
                     <h3 className="text-xl font-black text-gray-400 mb-2 uppercase tracking-tighter">
@@ -209,27 +209,27 @@ export default function Orders() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="bg-white dark:bg-[#111827] rounded-[2rem] border border-gray-100 dark:border-gray-800 overflow-hidden shadow-lg group transition-all hover:shadow-xl"
+                                className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-lg group transition-all hover:shadow-xl"
                             >
                                 {/* Order header */}
-                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-8 py-6 border-b border-gray-50 dark:border-gray-800 gap-4">
-                                    <div className="flex items-center gap-5">
-                                        <div className={`w-14 h-14 rounded-2xl ${config.bg} flex items-center justify-center shadow-sm`}>
-                                            <StatusIcon className={`${config.color} text-2xl`} />
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-50 gap-3 sm:gap-4">
+                                    <div className="flex items-center gap-3 sm:gap-5">
+                                        <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl ${config.bg} flex items-center justify-center shadow-sm shrink-0`}>
+                                            <StatusIcon className={`${config.color} text-lg sm:text-2xl`} />
                                         </div>
                                         <div>
-                                            <h3 className="text-gray-800 dark:text-white font-black text-lg">
+                                            <h3 className="text-gray-800 font-black text-sm sm:text-lg">
                                                 Commande #{(order.orderId || order.id).slice(-6).toUpperCase()}
                                             </h3>
-                                            <div className="flex items-center gap-2 text-gray-400 text-xs font-bold mt-1">
+                                            <div className="flex items-center gap-2 text-gray-400 text-[10px] sm:text-xs font-bold mt-1">
                                                 <FaCalendarAlt className="text-blue-400" />
                                                 {formatDate(order.date)}
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-3">
-                                        <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${config.bg} ${config.color} border ${config.border}`}>
+                                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                                        <span className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest ${config.bg} ${config.color} border ${config.border}`}>
                                             {order.status}
                                         </span>
                                         {/* Admin: Actions spécifiques pour commande Confirmée */}
@@ -244,19 +244,19 @@ export default function Orders() {
                                                         toast.success("Commande marquée comme livrée ✅");
                                                     }}
                                                     style={{ cursor: "pointer" }}
-                                                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 hover:bg-green-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all active:scale-90 border border-green-200 dark:border-green-500/20"
+                                                    className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-green-50 text-green-600 hover:bg-green-500 hover:text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all active:scale-90 border border-green-200"
                                                     title="Marquer comme Livrée"
                                                 >
-                                                    <FaBox size={14} />
+                                                    <FaBox size={12} />
                                                     Livrer
                                                 </button>
                                                 <button
                                                     onClick={() => handleCancel(order.orderId || order.id)}
                                                     style={{ cursor: "pointer" }}
-                                                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all active:scale-90 border border-amber-200 dark:border-amber-500/20"
+                                                    className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all active:scale-90 border border-amber-200"
                                                     title="Annuler la commande"
                                                 >
-                                                    <FiXCircle size={14} />
+                                                    <FiXCircle size={12} />
                                                     Annuler
                                                 </button>
                                             </div>
@@ -265,17 +265,17 @@ export default function Orders() {
                                             <button
                                                 onClick={() => handleDelete(order.orderId || order.id)}
                                                 style={{ cursor: "pointer" }}
-                                                className="p-3 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all active:scale-90"
+                                                className="p-2 sm:p-3 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all active:scale-90"
                                                 title="Supprimer"
                                             >
-                                                <FiTrash2 size={16} />
+                                                <FiTrash2 size={14} />
                                             </button>
                                         )}
                                     </div>
                                 </div>
 
                                 {/* Order Content */}
-                                <div className="p-8">
+                                <div className="p-4 sm:p-8">
                                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                         {/* Items List */}
                                         <div className="space-y-4">
@@ -292,7 +292,7 @@ export default function Orders() {
                                                             />
                                                         </div>
                                                         <div className="flex-1 min-w-0">
-                                                            <p className="text-gray-800 dark:text-white font-bold text-sm truncate">
+                                                            <p className="text-gray-800 font-bold text-sm truncate">
                                                                 {item.title}
                                                             </p>
                                                             <p className="text-gray-400 text-xs font-bold mt-1">
@@ -310,34 +310,34 @@ export default function Orders() {
                                         {/* Delivery Info */}
                                         <div className="space-y-6">
                                             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4">Informations de livraison</p>
-                                            <div className="bg-gray-50 dark:bg-[#0B0F19]/50 p-6 rounded-3xl border border-gray-100 dark:border-gray-800 space-y-4">
+                                            <div className="bg-gray-50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-gray-100 space-y-4">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#111827] flex items-center justify-center text-blue-500 shadow-sm">
+                                                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-blue-500 shadow-sm">
                                                         <FaUser size={16} />
                                                     </div>
                                                     <div>
                                                         <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Client</p>
-                                                        <p className="text-sm font-bold text-gray-800 dark:text-gray-200">{order.customer?.name || "Client Anonyme"}</p>
+                                                        <p className="text-sm font-bold text-gray-800">{order.customer?.name || "Client Anonyme"}</p>
                                                     </div>
                                                 </div>
 
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#111827] flex items-center justify-center text-pink-500 shadow-sm">
+                                                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-pink-500 shadow-sm">
                                                         <FaMapMarkerAlt size={16} />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Adresse</p>
-                                                        <p className="text-sm font-bold text-gray-800 dark:text-gray-200 truncate">{order.customer?.address || "Non spécifiée"}</p>
+                                                        <p className="text-sm font-bold text-gray-800 truncate">{order.customer?.address || "Non spécifiée"}</p>
                                                     </div>
                                                 </div>
 
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#111827] flex items-center justify-center text-green-500 shadow-sm">
+                                                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-green-500 shadow-sm">
                                                         <FaPhone size={16} />
                                                     </div>
                                                     <div>
                                                         <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Téléphone</p>
-                                                        <p className="text-sm font-bold text-gray-800 dark:text-gray-200">{order.customer?.phone || "Non spécifié"}</p>
+                                                        <p className="text-sm font-bold text-gray-800">{order.customer?.phone || "Non spécifié"}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -345,13 +345,13 @@ export default function Orders() {
                                     </div>
 
                                     {/* Footer Order */}
-                                    <div className="mt-8 pt-6 border-t border-gray-50 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-6">
+                                    <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-50 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
                                         <div className="flex items-center gap-4">
                                             {!isAdmin && order.status === "Confirmée" && (
                                                 <button
                                                     onClick={() => handleCancel(order.orderId || order.id)}
                                                     style={{ cursor: "pointer" }}
-                                                    className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all active:scale-95"
+                                                    className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all active:scale-95"
                                                 >
                                                     <FiXCircle size={14} />
                                                     Annuler la commande
@@ -361,7 +361,7 @@ export default function Orders() {
 
                                         <div className="flex items-baseline gap-3">
                                             <span className="text-gray-400 text-[10px] font-black uppercase tracking-widest">Total Payé :</span>
-                                            <span className="text-3xl font-black bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">
+                                            <span className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">
                                                 {order.total.toLocaleString()} DH
                                             </span>
                                         </div>
@@ -376,7 +376,7 @@ export default function Orders() {
     );
 
     return (
-        <div className={`min-h-screen transition-colors duration-300 ${isAdmin ? "bg-[#f8f9fa] dark:bg-[#0B0F19] flex" : "bg-[#0B0F19]"}`}>
+        <div className={`min-h-screen transition-colors duration-300 ${isAdmin ? "bg-[#f8f9fa] flex" : "bg-[#0B0F19]"}`}>
             {isAdmin && <AdminSidebar />}
 
             <div className={`flex-1 ${isAdmin ? "p-4 md:p-8 pt-16 md:pt-8" : "relative"}`}>

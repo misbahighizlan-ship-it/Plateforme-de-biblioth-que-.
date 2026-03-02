@@ -23,8 +23,8 @@ export default function AdminSidebar() {
         onClick={() => setIsOpen(true)}
         style={{ cursor: "pointer" }}
         className="md:hidden fixed top-4 left-4 z-50 w-10 h-10 rounded-xl
-                   bg-white dark:bg-[#111827] shadow-lg border border-gray-200 dark:border-gray-800
-                   flex items-center justify-center text-gray-700 dark:text-gray-300"
+                   bg-white shadow-lg border border-gray-200
+                   flex items-center justify-center text-gray-700"
       >
         <FaBars />
       </button>

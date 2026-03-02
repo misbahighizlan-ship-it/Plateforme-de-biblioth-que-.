@@ -83,7 +83,7 @@ export default function AdminLoginPage() {
         initial={{ opacity: 0, x: 40 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 py-12 bg-white dark:bg-[#0B0F19] transition-colors duration-300"
+        className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 py-12 bg-white transition-colors duration-300"
       >
         {/* Logo et Retour */}
         <div className="mb-10 w-full relative">
@@ -92,7 +92,7 @@ export default function AdminLoginPage() {
             type="button"
             style={{ cursor: "pointer" }}
             className="absolute top-0 right-0 flex items-center gap-2 px-3 py-1.5 rounded-lg
-                       bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-800 text-gray-400
+                       bg-white border border-gray-200 text-gray-400
                        hover:text-pink-500 hover:border-pink-200 transition-all text-sm shadow-sm"
           >
             <FaHome /> Accueil
@@ -106,17 +106,17 @@ export default function AdminLoginPage() {
               <FaBook className="text-white text-xl" />
             </div>
             <div>
-              <span className="font-bold text-gray-900 dark:text-white text-xl block leading-none">
+              <span className="font-bold text-gray-900 text-xl block leading-none">
                 SmartLibrary
               </span>
               <span className="text-gray-400 text-xs">BiblioIA</span>
             </div>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
             Espace Admin <span className="text-2xl">🔐</span>
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
+          <p className="text-gray-500 text-sm font-medium">
             Connectez-vous pour accéder au tableau de bord.
           </p>
         </div>
@@ -126,7 +126,7 @@ export default function AdminLoginPage() {
 
           {/* Email */}
           <div>
-            <label className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3 block">
+            <label className="text-xs font-black uppercase tracking-widest text-gray-500 mb-3 block">
               Adresse email
             </label>
             <div className="relative">
@@ -138,17 +138,16 @@ export default function AdminLoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="admin@biblioia.com"
-                className="w-full pl-12 pr-4 py-4 rounded-[1.2rem] border border-gray-100
-                           dark:border-gray-800 bg-gray-50 dark:bg-[#111827] outline-none 
-                           focus:border-pink-400 dark:focus:border-blue-500
-                           transition-all text-sm text-gray-700 dark:text-white font-medium"
+                className="w-full pl-12 pr-4 py-4 rounded-[1.2rem] border border-gray-100 bg-gray-50 outline-none 
+                           focus:border-pink-400
+                           transition-all text-sm text-gray-700 font-medium"
               />
             </div>
           </div>
 
           {/* Mot de passe */}
           <div>
-            <label className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3 block">
+            <label className="text-xs font-black uppercase tracking-widest text-gray-500 mb-3 block">
               Mot de passe
             </label>
             <div className="relative">
@@ -160,10 +159,9 @@ export default function AdminLoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="w-full pl-12 pr-12 py-4 rounded-[1.2rem] border border-gray-100
-                           dark:border-gray-800 bg-gray-50 dark:bg-[#111827] outline-none 
-                           focus:border-pink-400 dark:focus:border-blue-500
-                           transition-all text-sm text-gray-700 dark:text-white font-medium"
+                className="w-full pl-12 pr-12 py-4 rounded-[1.2rem] border border-gray-100 bg-gray-50 outline-none 
+                           focus:border-pink-400
+                           transition-all text-sm text-gray-700 font-medium"
               />
               <button
                 type="button"
@@ -202,7 +200,7 @@ export default function AdminLoginPage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 
+              className="bg-red-50 border border-red-100 
                               rounded-2xl px-5 py-3 text-red-500 text-xs font-black uppercase tracking-widest
                               flex items-center gap-3 shadow-sm"
             >

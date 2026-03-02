@@ -86,8 +86,8 @@ export default function EditBookModal({
 
           {/* FORM CONTENT */}
           <form id="edit-book-form" onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="sm:col-span-2">
                 <label className="text-xs font-bold text-gray-500 uppercase">Titre</label>
                 <input
                   name="title"

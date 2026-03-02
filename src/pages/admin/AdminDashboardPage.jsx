@@ -25,7 +25,7 @@ export default function AdminDashboardPage() {
   const feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
 
   return (
-    <div className="flex min-h-screen bg-[#f8f9fa] dark:bg-[#0B0F19] text-gray-900 dark:text-white transition-colors duration-300">
+    <div className="flex min-h-screen bg-[#f8f9fa] text-gray-900 transition-colors duration-300">
       <AdminSidebar />
 
       <main className="flex-1 p-4 md:p-8 pt-16 md:pt-8 max-w-[1600px] mx-auto w-full">
@@ -37,10 +37,10 @@ export default function AdminDashboardPage() {
         {/* TITRE + BOUTON AJOUTER */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h2 className="text-2xl font-black tracking-tight text-gray-800 dark:text-white">
+            <h2 className="text-2xl font-black tracking-tight text-gray-800">
               Tableau de bord
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm text-gray-500 mt-1">
               Bienvenue, voici l'état actuel de votre bibliothèque IA.
             </p>
           </div>
@@ -107,10 +107,10 @@ export default function AdminDashboardPage() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white dark:bg-[#111827] rounded-3xl p-6 shadow-lg border border-gray-100 dark:border-gray-800"
+            className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100"
           >
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-gray-800 dark:text-white">
+              <h3 className="text-lg font-bold text-gray-800">
                 Activité récente
               </h3>
               <span className="text-[10px] font-black uppercase tracking-widest text-blue-500 bg-blue-500/10 px-2 py-1 rounded-lg">
@@ -130,7 +130,7 @@ export default function AdminDashboardPage() {
                     {item.icon}
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-blue-500 transition-colors">
+                    <p className="text-sm font-bold text-gray-700 group-hover:text-blue-500 transition-colors">
                       {item.text}
                     </p>
                     <p className="text-[10px] text-gray-400 font-medium">{item.date}</p>
@@ -140,7 +140,7 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* QUICK LINK */}
-            <button className="w-full mt-8 py-3 rounded-xl border border-dashed border-gray-200 dark:border-gray-800 text-xs font-bold text-gray-400 hover:text-blue-500 hover:border-blue-500/50 transition-all uppercase tracking-widest">
+            <button className="w-full mt-8 py-3 rounded-xl border border-dashed border-gray-200 text-xs font-bold text-gray-400 hover:text-blue-500 hover:border-blue-500/50 transition-all uppercase tracking-widest">
               Voir tout l'historique
             </button>
           </motion.div>
@@ -159,12 +159,12 @@ function StatCard({ title, value, icon, trend, color, delay }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
       whileHover={{ y: -5 }}
-      className="bg-white dark:bg-[#111827] rounded-3xl p-6 shadow-lg border border-gray-100 dark:border-gray-800 relative overflow-hidden group transition-all"
+      className="bg-white rounded-3xl p-4 md:p-6 shadow-lg border border-gray-100 relative overflow-hidden group transition-all"
     >
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-4">
           <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg transform group-hover:rotate-12 transition-transform"
+            className="w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center text-white shadow-lg transform group-hover:rotate-12 transition-transform"
             style={{ background: `linear-gradient(135deg, ${color}, ${color}dd)` }}
           >
             {icon}
@@ -174,7 +174,7 @@ function StatCard({ title, value, icon, trend, color, delay }) {
           </span>
         </div>
         <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{title}</p>
-        <p className="text-3xl font-black text-gray-800 dark:text-white mt-1 leading-none tracking-tight">
+        <p className="text-3xl font-black text-gray-800 mt-1 leading-none tracking-tight">
           {value}
         </p>
       </div>

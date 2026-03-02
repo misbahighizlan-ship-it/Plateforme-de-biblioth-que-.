@@ -32,7 +32,7 @@ export default function CategoriesChart() {
   };
 
   return (
-    <div className="bg-white dark:bg-[#111827] rounded-3xl p-6 shadow-lg border border-gray-100 dark:border-gray-800">
+    <div className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100">
       {/* Titre */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md shadow-pink-500/20"
@@ -40,7 +40,7 @@ export default function CategoriesChart() {
           📊
         </div>
         <div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+          <h3 className="text-lg font-bold text-gray-900">
             Répartition par catégorie
           </h3>
           <p className="text-gray-400 text-xs mt-0.5">
@@ -64,7 +64,7 @@ export default function CategoriesChart() {
         className="w-full cursor-pointer"
         style={{ height: 300 }}
       >
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
           <PieChart>
             <Pie
               data={data}
@@ -101,7 +101,7 @@ export default function CategoriesChart() {
             />
             <Legend
               formatter={(value) => (
-                <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
                   {value}
                 </span>
               )}
@@ -115,10 +115,10 @@ export default function CategoriesChart() {
         {data.map((item, i) => (
           <div key={i} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between text-xs font-bold">
-              <span className="text-gray-700 dark:text-gray-300">{item.name}</span>
+              <span className="text-gray-700">{item.name}</span>
               <span className="text-gray-400">{item.value} ex.</span>
             </div>
-            <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${(item.value / books.length) * 100}%` }}

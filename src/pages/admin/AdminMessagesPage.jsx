@@ -53,7 +53,7 @@ export default function AdminMessagesPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#f8f9fa] dark:bg-[#0B0F19] transition-colors duration-300">
+    <div className="flex min-h-screen bg-[#f8f9fa] transition-colors duration-300">
       <AdminSidebar />
 
       <main className="flex-1 p-4 md:p-8 pt-16 md:pt-8 max-w-[1200px] mx-auto w-full">
@@ -64,10 +64,10 @@ export default function AdminMessagesPage() {
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h2 className="text-2xl font-black tracking-tight text-gray-800 dark:text-white">
+            <h2 className="text-2xl font-black tracking-tight text-gray-800">
               Messages & Avis
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm text-gray-500 mt-1">
               Consultez les retours de vos utilisateurs.
             </p>
           </div>
@@ -93,8 +93,8 @@ export default function AdminMessagesPage() {
         </div>
 
         {messages.length === 0 ? (
-          <div className="bg-white dark:bg-[#111827] p-20 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 text-center shadow-lg">
-            <div className="w-20 h-20 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+          <div className="bg-white p-20 rounded-[2.5rem] border border-gray-100 text-center shadow-lg">
+            <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
               <FiMessageSquare className="text-gray-300 text-3xl" />
             </div>
             <p className="text-gray-400 font-bold text-lg">Aucun message pour le moment.</p>
@@ -114,7 +114,7 @@ export default function AdminMessagesPage() {
                 </button>
               </div>
             ) : filteredMessages.map((msg) => (
-              <div key={msg.id} className="bg-white dark:bg-[#111827] border border-gray-100 dark:border-gray-800 p-6 md:p-8 rounded-[2rem] flex flex-col gap-6 hover:shadow-xl transition-all group relative overflow-hidden h-full flex-grow flex-shrink">
+              <div key={msg.id} className="bg-white border border-gray-100 p-6 md:p-8 rounded-[2rem] flex flex-col gap-6 hover:shadow-xl transition-all group relative overflow-hidden h-full flex-grow flex-shrink">
 
                 {/* Header (Top) */}
                 <div className="flex justify-between items-start gap-4">
@@ -126,7 +126,7 @@ export default function AdminMessagesPage() {
                     </div>
 
                     <div className="min-w-0">
-                      <h3 className="font-black text-gray-800 dark:text-gray-200 truncate pr-2 text-base">{msg.name || "Utilisateur anonyme"}</h3>
+                      <h3 className="font-black text-gray-800 truncate pr-2 text-base">{msg.name || "Utilisateur anonyme"}</h3>
                       <div className="flex items-center gap-1.5 text-gray-400 text-xs font-semibold mt-0.5">
                         <FiMail size={12} className="shrink-0" />
                         <span className="truncate">{msg.email || "Non renseigné"}</span>
@@ -136,14 +136,14 @@ export default function AdminMessagesPage() {
 
                   {/* Actions / Date */}
                   <div className="flex flex-col items-end gap-2 shrink-0 z-10">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 bg-gray-50 dark:bg-gray-800/50 px-2.5 py-1 rounded-lg">
+                    <div className="text-[10px] font-black uppercase tracking-widest text-gray-400 bg-gray-50 px-2.5 py-1 rounded-lg">
                       {new Date(msg.date || msg.id).toLocaleDateString("fr-FR", { day: 'numeric', month: 'short' })}
                     </div>
 
                     <button
                       onClick={() => handleDeleteClick(msg.id)}
                       style={{ cursor: "pointer" }}
-                      className="p-2.5 bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm active:scale-90"
+                      className="p-2.5 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm active:scale-90"
                       title="Supprimer ce message"
                     >
                       <FaTrash size={14} />
@@ -163,15 +163,15 @@ export default function AdminMessagesPage() {
                     </span>
                   )}
 
-                  <div className="flex items-center gap-1.5 bg-gray-50 dark:bg-[#0B0F19] px-2.5 py-1 rounded-lg border border-gray-100 dark:border-gray-800 ml-auto" title="Sentiment">
+                  <div className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100 ml-auto" title="Sentiment">
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Humeur</span>
                     <span className="text-sm">{getSentimentIcon(msg.sentiment)}</span>
                   </div>
                 </div>
 
                 {/* Message Body */}
-                <div className="flex-1 bg-gray-50 dark:bg-[#0f1523] rounded-2xl p-4 border border-gray-100 dark:border-gray-800/50 mt-auto relative z-10">
-                  <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed font-medium">
+                <div className="flex-1 bg-gray-50 rounded-2xl p-4 border border-gray-100 mt-auto relative z-10">
+                  <p className="text-gray-600 text-sm leading-relaxed font-medium">
                     {msg.message}
                   </p>
                 </div>

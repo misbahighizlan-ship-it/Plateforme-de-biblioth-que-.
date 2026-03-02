@@ -16,7 +16,7 @@ export default function AdminHeader() {
 
       {/* Gauche — Titre + date */}
       <div>
-        <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white capitalize">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 capitalize">
           {today}
         </h2>
         <p className="text-gray-400 text-xs mt-0.5">
@@ -34,7 +34,7 @@ export default function AdminHeader() {
         <div className="relative">
           <button
             style={{ cursor: "pointer" }}
-            className="w-10 h-10 rounded-xl bg-white dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800
+            className="w-10 h-10 rounded-xl bg-white border border-gray-200
                        flex items-center justify-center text-gray-500
                        hover:border-pink-300 hover:text-pink-500 transition-all"
           >

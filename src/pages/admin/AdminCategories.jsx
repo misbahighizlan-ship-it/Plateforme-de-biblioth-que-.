@@ -66,7 +66,7 @@ export default function AdminCategories() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#f8f9fa] dark:bg-[#0B0F19] text-gray-900 dark:text-white transition-colors duration-300 font-sans">
+    <div className="flex min-h-screen bg-[#f8f9fa] text-gray-900 transition-colors duration-300 font-sans">
       <AdminSidebar />
 
       <main className="flex-1 p-4 md:p-8 pt-16 md:pt-8 max-w-[1600px] mx-auto w-full">
@@ -77,10 +77,10 @@ export default function AdminCategories() {
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h2 className="text-2xl font-black tracking-tight text-gray-800 dark:text-white">
+            <h2 className="text-2xl font-black tracking-tight text-gray-800">
               Gestion des Catégories
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm text-gray-500 mt-1">
               Organisez votre bibliothèque par thématiques.
             </p>
           </div>
@@ -108,7 +108,7 @@ export default function AdminCategories() {
         </div>
 
         {/* SEARCH & FILTER */}
-        <div className="bg-white dark:bg-[#111827] rounded-3xl p-6 mb-8 shadow-lg border border-gray-100 dark:border-gray-800">
+        <div className="bg-white rounded-3xl p-6 mb-8 shadow-lg border border-gray-100">
           <div className="flex flex-col sm:flex-row gap-4 items-center">
 
             {/* Search */}
@@ -118,7 +118,7 @@ export default function AdminCategories() {
                 placeholder="Rechercher une catégorie..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-11 pr-4 py-4 rounded-2xl bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-pink-400 dark:focus:border-blue-500 text-gray-700 dark:text-white transition-all font-medium"
+                className="w-full pl-11 pr-4 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-pink-400 text-gray-700 transition-all font-medium"
               />
             </div>
 
@@ -128,7 +128,7 @@ export default function AdminCategories() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full pl-11 pr-4 py-4 rounded-2xl bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-pink-400 dark:focus:border-blue-500 text-gray-700 dark:text-white transition-all font-medium appearance-none cursor-pointer"
+                className="w-full pl-11 pr-4 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-pink-400 text-gray-700 transition-all font-medium appearance-none cursor-pointer"
               >
                 <option value="name-asc">Nom : A → Z</option>
                 <option value="name-desc">Nom : Z → A</option>
@@ -142,84 +142,113 @@ export default function AdminCategories() {
 
 
         {/* TABLE */}
-        <div className="bg-white dark:bg-[#111827] rounded-3xl shadow-lg border border-gray-100 dark:border-gray-800 overflow-hidden">
+        <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
           {loading ? (
             <div className="p-20 text-center">
               <div className="animate-spin w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
               <p className="text-gray-400 font-bold">Chargement des catégories...</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[700px]">
-                <thead className="bg-gray-50 dark:bg-[#0B0F19]/50 text-gray-400 text-[10px] uppercase font-black tracking-widest">
-                  <tr>
-                    <th className="p-6 text-left">Nom de la Catégorie</th>
-                    <th className="p-6 text-center">Livres</th>
-                    <th className="p-6 text-center hidden sm:table-cell">Créée le</th>
-                    <th className="p-6 text-center">Actions</th>
-                  </tr>
-                </thead>
-
-                <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                  {filteredCategories.map((cat, index) => {
-                    const colorCircle = COLORS[index % COLORS.length];
-
-                    return (
-                      <tr
-                        key={cat.id}
-                        className="hover:bg-gray-50 dark:hover:bg-[#0B0F19]/40 transition group"
-                      >
-                        {/* NAME */}
-                        <td className="p-6">
-                          <div className="flex items-center gap-3">
-                            <span className={`h-2.5 w-2.5 rounded-full ${colorCircle} shadow-sm shadow-current/50 animate-pulse`}></span>
-                            <span className="font-bold text-gray-800 dark:text-gray-200 group-hover:text-blue-500 transition-colors">
-                              {cat.name}
-                            </span>
-                          </div>
-                        </td>
-
-
-
-                        {/* BOOKS COUNT */}
-                        <td className="p-6 text-center">
-                          <span className="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase bg-blue-500/10 text-blue-500 border border-blue-500/10">
-                            {books.filter(b => b.category === cat.name).length} livres
-                          </span>
-                        </td>
-
-                        {/* DATE */}
-                        <td className="p-6 text-center text-gray-400 text-xs hidden sm:table-cell font-medium">
+            <>
+              {/* ═══ MOBILE CARDS ═══ */}
+              <div className="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+                {filteredCategories.map((cat, index) => {
+                  const colorCircle = COLORS[index % COLORS.length];
+                  const bookCount = books.filter(b => b.category === cat.name).length;
+                  return (
+                    <div
+                      key={cat.id}
+                      className="bg-gray-50 rounded-2xl p-4 border border-gray-100 hover:shadow-md transition-all"
+                    >
+                      <div className="flex items-center justify-between gap-3 mb-3">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className={`h-2.5 w-2.5 rounded-full ${colorCircle} shadow-sm animate-pulse shrink-0`}></span>
+                          <span className="font-bold text-gray-800 text-sm truncate">{cat.name}</span>
+                        </div>
+                        <span className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase bg-blue-500/10 text-blue-500 border border-blue-500/10 shrink-0">
+                          {bookCount} livres
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                        <span className="text-[11px] text-gray-400 font-medium">
                           {cat.createdAt
                             ? new Date(cat.createdAt).toLocaleDateString("fr-FR", {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
+                              day: "2-digit", month: "short", year: "numeric",
                             })
                             : "—"}
-                        </td>
+                        </span>
+                        <button
+                          onClick={() => handleDeleteClick(cat)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all text-xs font-bold"
+                        >
+                          <FiTrash2 size={14} /> Supprimer
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
-                        {/* ACTION */}
-                        <td className="p-6 text-center">
-                          <button
-                            onClick={() => handleDeleteClick(cat)}
-                            className="p-3 rounded-2xl bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm"
-                            title="Supprimer"
-                          >
-                            <FiTrash2 size={18} />
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+              {/* ═══ DESKTOP TABLE ═══ */}
+              <div className="hidden md:block">
+                <table className="w-full">
+                  <thead className="bg-gray-50 text-gray-400 text-[10px] uppercase font-black tracking-widest">
+                    <tr>
+                      <th className="p-6 text-left">Nom de la Catégorie</th>
+                      <th className="p-6 text-center">Livres</th>
+                      <th className="p-6 text-center">Créée le</th>
+                      <th className="p-6 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {filteredCategories.map((cat, index) => {
+                      const colorCircle = COLORS[index % COLORS.length];
+                      return (
+                        <tr
+                          key={cat.id}
+                          className="hover:bg-gray-50 transition group"
+                        >
+                          <td className="p-6">
+                            <div className="flex items-center gap-3">
+                              <span className={`h-2.5 w-2.5 rounded-full ${colorCircle} shadow-sm shadow-current/50 animate-pulse`}></span>
+                              <span className="font-bold text-gray-800 group-hover:text-blue-500 transition-colors">
+                                {cat.name}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="p-6 text-center">
+                            <span className="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase bg-blue-500/10 text-blue-500 border border-blue-500/10">
+                              {books.filter(b => b.category === cat.name).length} livres
+                            </span>
+                          </td>
+                          <td className="p-6 text-center text-gray-400 text-xs font-medium">
+                            {cat.createdAt
+                              ? new Date(cat.createdAt).toLocaleDateString("fr-FR", {
+                                day: "2-digit", month: "short", year: "numeric",
+                              })
+                              : "—"}
+                          </td>
+                          <td className="p-6 text-center">
+                            <button
+                              onClick={() => handleDeleteClick(cat)}
+                              className="p-3 rounded-2xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                              title="Supprimer"
+                            >
+                              <FiTrash2 size={18} />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
 
           {filteredCategories.length === 0 && !loading && (
             <div className="p-20 text-center">
-              <div className="w-16 h-16 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+              <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
                 <FiSearch className="text-gray-300 text-2xl" />
               </div>
               <p className="text-gray-400 font-bold tracking-tight italic">Aucune catégorie trouvée</p>
@@ -252,7 +281,7 @@ export default function AdminCategories() {
 
 function StatCard({ title, value, color, icon }) {
   return (
-    <div className="bg-white dark:bg-[#111827] rounded-[2rem] p-8 border border-gray-100 dark:border-gray-800 shadow-lg hover:-translate-y-2 transition-all group overflow-hidden relative">
+    <div className="bg-white rounded-[2rem] p-5 md:p-8 border border-gray-100 shadow-lg hover:-translate-y-2 transition-all group overflow-hidden relative">
       {/* Colored top accent bar */}
       <div
         className="absolute top-0 left-0 right-0 h-1 rounded-t-[2rem] opacity-70 group-hover:opacity-100 transition-opacity"
@@ -270,7 +299,7 @@ function StatCard({ title, value, color, icon }) {
           {icon}
         </div>
       </div>
-      <h3 className="text-5xl font-black tracking-tighter relative z-10 leading-none" style={{ color }}>
+      <h3 className="text-3xl md:text-5xl font-black tracking-tighter relative z-10 leading-none" style={{ color }}>
         {value}
       </h3>
 
