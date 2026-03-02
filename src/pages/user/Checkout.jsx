@@ -7,11 +7,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiArrowLeft, FiUser, FiMail, FiPhone, FiMapPin, FiSend } from "react-icons/fi";
 import { motion } from "framer-motion";
+import { useToast } from "../../components/Toast";
 
 export default function Checkout() {
   const { items, total } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [loading, setLoading] = useState(false);
 
@@ -60,11 +62,13 @@ export default function Checkout() {
       dispatch(addOrder(orderData));
       dispatch(clearCart());
 
-      navigate("/catalogue");
+      toast.success("Commande confirmée avec succès ! 🎉");
+
+      setTimeout(() => navigate("/catalogue"), 1500);
 
     } catch (error) {
       console.error(error);
-      alert("Erreur lors de l'envoi ❌");
+      toast.error("Erreur lors de l'envoi de la commande ❌");
     } finally {
       setLoading(false);
     }

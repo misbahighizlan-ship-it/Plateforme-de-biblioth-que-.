@@ -17,6 +17,8 @@ import { FiXCircle, FiTrash2, FiPackage } from "react-icons/fi";
 import { cancelOrder, deleteOrder, updateOrderStatus } from "../../slices/ordersSlice";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import AdminHeader from "../../components/admin/AdminHeader";
+import ConfirmModal from "../../components/ConfirmModal";
+import { useToast } from "../../components/Toast";
 
 const statusConfig = {
     "Confirmée": {
@@ -55,7 +57,18 @@ export default function Orders() {
     const { list: orders } = useSelector((state) => state.orders);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const toast = useToast();
     const [filter, setFilter] = useState("Toutes");
+
+    // Confirm modal state
+    const [confirmModal, setConfirmModal] = useState({
+        isOpen: false,
+        title: "",
+        message: "",
+        variant: "danger",
+        confirmText: "",
+        onConfirm: () => { },
+    });
 
     const isAdmin = localStorage.getItem("isAdmin") === "true";
 
@@ -73,17 +86,31 @@ export default function Orders() {
     };
 
     const handleCancel = (orderId) => {
-        const confirm = window.confirm("Voulez-vous annuler cette commande ?");
-        if (confirm) {
-            dispatch(cancelOrder(orderId));
-        }
+        setConfirmModal({
+            isOpen: true,
+            title: "Annuler la commande",
+            message: "Voulez-vous vraiment annuler cette commande ? Cette action est irréversible.",
+            variant: "warning",
+            confirmText: "Oui, annuler",
+            onConfirm: () => {
+                dispatch(cancelOrder(orderId));
+                toast.warning("Commande annulée");
+            },
+        });
     };
 
     const handleDelete = (orderId) => {
-        const confirm = window.confirm("Voulez-vous supprimer cette commande définitivement ?");
-        if (confirm) {
-            dispatch(deleteOrder(orderId));
-        }
+        setConfirmModal({
+            isOpen: true,
+            title: "Supprimer la commande",
+            message: "Voulez-vous supprimer cette commande définitivement ? Cette action est irréversible.",
+            variant: "danger",
+            confirmText: "Supprimer",
+            onConfirm: () => {
+                dispatch(deleteOrder(orderId));
+                toast.error("Commande supprimée");
+            },
+        });
     };
 
     const content = (
@@ -209,10 +236,13 @@ export default function Orders() {
                                         {isAdmin && order.status === "Confirmée" && (
                                             <div className="flex items-center gap-2">
                                                 <button
-                                                    onClick={() => dispatch(updateOrderStatus({
-                                                        id: order.orderId || order.id,
-                                                        status: "Livrée"
-                                                    }))}
+                                                    onClick={() => {
+                                                        dispatch(updateOrderStatus({
+                                                            id: order.orderId || order.id,
+                                                            status: "Livrée"
+                                                        }));
+                                                        toast.success("Commande marquée comme livrée ✅");
+                                                    }}
                                                     style={{ cursor: "pointer" }}
                                                     className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 hover:bg-green-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all active:scale-90 border border-green-200 dark:border-green-500/20"
                                                     title="Marquer comme Livrée"
@@ -359,6 +389,17 @@ export default function Orders() {
                 )}
                 {content}
             </div>
+
+            {/* Confirm Modal */}
+            <ConfirmModal
+                isOpen={confirmModal.isOpen}
+                onClose={() => setConfirmModal({ ...confirmModal, isOpen: false })}
+                onConfirm={confirmModal.onConfirm}
+                title={confirmModal.title}
+                message={confirmModal.message}
+                variant={confirmModal.variant}
+                confirmText={confirmModal.confirmText}
+            />
         </div>
     );
 }

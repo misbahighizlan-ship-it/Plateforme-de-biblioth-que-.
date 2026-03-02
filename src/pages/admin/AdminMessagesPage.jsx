@@ -3,10 +3,19 @@ import AdminSidebar from "../../components/admin/AdminSidebar";
 import AdminHeader from "../../components/admin/AdminHeader";
 import { FaTrash, FaSmileBeam, FaFrown, FaMeh } from "react-icons/fa";
 import { FiMessageSquare, FiMail, FiSearch } from "react-icons/fi";
+import ConfirmModal from "../../components/ConfirmModal";
+import { useToast } from "../../components/Toast";
 
 export default function AdminMessagesPage() {
   const [messages, setMessages] = useState([]);
   const [search, setSearch] = useState("");
+  const toast = useToast();
+
+  // Confirm modal state
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    messageId: null,
+  });
 
   useEffect(() => {
     // On utilise "feedbacks" pour la cohérence avec le AdminHeader
@@ -24,12 +33,15 @@ export default function AdminMessagesPage() {
     );
   });
 
-  const handleDelete = (id) => {
-    const confirm = window.confirm("Supprimer ce message ?");
-    if (!confirm) return;
-    const filtered = messages.filter((m) => m.id !== id);
+  const handleDeleteClick = (id) => {
+    setConfirmModal({ isOpen: true, messageId: id });
+  };
+
+  const handleDeleteConfirm = () => {
+    const filtered = messages.filter((m) => m.id !== confirmModal.messageId);
     setMessages(filtered);
     localStorage.setItem("feedbacks", JSON.stringify(filtered));
+    toast.success("Message supprimé avec succès");
   };
 
   const getSentimentIcon = (sentiment) => {
@@ -129,7 +141,7 @@ export default function AdminMessagesPage() {
                     </div>
 
                     <button
-                      onClick={() => handleDelete(msg.id)}
+                      onClick={() => handleDeleteClick(msg.id)}
                       style={{ cursor: "pointer" }}
                       className="p-2.5 bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm active:scale-90"
                       title="Supprimer ce message"
@@ -171,6 +183,17 @@ export default function AdminMessagesPage() {
           </div>
         )}
       </main>
+
+      {/* Confirm Modal for delete */}
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        onClose={() => setConfirmModal({ isOpen: false, messageId: null })}
+        onConfirm={handleDeleteConfirm}
+        title="Supprimer ce message"
+        message="Voulez-vous vraiment supprimer ce message ? Cette action est irréversible."
+        confirmText="Supprimer"
+        variant="danger"
+      />
     </div>
   );
 }
