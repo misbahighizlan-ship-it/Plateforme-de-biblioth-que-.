@@ -9,6 +9,7 @@ if (!apiKey) {
 const genAI = new GoogleGenerativeAI(apiKey);
 
 export async function askGemini({ prompt }) {
+  // Utilisation d'un identifiant de modèle valide et stable
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
 
   const result = await model.generateContent(prompt);

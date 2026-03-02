@@ -23,6 +23,14 @@ const ordersSlice = createSlice({
                 localStorage.setItem("orders", JSON.stringify(state.list));
             }
         },
+        updateOrderStatus: (state, action) => {
+            const { id, status } = action.payload;
+            const order = state.list.find((o) => (o.orderId || o.id) === id);
+            if (order) {
+                order.status = status;
+                localStorage.setItem("orders", JSON.stringify(state.list));
+            }
+        },
         deleteOrder: (state, action) => {
             state.list = state.list.filter(
                 (o) => (o.orderId || o.id) !== action.payload
@@ -32,5 +40,6 @@ const ordersSlice = createSlice({
     },
 });
 
-export const { addOrder, clearOrders, cancelOrder, deleteOrder } = ordersSlice.actions;
+export const { addOrder, clearOrders, cancelOrder, deleteOrder, updateOrderStatus } = ordersSlice.actions;
 export default ordersSlice.reducer;
+

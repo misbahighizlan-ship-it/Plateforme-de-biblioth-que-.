@@ -6,7 +6,7 @@ import { addCategory } from "../../slices/categoriesSlice";
 
 export default function AddCategoryModal({ open, onClose }) {
   const dispatch = useDispatch();
-  const [form, setForm] = useState({ name: "", description: "" });
+  const [form, setForm] = useState({ name: "" });
 
   if (!open) return null;
 
@@ -20,12 +20,12 @@ export default function AddCategoryModal({ open, onClose }) {
 
     dispatch(
       addCategory({
-        ...form,
+        name: form.name.trim(),
         booksCount: 0,
         createdAt: new Date().toISOString(),
       })
     );
-    setForm({ name: "", description: "" });
+    setForm({ name: "" });
     onClose();
   };
 
@@ -81,19 +81,7 @@ export default function AddCategoryModal({ open, onClose }) {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">
-                Description (optionnel)
-              </label>
-              <textarea
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                placeholder="Brève description de la thématique..."
-                rows="3"
-                className="w-full px-4 py-3 rounded-xl bg-[#0B0F19] border border-gray-800 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white placeholder-gray-600 transition-all resize-none"
-              ></textarea>
-            </div>
+
 
             {/* ACTION BUTTONS */}
             <div className="flex gap-3 pt-2">

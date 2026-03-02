@@ -43,11 +43,11 @@ function AppContent() {
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   const location = useLocation();
-  const isAdminOrLogin = location.pathname.startsWith('/admin') || location.pathname === '/login';
+  const hideNavbar = location.pathname.startsWith('/admin') || location.pathname === '/login' || location.pathname === '/orders';
 
   return (
     <div>
-      {!isAdminOrLogin && (
+      {!hideNavbar && (
         <Navbar
           onCartClick={() => setShowCart(true)}
           darkMode={darkMode}
@@ -55,7 +55,7 @@ function AppContent() {
         />
       )}
 
-      {!isAdminOrLogin && (
+      {!hideNavbar && (
         <CartSidebar
           show={showCart}
           onClose={() => setShowCart(false)}

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { FiSearch, FiBell } from "react-icons/fi";
+import { FiBell } from "react-icons/fi";
 
 export default function AdminHeader() {
   const { list: books } = useSelector((state) => state.books);
@@ -27,19 +27,8 @@ export default function AdminHeader() {
       {/* Droite — Search + Notifs */}
       <div className="flex items-center gap-3 w-full sm:w-auto">
 
-        {/* Search */}
-        <div className="relative flex-1 sm:w-64">
-          <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2
-                               text-gray-400 text-sm" />
-          <input
-            type="text"
-            placeholder="Rechercher..."
-            className="w-full pl-9 pr-4 py-2.5 rounded-2xl border border-gray-200
-                       bg-white dark:bg-[#0B0F19] dark:border-gray-800 text-sm text-gray-700 dark:text-gray-200 outline-none
-                       focus:border-pink-400 focus:ring-2 focus:ring-pink-100
-                       transition-all"
-          />
-        </div>
+
+
 
         {/* Notif avis */}
         <div className="relative">

@@ -10,7 +10,7 @@ import AdminHeader from "../../components/admin/AdminHeader";
 import AddCategoryModal from "../../components/admin/AddCategoryModal";
 import DeleteConfirmModal from "../../components/admin/DeleteConfirmModal";
 
-import { FiTrash2, FiSearch, FiPlus, FiTag } from "react-icons/fi";
+import { FiTrash2, FiSearch, FiPlus, FiTag, FiFilter } from "react-icons/fi";
 
 export default function AdminCategories() {
   const COLORS = [
@@ -28,6 +28,7 @@ export default function AdminCategories() {
   const { list: books } = useSelector((state) => state.books);
 
   const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("name-asc");
   const [openAdd, setOpenAdd] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -36,9 +37,17 @@ export default function AdminCategories() {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const filteredCategories = categories.filter((cat) =>
-    cat.name?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredCategories = categories
+    .filter((cat) => cat.name?.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => {
+      const countA = books.filter(bk => bk.category === a.name).length;
+      const countB = books.filter(bk => bk.category === b.name).length;
+      if (sortBy === "name-asc") return a.name?.localeCompare(b.name);
+      if (sortBy === "name-desc") return b.name?.localeCompare(a.name);
+      if (sortBy === "books-desc") return countB - countA;
+      if (sortBy === "books-asc") return countA - countB;
+      return 0;
+    });
 
   const totalCategories = categories.length;
   // Calculation with real books list if available
@@ -100,16 +109,37 @@ export default function AdminCategories() {
 
         {/* SEARCH & FILTER */}
         <div className="bg-white dark:bg-[#111827] rounded-3xl p-6 mb-8 shadow-lg border border-gray-100 dark:border-gray-800">
-          <div className="relative max-w-md">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              placeholder="Rechercher une catégorie..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-11 pr-4 py-4 rounded-2xl bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-pink-400 dark:focus:border-blue-500 text-gray-700 dark:text-white transition-all font-medium"
-            />
+          <div className="flex flex-col sm:flex-row gap-4 items-center">
+
+            {/* Search */}
+            <div className="relative flex-1 w-full">
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                placeholder="Rechercher une catégorie..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-11 pr-4 py-4 rounded-2xl bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-pink-400 dark:focus:border-blue-500 text-gray-700 dark:text-white transition-all font-medium"
+              />
+            </div>
+
+            {/* Sort Filter */}
+            <div className="relative w-full sm:w-64">
+              <FiFilter className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full pl-11 pr-4 py-4 rounded-2xl bg-gray-50 dark:bg-[#0B0F19] border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-pink-400 dark:focus:border-blue-500 text-gray-700 dark:text-white transition-all font-medium appearance-none cursor-pointer"
+              >
+                <option value="name-asc">Nom : A → Z</option>
+                <option value="name-desc">Nom : Z → A</option>
+                <option value="books-desc">Plus de livres</option>
+                <option value="books-asc">Moins de livres</option>
+              </select>
+            </div>
+
           </div>
         </div>
+
 
         {/* TABLE */}
         <div className="bg-white dark:bg-[#111827] rounded-3xl shadow-lg border border-gray-100 dark:border-gray-800 overflow-hidden">
@@ -124,7 +154,6 @@ export default function AdminCategories() {
                 <thead className="bg-gray-50 dark:bg-[#0B0F19]/50 text-gray-400 text-[10px] uppercase font-black tracking-widest">
                   <tr>
                     <th className="p-6 text-left">Nom de la Catégorie</th>
-                    <th className="p-6 text-left hidden md:table-cell">Description</th>
                     <th className="p-6 text-center">Livres</th>
                     <th className="p-6 text-center hidden sm:table-cell">Créée le</th>
                     <th className="p-6 text-center">Actions</th>
@@ -150,10 +179,7 @@ export default function AdminCategories() {
                           </div>
                         </td>
 
-                        {/* DESCRIPTION */}
-                        <td className="p-6 text-gray-500 dark:text-gray-400 text-sm max-w-sm truncate hidden md:table-cell font-medium">
-                          {cat.description || "—"}
-                        </td>
+
 
                         {/* BOOKS COUNT */}
                         <td className="p-6 text-center">
@@ -227,21 +253,30 @@ export default function AdminCategories() {
 function StatCard({ title, value, color, icon }) {
   return (
     <div className="bg-white dark:bg-[#111827] rounded-[2rem] p-8 border border-gray-100 dark:border-gray-800 shadow-lg hover:-translate-y-2 transition-all group overflow-hidden relative">
-      <div className="flex items-center justify-between mb-2">
+      {/* Colored top accent bar */}
+      <div
+        className="absolute top-0 left-0 right-0 h-1 rounded-t-[2rem] opacity-70 group-hover:opacity-100 transition-opacity"
+        style={{ background: `linear-gradient(90deg, ${color}, ${color}88)` }}
+      />
+
+      <div className="flex items-center justify-between mb-4">
         <p className="text-gray-400 text-[10px] uppercase tracking-[0.2em] font-black relative z-10">
           {title}
         </p>
-        <div className="text-gray-200 dark:text-gray-800 relative z-10 transition-colors group-hover:text-blue-500/50">
+        <div
+          className="p-2.5 rounded-xl relative z-10 transition-transform group-hover:scale-110"
+          style={{ backgroundColor: `${color}18`, color }}
+        >
           {icon}
         </div>
       </div>
-      <h3 className="text-4xl font-black text-gray-800 dark:text-white tracking-tighter relative z-10 leading-none">
+      <h3 className="text-5xl font-black tracking-tighter relative z-10 leading-none" style={{ color }}>
         {value}
       </h3>
 
-      {/* Decorative gradient dot */}
+      {/* Decorative gradient blob */}
       <div
-        className="absolute -bottom-4 -right-4 w-16 h-16 rounded-full opacity-[0.05] group-hover:opacity-[0.1] group-hover:scale-150 transition-all duration-500"
+        className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full opacity-[0.06] group-hover:opacity-[0.12] group-hover:scale-125 transition-all duration-500"
         style={{ backgroundColor: color }}
       />
     </div>

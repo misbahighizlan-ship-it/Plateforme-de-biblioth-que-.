@@ -14,7 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { FiXCircle, FiTrash2, FiPackage } from "react-icons/fi";
-import { cancelOrder, deleteOrder } from "../../slices/ordersSlice";
+import { cancelOrder, deleteOrder, updateOrderStatus } from "../../slices/ordersSlice";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import AdminHeader from "../../components/admin/AdminHeader";
 
@@ -128,7 +128,7 @@ export default function Orders() {
 
             {/* Filters */}
             <div className={`flex gap-3 mb-10 overflow-x-auto pb-2 scrollbar-none ${isAdmin ? "justify-start" : "justify-center"}`}>
-                {["Toutes", "Confirmée", "Annulée", "En cours"].map((f) => (
+                {["Toutes", "Confirmée", "Livrée", "Annulée"].map((f) => (
                     <button
                         key={f}
                         onClick={() => setFilter(f)}
@@ -205,6 +205,32 @@ export default function Orders() {
                                         <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${config.bg} ${config.color} border ${config.border}`}>
                                             {order.status}
                                         </span>
+                                        {/* Admin: Actions spécifiques pour commande Confirmée */}
+                                        {isAdmin && order.status === "Confirmée" && (
+                                            <div className="flex items-center gap-2">
+                                                <button
+                                                    onClick={() => dispatch(updateOrderStatus({
+                                                        id: order.orderId || order.id,
+                                                        status: "Livrée"
+                                                    }))}
+                                                    style={{ cursor: "pointer" }}
+                                                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 hover:bg-green-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all active:scale-90 border border-green-200 dark:border-green-500/20"
+                                                    title="Marquer comme Livrée"
+                                                >
+                                                    <FaBox size={14} />
+                                                    Livrer
+                                                </button>
+                                                <button
+                                                    onClick={() => handleCancel(order.orderId || order.id)}
+                                                    style={{ cursor: "pointer" }}
+                                                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all active:scale-90 border border-amber-200 dark:border-amber-500/20"
+                                                    title="Annuler la commande"
+                                                >
+                                                    <FiXCircle size={14} />
+                                                    Annuler
+                                                </button>
+                                            </div>
+                                        )}
                                         {isAdmin && (
                                             <button
                                                 onClick={() => handleDelete(order.orderId || order.id)}

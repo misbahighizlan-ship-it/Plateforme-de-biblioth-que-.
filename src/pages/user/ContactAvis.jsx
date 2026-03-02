@@ -11,15 +11,25 @@ export default function ContactAvis() {
     });
     const [submitted, setSubmitted] = useState(false);
     const [activeTab, setActiveTab] = useState("avis"); // "avis" ou "contact"
+    const [contactForm, setContactForm] = useState({
+        name: "", email: "", subject: "", message: ""
+    });
+    const [contactSubmitted, setContactSubmitted] = useState(false);
+    const [contactLoading, setContactLoading] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (form.message.length < 5) return;
 
+        let calculatedSentiment = "neutre";
+        if (rating >= 4) calculatedSentiment = "positif";
+        else if (rating <= 2) calculatedSentiment = "negatif";
+
         const feedback = {
             id: Date.now(),
             ...form,
             rating,
+            sentiment: calculatedSentiment,
             date: new Date().toISOString(),
             read: false,
         };
@@ -28,6 +38,36 @@ export default function ContactAvis() {
         existing.unshift(feedback);
         localStorage.setItem("feedbacks", JSON.stringify(existing));
         setSubmitted(true);
+    };
+
+    const handleContactSubmit = (e) => {
+        e.preventDefault();
+        if (!contactForm.name || !contactForm.email || !contactForm.message) return;
+
+        setContactLoading(true);
+
+        // Sauvegarder dans localStorage comme les feedbacks
+        const contactMessage = {
+            id: Date.now(),
+            name: contactForm.name,
+            email: contactForm.email,
+            type: "Contact",
+            message: `[Sujet: ${contactForm.subject}] ${contactForm.message}`,
+            rating: 0,
+            sentiment: "neutre", // Par défaut pour un message de contact
+            date: new Date().toISOString(),
+            read: false,
+        };
+
+        const existing = JSON.parse(localStorage.getItem("feedbacks")) || [];
+        existing.unshift(contactMessage);
+        localStorage.setItem("feedbacks", JSON.stringify(existing));
+
+        setTimeout(() => {
+            setContactLoading(false);
+            setContactSubmitted(true);
+            setContactForm({ name: "", email: "", subject: "", message: "" });
+        }, 800);
     };
 
     // PAGE SUCCÈS
@@ -343,40 +383,106 @@ export default function ContactAvis() {
                             </div>
 
                             {/* Formulaire contact */}
-                            <form className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-5">
+                            <form
+                                onSubmit={handleContactSubmit}
+                                className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-5"
+                            >
                                 <h3 className="text-lg font-bold text-gray-900">
                                     Envoyer un message
                                 </h3>
+
+                                {/* Succes message */}
+                                {contactSubmitted && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="bg-green-50 border border-green-200 rounded-2xl px-4 py-3
+                                             text-green-600 text-sm flex items-center gap-2 font-medium"
+                                    >
+                                        ✅ Message envoyé avec succès ! Nous vous répondrons bientôt.
+                                    </motion.div>
+                                )}
+
                                 <div>
-                                    <label className="text-xs font-semibold text-gray-600 mb-1.5 block">Nom</label>
-                                    <input type="text" placeholder="Votre nom"
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50
-                               outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 text-sm" />
+                                    <label className="text-xs font-semibold text-gray-600 mb-1.5 block">
+                                        Nom <span className="text-red-400">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                                        <input
+                                            type="text"
+                                            placeholder="Votre nom"
+                                            value={contactForm.name}
+                                            onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                                            required
+                                            className="w-full pl-9 pr-4 py-3 rounded-xl border border-gray-200 bg-gray-50
+                                               outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 text-sm"
+                                        />
+                                    </div>
                                 </div>
+
                                 <div>
-                                    <label className="text-xs font-semibold text-gray-600 mb-1.5 block">Email</label>
-                                    <input type="email" placeholder="votre@email.com"
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50
-                               outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 text-sm" />
+                                    <label className="text-xs font-semibold text-gray-600 mb-1.5 block">
+                                        Email <span className="text-red-400">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                                        <input
+                                            type="email"
+                                            placeholder="votre@email.com"
+                                            value={contactForm.email}
+                                            onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                                            required
+                                            className="w-full pl-9 pr-4 py-3 rounded-xl border border-gray-200 bg-gray-50
+                                               outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 text-sm"
+                                        />
+                                    </div>
                                 </div>
+
                                 <div>
                                     <label className="text-xs font-semibold text-gray-600 mb-1.5 block">Sujet</label>
-                                    <input type="text" placeholder="Objet de votre message"
+                                    <input
+                                        type="text"
+                                        placeholder="Objet de votre message"
+                                        value={contactForm.subject}
+                                        onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50
-                               outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 text-sm" />
+                                             outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 text-sm"
+                                    />
                                 </div>
+
                                 <div>
-                                    <label className="text-xs font-semibold text-gray-600 mb-1.5 block">Message</label>
-                                    <textarea rows={4} placeholder="Votre message..."
+                                    <label className="text-xs font-semibold text-gray-600 mb-1.5 block">
+                                        Message <span className="text-red-400">*</span>
+                                    </label>
+                                    <textarea
+                                        rows={4}
+                                        placeholder="Votre message..."
+                                        value={contactForm.message}
+                                        onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                                        required
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50
-                               outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100
-                               resize-none text-sm" />
+                                             outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100
+                                             resize-none text-sm"
+                                    />
                                 </div>
-                                <button type="button"
-                                    style={{ background: "linear-gradient(135deg, #ff758c, #7a5cff)", cursor: "pointer" }}
+
+                                <button
+                                    type="submit"
+                                    disabled={contactLoading}
+                                    style={{
+                                        background: contactLoading ? "#e5e7eb" : "linear-gradient(135deg, #ff758c, #7a5cff)",
+                                        cursor: contactLoading ? "not-allowed" : "pointer"
+                                    }}
                                     className="w-full py-4 rounded-2xl font-bold text-white
-                             hover:opacity-90 transition-all shadow-lg flex items-center justify-center gap-2">
-                                    <FaPaperPlane /> Envoyer le message
+                                           hover:opacity-90 transition-all shadow-lg
+                                           flex items-center justify-center gap-2"
+                                >
+                                    {contactLoading ? (
+                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                    ) : (
+                                        <><FaPaperPlane /> Envoyer le message</>
+                                    )}
                                 </button>
                             </form>
                         </motion.div>
