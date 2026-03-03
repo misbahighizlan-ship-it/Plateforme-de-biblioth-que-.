@@ -53,10 +53,10 @@ export default function Checkout() {
           pdfUrl: items[0]?.pdf || "",
           orderId: orderData.orderId,
         };
-        await axios.post("https://n8n.deontex.com/webhook/download", downloadData);
+        await axios.post(`${import.meta.env.VITE_N8N_URL}/webhook/download`, downloadData);
       } else {
         // 🛒 CAS ACHAT NORMAL → webhook /orders
-        await axios.post("https://n8n.deontex.com/webhook/orders", orderData);
+        await axios.post(`${import.meta.env.VITE_N8N_URL}/webhook/orders`, orderData);
       }
 
       dispatch(addOrder(orderData));

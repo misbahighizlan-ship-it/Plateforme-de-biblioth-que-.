@@ -5,6 +5,7 @@ import { FaArrowLeft, FaPaperPlane, FaRobot, FaUser, FaTimes, FaBook } from "rea
 import { useState, useRef, useEffect } from "react";
 import { buildPrompt } from "../../features/chatbot/buildPrompt";
 import { askGemini } from "../../services/geminiService";
+import { extractTextFromPDF } from "../../utils/pdfExtract";
 
 export default function BookChatbot() {
     const { id } = useParams();
@@ -21,7 +22,20 @@ export default function BookChatbot() {
     const [inputValue, setInputValue] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [pdfContext, setPdfContext] = useState("");
     const scrollRef = useRef(null);
+
+    // Extract PDF text for context
+    useEffect(() => {
+        if (book?.pdf) {
+            extractTextFromPDF(book.pdf, 30).then((text) => {
+                if (text) {
+                    // Limit text length to prevent breaking context window
+                    setPdfContext(text.substring(0, 30000));
+                }
+            });
+        }
+    }, [book?.pdf]);
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -40,7 +54,7 @@ export default function BookChatbot() {
         setLoading(true);
 
         try {
-            const prompt = buildPrompt({ books, userMessage, currentBook: book });
+            const prompt = buildPrompt({ books, userMessage, currentBook: book, pdfContext });
             const aiText = await askGemini({ prompt });
             setMessages((prev) => [...prev, { role: "assistant", content: aiText }]);
         } catch (err) {

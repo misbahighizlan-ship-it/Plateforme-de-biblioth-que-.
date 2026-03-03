@@ -23,7 +23,7 @@ export const normalizeData = (data) => {
 };
 
 const api = axios.create({
-  baseURL: "https://6977f6b85b9c0aed1e87c204.mockapi.io/",
+  baseURL: import.meta.env.VITE_MOCKAPI_URL,
   timeout: 10000,
 });
 
