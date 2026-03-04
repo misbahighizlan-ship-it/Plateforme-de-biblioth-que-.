@@ -285,7 +285,7 @@ export default function Home() {
           </motion.div>
 
           {/* 4 cards grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             {books.slice(0, 4).map((book) => (
               <ProductCard key={book.id} book={book} />
             ))}

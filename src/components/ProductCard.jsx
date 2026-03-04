@@ -13,7 +13,7 @@ export default function ProductCard({ book }) {
 
   return (
     <motion.div
-      className="relative w-64 h-96 rounded-2xl overflow-hidden
+      className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden
                  cursor-pointer backdrop-blur-xl
                  bg-white/5 border border-white/10
                  shadow-[0_20px_50px_rgba(0,0,0,0.5)]"

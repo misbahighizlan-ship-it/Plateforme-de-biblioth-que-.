@@ -114,7 +114,7 @@ export default function Orders() {
     };
 
     const content = (
-        <div className={`relative z-10 w-full ${isAdmin ? "max-w-[1200px] mx-auto" : "max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12"}`}>
+        <div className={`relative z-10 w-full min-w-0 ${isAdmin ? "max-w-[1200px] mx-auto px-4 sm:px-6 py-6" : "max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12"}`}>
             {/* Header Admin vs User */}
             {isAdmin ? (
                 <div className="mb-8">
@@ -234,7 +234,7 @@ export default function Orders() {
                                         </span>
                                         {/* Admin: Actions spécifiques pour commande Confirmée */}
                                         {isAdmin && order.status === "Confirmée" && (
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex flex-wrap items-center gap-2">
                                                 <button
                                                     onClick={() => {
                                                         dispatch(updateOrderStatus({
@@ -265,7 +265,7 @@ export default function Orders() {
                                             <button
                                                 onClick={() => handleDelete(order.orderId || order.id)}
                                                 style={{ cursor: "pointer" }}
-                                                className="p-2 sm:p-3 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all active:scale-90"
+                                                className="p-2 sm:p-3 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all active:scale-90 shrink-0"
                                                 title="Supprimer"
                                             >
                                                 <FiTrash2 size={14} />
@@ -299,7 +299,7 @@ export default function Orders() {
                                                                 Quantité: {item.quantity} × {item.price} DH
                                                             </p>
                                                         </div>
-                                                        <span className="text-blue-500 font-black text-sm">
+                                                        <span className="text-blue-500 font-black text-sm shrink-0">
                                                             {(item.price * item.quantity).toLocaleString()} DH
                                                         </span>
                                                     </div>
@@ -312,17 +312,17 @@ export default function Orders() {
                                             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4">Informations de livraison</p>
                                             <div className="bg-gray-50 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-gray-100 space-y-4">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-blue-500 shadow-sm">
+                                                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-blue-500 shadow-sm shrink-0">
                                                         <FaUser size={16} />
                                                     </div>
-                                                    <div>
+                                                    <div className="flex-1 min-w-0">
                                                         <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Client</p>
-                                                        <p className="text-sm font-bold text-gray-800">{order.customer?.name || "Client Anonyme"}</p>
+                                                        <p className="text-sm font-bold text-gray-800 truncate">{order.customer?.name || "Client Anonyme"}</p>
                                                     </div>
                                                 </div>
 
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-pink-500 shadow-sm">
+                                                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-pink-500 shadow-sm shrink-0">
                                                         <FaMapMarkerAlt size={16} />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
@@ -332,12 +332,12 @@ export default function Orders() {
                                                 </div>
 
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-green-500 shadow-sm">
+                                                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-green-500 shadow-sm shrink-0">
                                                         <FaPhone size={16} />
                                                     </div>
-                                                    <div>
+                                                    <div className="flex-1 min-w-0">
                                                         <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Téléphone</p>
-                                                        <p className="text-sm font-bold text-gray-800">{order.customer?.phone || "Non spécifié"}</p>
+                                                        <p className="text-sm font-bold text-gray-800 truncate">{order.customer?.phone || "Non spécifié"}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -346,12 +346,12 @@ export default function Orders() {
 
                                     {/* Footer Order */}
                                     <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-50 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
-                                        <div className="flex items-center gap-4">
+                                        <div className="flex items-center gap-4 w-full sm:w-auto">
                                             {!isAdmin && order.status === "Confirmée" && (
                                                 <button
                                                     onClick={() => handleCancel(order.orderId || order.id)}
                                                     style={{ cursor: "pointer" }}
-                                                    className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all active:scale-95"
+                                                    className="flex items-center gap-2 justify-center w-full sm:w-auto px-6 py-3 rounded-2xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all active:scale-95"
                                                 >
                                                     <FiXCircle size={14} />
                                                     Annuler la commande
@@ -359,7 +359,7 @@ export default function Orders() {
                                             )}
                                         </div>
 
-                                        <div className="flex items-baseline gap-3">
+                                        <div className="flex items-baseline justify-between w-full sm:w-auto gap-3">
                                             <span className="text-gray-400 text-[10px] font-black uppercase tracking-widest">Total Payé :</span>
                                             <span className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent">
                                                 {order.total.toLocaleString()} DH
@@ -379,7 +379,7 @@ export default function Orders() {
         <div className={`min-h-screen transition-colors duration-300 ${isAdmin ? "bg-[#f8f9fa] flex" : "bg-[#0B0F19]"}`}>
             {isAdmin && <AdminSidebar />}
 
-            <div className={`flex-1 ${isAdmin ? "p-4 md:p-8 pt-16 md:pt-8" : "relative"}`}>
+            <div className={`flex-1 min-w-0 overflow-x-hidden ${isAdmin ? "p-4 md:p-8 pt-16 md:pt-8" : "relative"}`}>
                 {!isAdmin && (
                     <>
                         {/* User background glow */}
