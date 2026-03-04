@@ -14,7 +14,7 @@ export default function AdminLoginPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (email === "admin@biblioia.com" && password === "admin123") {
+    if (email === "admin@biblioai.com" && password === "admin123") {
       setLoading(true);
       localStorage.setItem("isAdmin", "true");
       setTimeout(() => {

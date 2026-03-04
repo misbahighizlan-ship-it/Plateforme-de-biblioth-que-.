@@ -14,4 +14,3 @@ export const store = configureStore({
     orders: ordersReducer,
   },
 });
-

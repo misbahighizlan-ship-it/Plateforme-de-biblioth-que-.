@@ -357,9 +357,9 @@ export default function ContactAvis() {
                                     Nous sommes là pour vous 🤝
                                 </h2>
                                 {[
-                                    { icon: <FaEnvelope className="text-pink-400" />, title: "Email", value: "contact@biblioia.com" },
+                                    { icon: <FaEnvelope className="text-pink-400" />, title: "Email", value: "SmartLibrary@biblioia.com" },
                                     { icon: <FaPhone className="text-purple-400" />, title: "Téléphone", value: "+212 6XX XXX XXX" },
-                                    { icon: <FaMapMarkerAlt className="text-blue-400" />, title: "Adresse", value: "Fès, Maroc" },
+                                    { icon: <FaMapMarkerAlt className="text-blue-400" />, title: "Adresse", value: "Casablanca , Maroc" },
                                     { icon: <FaBook className="text-pink-400" />, title: "Horaires", value: "24h/7 - IA toujours active" },
                                 ].map((info, i) => (
                                     <motion.div
